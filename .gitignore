@@ -1,11 +1,7 @@
 /.idea
 /.vscode
-/vendor
 *.log
-thinkphp
 .env
 public/uploads/
 uploads/
 .svn/
-config/database.php
-config/database.backup.php
