@@ -1,0 +1,575 @@
+{extend name="common/templates/tpl-blank"} 
+{block name="page-title"}项目管理{/block} 
+{block name="custom-css"}{/block}
+{block name="custom-js"}{/block}
+{block name="breadcrumb"}
+<ul class="page-breadcrumb">
+    <li>
+        <span>项目管理</span>
+    </li>
+</ul>
+{/block} {block name="page-content-title"}
+<h1 class="page-title"> 项目管理
+</h1>
+{/block} {block name="page-content"} {/block} 
+
+{extend name="common/templates/tpl-blank"} {block name="page-title"}项目管理-项目管理{/block} {block name="custom-css"}
+<link href="/assets/metronic/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+<link href="/assets/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css"
+/>
+<link href="/assets/metronic/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"
+/>
+<link href="/assets/metronic/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
+<link href="/assets/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" type="text/css"/>
+<link href="/assets/metronic/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css"
+/>
+ {/block} {block name="custom-js"}
+<script src="/assets/metronic/global/scripts/datatable.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="/assets/metronic/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        var demand_types = JSON.parse('{$demand_types1}'.replace(/&quot;/g, '"'));
+        var service_time_from, service_time_to;
+        $("#is_show").bootstrapSwitch();
+
+        $('.datepicker').datepicker({
+            autoclose:true,
+            format: "YYYY/MM/DD",
+        });
+        $('#service_period').daterangepicker({
+            "minYear": 2000,
+            "maxYear": 2099,
+            "showWeekNumbers": true,
+            ranges: {
+                '今日': [moment(), moment()],
+                '昨日': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                '这个月': [moment().startOf('month'), moment().endOf('month')],
+                '下个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "locale": {
+                "format": "YYYY/MM/DD",
+                "separator": " - ",
+                "applyLabel": "应用",
+                "cancelLabel": "取消",
+                "fromLabel": "从",
+                "toLabel": "至",
+                "customRangeLabel": "自定义",
+                "weekLabel": "周",
+                "daysOfWeek": [
+                    "日",
+                    "一",
+                    "二",
+                    "三",
+                    "四",
+                    "五",
+                    "六"
+                ],
+                "monthNames": [
+                    "一月",
+                    "二月",
+                    "三月",
+                    "四月",
+                    "五月",
+                    "六月",
+                    "七月",
+                    "八月",
+                    "九月",
+                    "十月",
+                    "十一月",
+                    "十二月"
+                ],
+                "firstDay":0
+            },
+            "linkedCalendars": false,
+            "showCustomRangeLabel": false,
+            "alwaysShowCalendars": true,
+            "startDate": moment(),
+            "endDate": moment(),
+            "minDate": "2000/01/01",
+            "maxDate": "2099/12/31",
+            "applyButtonClasses": "btn-success"
+        }, function (start, end, label) {
+            service_time_from = start;
+            service_time_to = end;
+        });
+
+        $('#add_button').click(function () {
+            $('#project_form')[0].reset();
+            $("#demand_root_type").change();
+            $("#region_1").change();
+            $('.modal-title').text("添加文章");
+            $('#action').val("添加");
+            $('#operation').val("add");
+        });
+
+        $("#demand_root_type").change( function () {
+           $.ajax({
+               url: "/admin/project/index/getchilddemandtypes/pid/" + $("#demand_root_type").val(),
+               method: "GET",
+               dataType: "json",
+               success: function(response) {
+                   response = JSON.parse(response);
+                   childDemandTypes = "";
+                   for (x in response) {
+                       childDemandTypes += "<option value='" + x + "'>" + response[x] + "</option>"
+                   }
+                   $("#demand_type").html(childDemandTypes);
+               }
+           }) ;
+        });
+        
+        $("#region_1").change(function () {
+            $.ajax({
+                url: "/admin/project/index/getregion2/pid/" + $("#region_1").val(),
+                method: "GET",
+                dataType: "json",
+                success: function (response) {
+                    response = JSON.parse(response);
+                    region_2 = "";
+                    for (x in response) {
+                        region_2 += "<option value='" + x + "'>" + response[x] + "</option>"
+                    }
+                    $("#region_2").html(region_2);
+                }
+            });
+        });
+        
+
+        var dataTable = $('#article_data').DataTable({
+            "ajax": {
+                "url": "/admin/project/index/0",
+                "type": "GET",
+                "datatype": "json",
+                "dataSrc": function (response) {
+                    json = JSON.parse(response);
+
+                    return json.data;
+                }
+            },
+            "columns": [
+                { "data": "user_name" },
+                {
+                    "data": "demand_type",
+                    "render": function (type_id) {
+
+                        return demand_types[type_id];
+                    }
+                },
+                { "data": "title" },
+                { "data": "detail" },
+                { "data": "apply_requirement" },
+                { "data": "service_time_from" },
+                { "data": "time_total" },
+                { "data": "valid_time" },
+                { "data": "pay_amount" },
+                { "data": "region_1" },
+                { "data": "address_detail" },
+                { "data": "contact_name" },
+                { "data": "contact_phone" },
+                { "data": "published_time" },
+                {
+                    "data": "state",
+                    "render": function (state) {
+                        return "<span class='label label-success'>" + state + "</span>";
+                    }
+                },
+                {
+                    "data": "is_show",
+                    "render": function (is_show) {
+                        if (is_show) return "<span class='label label-success'>是</span>";
+                        else return "<span class='label label-danger'>否</span>";
+                    }
+                },
+                {
+                    "data": "id",
+                    "render": function (id) {
+                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i> 编辑</button><button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i> 删除</button>";
+                    }
+                }
+            ],
+            "language": {
+                "emptyTable": "没有资料。请点击<b>新增爱心企业</b>。"
+            }
+        });
+
+        $(document).on('submit', '#project_form', function (event) {
+            event.preventDefault();
+            var user_id = 1;
+            var demand_type = $("#demand_type").val();
+            var title = $("#title").val();
+            var detail = $("#detail").val();
+            var apply_requirement = $("#apply_requirement").val();
+            var time_total = $("#time_total").val();
+            var valid_time = $("#valid_time").val();
+            var pay_amount = $("#pay_amount").val();
+            var region_1 = $("#region_1").val();
+            var region_2 = $("#region_2").val();
+            var address_detail = $("#address_detail").val();
+            var contact_name = $("#contact_name").val();
+            var contact_phone = $("#contact_phone").val();
+            var state = $("#state").val();
+            var published_time = $("#published_time").val();
+
+            var is_show = 0;
+            if ($("#is_show").is(":checked")) is_show = 1;
+            if ($("#operation").val() == 'add') {
+                $.ajax({
+                    url: "/admin/project/index",
+                    method: 'POST',
+                    data: { 
+                        user_id: user_id,
+                        demand_type: demand_type,
+                        title: title,
+                        detail: detail,
+                        apply_requirement: apply_requirement,
+                        service_time_from: service_time_from,
+                        service_time_to: service_time_to,
+                        time_total: time_total,
+                        valid_time: valid_time,
+                        pay_amount: pay_amount,
+                        region_1: region_1,
+                        region_2: region_2,
+                        address_detail: address_detail,
+                        contact_name: contact_name,
+                        contact_phone: contact_phone,
+                        published_time: published_time,
+                        state: state,
+                        is_show: is_show
+                    },
+                    success: function (data) {
+                        $('#project_form')[0].reset();
+                        $('#projectModal').modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                });
+            }
+            else if ($("#operation").val() == 'update') {
+                $.ajax({
+                    url: "/admin/project/index/" + $("#data_id").val(),
+                    method: 'PUT',
+                    data: {
+                        user_id: user_id,
+                        demand_type: demand_type,
+                        title: title,
+                        detail: detail,
+                        apply_requirement: apply_requirement,
+                        service_time_from: service_time_from,
+                        service_time_to: service_time_to,
+                        time_total: time_total,
+                        valid_time: valid_time,
+                        pay_amount: pay_amount,
+                        region_1: region_1,
+                        region_2: region_2,
+                        address_detail: address_detail,
+                        contact_name: contact_name,
+                        contact_phone: contact_phone,
+                        published_time: published_time,
+                        state: state,
+                        is_show: is_show
+                    },
+                    success: function (data) {
+                        $('#project_form')[0].reset();
+                        $('#projectModal').modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.update', function () {
+            var id = $(this).attr("id");
+            $("#data_id").val(id);
+            $.ajax({
+                url: "/admin/project/index/" + id,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    data = JSON.parse(data);
+                    $("#user_name").val(data.user_name);
+                    $("#demand_type").val(data.demand_type);
+                    $("#title").val(data.title);
+                    $("#detail").val(data.detail);
+                    $("#apply_requirement").val(data.apply_requirement);
+                    $("#service_period").val(service_time_from + " - " + service_time_to);
+                    $("#time_total").val(data.time_total);
+                    $("#valid_time").val(data.valid_time);
+                    $("#pay_amount").val(data.pay_amount);
+                    $("#region_1").val(data.region_1);
+                    $("#region_1").change();
+                    $("#region_2").val(data.region_2);
+                    $("#address_detail").val(data.address_detail);
+                    $("#contact_name").val(data.contact_name);
+                    $("#contact_phone").val(data.contact_phone);
+                    $("#state").val(data.state);
+                    $("#published_time").val(data.published_time);
+                    if (data.is_show) $("#is_show").bootstrapSwitch('state', true);
+                    else $("#is_show").bootstrapSwitch('state', false);
+
+                    $('.modal-title').text("修改文章");
+                    $('#action').val("修改");
+                    $('#operation').val('update');
+                    $('#projectModal').modal('show');
+                }
+            })
+        });
+
+        $(document).on('click', '.delete', function () {
+            var id = $(this).attr("id");
+            if (confirm("确定删除?")) {
+                $.ajax({
+                    url: "/admin/project/index/" + id,
+                    method: "DELETE",
+                    success: function (data) {
+                        dataTable.ajax.reload();
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+    });
+</script> {/block} {block name="breadcrumb"}
+<ul class="page-breadcrumb">
+    <li>
+        <a href="#">项目管理</a>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>项目管理</span>
+    </li>
+</ul>
+{/block} {block name="page-content-title"} {/block} {block name="page-content"}
+<div class="table-responsive">
+    <br />
+    <div align="right">
+        <button type="button" id="add_button" class="btn btn-success btn-lg" data-target="#projectModal" data-toggle="modal">
+            <i class="fa fa-plus"></i> 添加文章</button>
+    </div>
+    <br />
+    <br />
+    <table id="article_data" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>用户名</th>
+                <th>项目分类</th>
+                <th>项目标题</th>
+                <th>项目具体</th>
+                <th>承接要求</th>
+                <th>服务时间</th>
+                <th>所需时间</th>
+                <th>有效日期</th>
+                <th>支付时间币</th>
+                <th>服务地点</th>
+                <th>详细地址</th>
+                <th>联系人</th>
+                <th>联系电话</th>
+                <th>发布时间</th>
+                <th>状态</th>
+                <th>显示</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+
+<div id="projectModal" class="modal fade">
+    <div class="modal-dialog">
+        <form method="post" id="project_form" class="form-horizontal form-bordered" enctype="multipart/form-data">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add User</h4>
+                </div>
+                <div class="modal-body form-body">
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="user_name" disabled>用户名：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="user_name" id="user_name" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="demand_root_type">项目分类：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select class="form-control col-md-6" id="demand_root_type" name="demand_root_type">
+                                {foreach $demand_root_types as $key=>$val }
+                                <option value="{$val.id}">{$val.name}</option>
+                                {/foreach}
+                            </select>
+
+                            <select class="form-control col-md-6" id="demand_type" name="demand_type">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="title">项目标题：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="title" id="title" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="detail">项目具体</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea name="detail" id="detail" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="apply_requirement">承接要求</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea name="apply_requirement" id="apply_requirement" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="service_time_from">服务时间：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" id="service_period" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="time_total">所需时间：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="time_total" id="time_total" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="valid_time">有效日期：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="valid_time" name="valid_time">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="pay_amount">支付时间币：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="pay_amount" id="pay_amount" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="region_1">服务地点：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select class="form-control col-md-6" id="region_1" name="region_1">
+                                {foreach $root_regions as $key=>$value}
+                                <option value="{$key}">{$value}</option>
+                                {/foreach}
+                            </select>
+                            
+                            <select class="form-control col-md-6" id="region_2" name="region_2">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="address_detail">详细地点：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea name="address_detail" id="address_detail" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="contact_name">联系人：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="contact_name" id="contact_name" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="contact_phone">联系电话：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" name="contact_phone" id="contact_phone" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="published_time">发布时间：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="input-group date" data-provide="datepicker">
+                                <input type="text" class="form-control" id="published_time" name="published_time">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="state">状态：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <select class="form-control col-md-6" id="state" name="state">
+                                {foreach $state as $key=>$value}
+                                <option value="{$key}">{$value}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label for="is_show">是否显示：</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="checkbox" name="is_show" id="is_show" class="make-switch" data-size="small" value="1" data-on-text="是" data-off-text="否">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="data_id" id="data_id" />
+                    <input type="hidden" name="operation" id="operation" />
+                    <input type="submit" name="action" id="action" class="btn btn-success" value="Add" />
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{/block}

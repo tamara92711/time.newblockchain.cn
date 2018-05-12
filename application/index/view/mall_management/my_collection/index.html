@@ -1,0 +1,201 @@
+{extend name="/common/templates/tpl-wo-sb"}
+
+{block name="page-title"}购买界面{/block}
+{block name="main"}
+<div>
+    <div class="table-header">
+        <div class="checkbox checkbox-primary" style="float:left;">
+            <input id="checkAll" type="checkbox">
+            <label for="checkAll"></label>
+        </div>
+        <div class="fl" style="margin-top: -4px; float:left;">全选</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 194px;float:left;">商品</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 267px;float:left;">单价</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 126px;float:left;">数量</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 137px;float:left;">小计</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 102px;float:left;">操作</div>
+    </div>
+    <?php foreach($products as $product) {?>
+    <div class="rows-container" id="product-record-{$product->id}">
+        <div class="rows">
+            <div class="checkbox checkbox-primary" style="float:left;padding-top: 51px; padding-right: 42px;">
+                <input id="ordercheck-{$product->id}" type="checkbox">
+                <label for="ordercheck-{$product->id}"></label>
+            </div>
+            <img src="{$product->thumbnail}" style="height: 110px" class="fl"/>
+            <div class="description-1">{$product->description}</div>
+            <div class="currency-1" id="primaryvalue-{$product->id}">{$product->price}</div>
+            <div class="min-and-plus-region">
+                <div class="min-add-button">
+                    <div class="input-group">
+                        <a onclick="amount_increase('{$product->id}','-1')" class="input-group-addon minus increment">
+                            <i class="fa fa-minus" aria-hidden="true"></i>
+                        </a>
+                        <input type="number" min="0" id="amount-{$product->id}" onchange="amount_change('{$product->id}')"  value="{$product->amount}" style="width: 32px;height: 28px; text-align: center;">
+                        <a onclick="amount_increase('{$product->id}','1')" class="input-group-addon plus increment">
+                            <i class="fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="currency-2" id="totalvalue-{$product->id}"><?php echo $product->price * $product->amount;?></div>
+            <a href="#" class="button-delete" id="del-{$product->id}" onclick="delete_from_cart('{$product->id}')">删除</a>
+            <a href="#" class="right" style="padding-left: 36px;" id="fav-{$product->id}" onclick="addToFav('{$product->id}')">移入收藏夹</a>
+        </div>
+    </div>
+    <?php } ?>
+    
+    <div class="table-header" style="margin-top:10px;margin-bottom: 60px;">
+        <div class="checkbox checkbox-primary" style="float:left;">
+            <input id="checktotal" type="checkbox">
+            <label for="checktotal"></label>
+        </div>
+        <div class="fl" style="margin-top: -4px;float:left;">全选</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 41px;float:left;">删除选中商品</div>
+        <div class="fl" style="margin-top: -4px; padding-left: 475px;float:left;">已选择
+            <span class="counts" id="checkedTotalCount">0</span>件商品</div>
+        <div class="fl" style="margin-top: -9px; padding-left: 56px;float:left;">总价：
+            <span class="total-money">￥0</span></div>
+        <div class="fl button-clearing" style="margin-top: -13px; margin-left: 27px;float:left;" onclick="order()">去结算</div>
+    </div>
+
+
+</div>
+
+{/block}
+{block name="custom-css"}
+<link href="/assets/css/index/index/shopping_cart.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="custom-js"}
+<script>
+
+    $(function(){
+
+    });
+
+    $("#checkAll").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+        reCalculateTotalMoney();
+    });
+
+    $("#checktotal").click(function () {
+        $('input:checkbox').not(this).prop('checked', this.checked);
+        reCalculateTotalMoney();
+    });
+    //when checkbox is all checked , totalcheckbox is checked
+    $("[id*=ordercheck-]").change(function () {
+        if ($('input[id*=ordercheck-][type=checkbox]:checked').length == $('input[id*=ordercheck-][type=checkbox]').length) {
+            $('#checkAll').prop('checked', true);
+            $('#checktotal').prop('checked',true);
+        } else {
+            $('#checkAll').prop('checked', false);
+            $('#checktotal').prop('checked',false);
+        }
+        //var checkID = $(this).attr('id');
+        //var idStr = checkID.substring(11);
+        reCalculateTotalMoney();
+    });
+    //when checkbox changed, change Totalcountvalue;
+    function reCalculateTotalMoney() {
+        //when checkbox changed, change Totalcountvalue;
+        var checkCountStr = ($('input[id*=ordercheck-][type=checkbox]:checked').length);
+        $("#checkedTotalCount").html(parseInt(checkCountStr));
+        //when checkbox changed, change TotalAmounttValue;
+        var sum = 0;
+        $('input[id*=ordercheck-][type=checkbox]:checked').each(function () {
+            var checkID = $(this).attr('id');
+            var idStr = checkID.substring(11);
+            var price = $("#primaryvalue-"+idStr).html();
+            var eachtotal = price * parseInt($("#amount-" + idStr).val());
+            $("#totalvalue-"+idStr).html(eachtotal);
+            sum += eachtotal;
+        })
+
+        $(".total-money").html(sum);
+    }
+
+    function amount_increase(id, val)
+    {
+        if (val == "-1" && $("#amount-" + id).val() == "1")
+            return 0;
+        var value = parseInt($("#amount-" + id).val());
+        value += parseInt(val);
+        $("#amount-" + id).val(value);
+        var price = $("#primaryvalue-" + id).html();
+        var eachtotal = price * parseInt($("#amount-" + id).val());
+        $("#totalvalue-" + id).html(eachtotal);
+        amount_change(id);
+        reCalculateTotalMoney();
+    }
+
+    function amount_change(id)
+    {
+        $.ajax({
+            url: '/update_amount',
+            method: 'post',
+            data: 'id='+id+'&value='+$("#amount-"+id).val(),
+            success: function () {
+                reCalculateTotalMoney();
+            }
+        });
+    }
+
+    function delete_from_cart (id)
+    {
+        $.ajax({
+            url: '/delete_from_cart',
+            method: 'post',
+            data: 'id=' + id,
+            success: function (response) {
+                console.log(response);
+                $("#product-record-" + id).remove();
+                reCalculateTotalMoney();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+    function order() {
+        var ids = "";
+        $('input[id*=ordercheck-][type=checkbox]:checked').each(function () {
+            var checkID = $(this).attr('id');
+            var idStr = checkID.substring(11);
+            ids += idStr + ',';
+        });
+        console.log(ids);
+        if (ids.length == 0)
+        {
+            alert("请选择产品");
+            return 0;
+        }
+        
+
+        var form = $("<form method='post'></form>");
+        form.attr({ "action": '/purchase_view' });
+        var input1 = $("<input type='hidden'>");
+        input1.attr("name", 'ids');
+        input1.val(ids);
+        form.append(input1);
+        $(document.body).append(form);
+        form.submit();
+
+/*
+
+        $.ajax({
+            url: '/apply_payment',
+            method: 'post',
+            data: "data="+ids,
+            success: function (result) {
+                console.log(result);
+                document.location = "/purchase_view";
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });*/
+    /*    */
+    }
+</script>
+{/block}

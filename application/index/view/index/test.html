@@ -1,0 +1,253 @@
+<form class="form-horizontal" action="#" id="submit_form" method="POST">
+    <div class="form-wizard">
+        <div class="form-body">
+            <div class="release-container">
+                <div class="progress-bar-container" >
+                    <ol class="progtrckr" style="padding-left: 13px;padding-right: 13px;">
+                        <li class="progtrckr-done" id="step-1">
+                            <a href="#tab1" data-toggle="tab" aria-expanded="true">
+                                描述您的需求
+                            </a>
+                        </li>
+                        <li class="progtrckr-todo" id="step-2">
+                            <a href="#tab2" data-toggle="tab"  aria-expanded="false">
+                                <span class="desc"> 设置并托管时间帀 </span>
+                            </a>
+                        </li>
+                        <li class="progtrckr-todo" id="step-3">
+                            <a href="#tab3" data-toggle="tab">
+                                确认发布
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+                <div class="tab-content">
+                    <div class="alert alert-danger display-none">
+                        <button class="close" data-dismiss="alert"></button> You have some form errors. Please check below. </div>
+                    <div class="alert alert-success display-none">
+                        <button class="close" data-dismiss="alert"></button> Your form validation is successful! </div>
+                    <div class="tab-pane active" id="tab1">
+                        <div class="tree-sidebar">
+                            <div class="headertopic">选择需求类型</div>
+                        </div>
+                        <div class="form-container-1">
+                            <div class="form-title">描述具体需求</div>
+                            <div class="form-group">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <input type="text" class="form-control input-custom"/>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 113px;">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <textarea class="form-control" rows="3" name="specific_needs" id="specific_needs" style="height: 100px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 91px;">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <textarea class="form-control" rows="2" name="acceptance_requirements" id="acceptance_requirements" style="height: 79px;"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <input type="text" class="form-control input-custom" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <input type="text" class="form-control input-custom"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="left">
+                                    <label>需求标题：</label>
+                                </div>
+                                <div class="right">
+                                    <input type="text" class="form-control input-custom"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="form-body" style="margin-left: 25px;margin-right: 25px;">
+                            <div class="form-group">
+                                <div class="left" style="padding-left:31px;">
+                                    <label>支付时间币：</label>
+                                </div>
+                                <div class="right" style="margin-left: 8px;">
+                                    <input type="text" class="form-control input-custom"/>
+                                </div>
+                            </div>
+                            <div class="form-group" style="height: 230px;">
+                                <div class="left" style="padding-left:31px;">
+                                    <label>服务地点：</label>
+                                </div>
+                                <div class="right" style="margin-left: 8px;">
+                                    <select class="form-control" style=" width: 160px; height:35px;float: left; margin-right: 10px;">
+                                        <option>请选择省市</option>
+                                        <option>个体经营者</option>
+                                        <option>自由职业者</option>
+                                        <option>离退休人员</option>
+                                        <option>学生</option>
+                                        <option>其他</option>
+                                    </select>
+                                    <select class="form-control" style="width: 160px; height:35px;float: left; margin-bottom: 18px;">
+                                        <option>全部</option>
+                                        <option>个体经营者</option>
+                                        <option>自由职业者</option>
+                                        <option>离退休人员</option>
+                                        <option>学生</option>
+                                        <option>其他</option>
+                                    </select>
+                                    <textarea class="form-control" rows="3" name="" id="" style="height: 90px;" placeholder="请输入详细地址..."></textarea>
+                                    <a href="" class="btn button-select-existing-address">选择已有地址</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="left" style="padding-left:31px;">
+                                    <label>联系人：</label>
+                                </div>
+                                <div class="right" style="margin-left: 8px;">
+                                    <input type="text" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="left" style="padding-left:31px;">
+                                    <label>联系电话: </label>
+                                </div>
+                                <div class="right" style="margin-left: 8px;">
+                                    <input type="text" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="form-body" style="margin-left: 28px;margin-right: 21px;">
+                            <div class="form-group">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>需求类型：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                                <div class="left" style="padding-left:22px;">
+                                    <label>发布时间：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px; width: 0px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>支付时间币：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                                <div class="left" style="padding-left:22px;">
+                                    <label>有效期：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px; width: 0px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>联系人：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                                <div class="left" style="padding-left:22px;">
+                                    <label>联系电话：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px; width: 0px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="height: 131px;">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>服务地址：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <textarea class="form-control" rows="3" name="" id="t" style="height: 80px;width: 665px;" placeholder="请输入详细地址..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>服务时间：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                                <div class="left" style="padding-left:22px;">
+                                    <label>所需时间：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px; width: 0px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="height: 131px;">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>服务内容：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <textarea class="form-control" rows="3" name="" id="te" style="height: 98px;width: 665px;" placeholder="请输入详细地址..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="height: 131px;">
+                                <div class="left" style="padding-left:22px;">
+                                    <label>承接要求：</label>
+                                </div>
+                                <div class="right" style="margin-left: 4px;margin-right: -72px;">
+                                    <textarea class="form-control" rows="3" name="" id="t3" style="height: 77px;width: 665px;" placeholder="请输入详细地址..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="left" style="padding-left:26px;padding-top: 0px;">
+                                    <label>验  证  码：</label>
+                                </div>
+                                <div style=" float: left;margin-right: 15px;">
+                                    <input type="text" class="form-control input-custom input-width"/>
+                                </div>
+                                <button class="btn image-verify">A904</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a href="javascript:;" class="btn default button-previous">Back </a>
+                                <a href="javascript:;" class="btn btn-outline green button-next"> Continue</a>
+                                <a href="javascript:;" class="btn green button-submit"> Submit</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</form>

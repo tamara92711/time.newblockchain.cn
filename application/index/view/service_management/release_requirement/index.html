@@ -1,0 +1,500 @@
+{extend name="/common/templates/tpl-w-sb"} {block name="page-title"}发布需求{/block} {block name="main-part"}
+<div class="form_wizard_1" id="form_wizard_1">
+
+    <div class="qk-portlet">
+        <div class="qk-portlet-title" style="padding-left: 23px;padding-top: 13px;height:50px">
+            <img class="qk-portlet-title-icon" src="/assets/img/release.png" />
+            <span class="qk-portlet-title-text">发布需求</span>
+        </div>
+    </div>
+    <form class="form-horizontal" action="#" id="release_requirement_form" method="POST">
+        <div class="form-wizard">
+            <div class="form-body">
+                <div class="release-container">
+                    <div class="progress-bar-container">
+                        <ul class="progtrckr" style="padding-left: 13px;padding-right: 13px;">
+                            <li class="progtrckr-todo" id="step-1">
+                                <a href="#tab1" data-toggle="tab" aria-expanded="true" style="text-decoration: none;;">
+                                    描述您的需求
+                                </a>
+                            </li>
+                            <li class="progtrckr-todo" id="step-2">
+                                <a href="#tab2" data-toggle="tab" aria-expanded="false" style="text-decoration: none;">
+                                    <span class="desc"> 设置并托管时间帀 </span>
+                                </a>
+                            </li>
+                            <li class="progtrckr-todo" id="step-3">
+                                <a href="#tab3" data-toggle="tab" style="text-decoration: none;">
+                                    确认发布
+                                </a>
+                            </li>
+                        </ul>
+
+                    </div>
+                    <div class="tab-content">
+                        <div class="alert alert-danger display-none" style="color: red;background-color: white;border: 0px;">
+                            <button class="close" data-dismiss="alert" style="padding-left: 22px;padding-top: 20px;"></button>你有一些表单错误。请检查下面。</div>
+                        <div class="tab-pane active" id="tab1">
+                            <div class="tree-sidebar">
+                                <div class="headertopic">选择需求类型</div>
+                                <div class="accordion-container" id="accordion">
+                                    <?php
+                                        foreach(json_decode($jsonData) as $key=>$value)
+                                        {
+                                            echo "<div class='set'>";
+                                            echo "<a href='#' class='acc-plus'>";
+                                            echo $value->name;
+                                            echo "</a>";
+                                            echo "<div class='content'>";
+                                            echo "<ul>";
+                                            foreach ($value->items as $key1=>$value1)
+                                            {
+                                                $i=0;
+                                                echo "<li>";
+                                                echo "<div class='form-group'>";
+                                                echo "<input type='radio' name='demand_type' id='radio_".$value1->id."' value='".$value1->id."' class='radio_demand_type'>";
+                                                echo " <label for='radio_".$value1->id."'>";
+                                                echo $value1->name;
+                                                echo "</label>";
+                                                echo "</div>";
+                                                echo "</li>";
+
+                                            }
+                                            echo "</ul>";
+                                            echo "</div>";
+                                            echo "</div>";
+                                        }
+                                    ?>
+                                </div>
+                                <div id="form_demand_type_error"> </div>
+                            </div>
+                            <div class="form-container-1">
+                                <div class="form-title">描述具体需求</div>
+                                <div class="form-group">
+                                    <div class="left label-custom">
+                                        <label>需求标题：</label>
+                                    </div>
+                                    <div class="right first-input-custom">
+                                        <input type="text" class="form-control input-custom" name="title" id="title"/>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="left">
+                                        <label>具体需求：</label>
+                                    </div>
+                                    <div class="right">
+                                        <textarea class="form-control" rows="3" name="detail" id="detail"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="left">
+                                        <label>承接要求：</label>
+                                    </div>
+                                    <div class="right">
+                                        <textarea class="form-control" rows="3" name="apply_requirement" id="apply_requirement"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="left">
+                                        <label>服务时间：</label>
+                                    </div>
+                                    <div class="right">
+                                        <div class="input-icon right input-mid">
+                                            <i class="fa fa-calendar-custom"></i>
+                                            <input type="text" class="form-control input-custom" data-toggle="service_time_from" id="service_time_from" name="service_time_from" placeholder="请选择日期"/>
+                                        </div>
+                                        <span class="left left-lable-custom">至</span>
+                                        <div class="input-icon right input-mid">
+                                            <i class="fa fa-calendar-custom"></i>
+                                            <input type="text" class="form-control input-custom" data-toggle="service_time_to" id="service_time_to"  name="service_time_to" placeholder="请选择日期"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="left">
+                                        <label>所需时间：</label>
+                                    </div>
+                                    <div class="right">
+                                        <input type="text" class="form-control input-custom" name="time_required" id="time_required"/>
+                                    </div>
+                                    <span class="required-letter"> * 例：周六下午3-5点，预计2小时</span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="left">
+                                        <label>有效日期至：</label>
+                                    </div>
+                                    <div class="right">
+                                        <div class="input-icon right input-big">
+                                            <i class="fa fa-calendar-custom "></i>
+                                            <input type="text" class="form-control" data-toggle="valid_time" name="valid_time" id="valid_time" placeholder="请选择日期"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="floatfix"></div>
+                        </div>
+                        <div class="tab-pane" id="tab2">
+                            <div class="form-body" style="margin-left: 0px;margin-right: 2px;">
+                                <div class="form-group" style="margin-bottom: -3px;">
+                                    <div class="left" style="padding-left:31px;">
+                                        <label>支付时间币：</label>
+                                    </div>
+                                    <div class="right first-input-custom-1" style="margin-left: 8px;">
+                                        <input type="text" class="form-control input-custom" name="pay_amount" id="pay_amount" />
+                                    </div>
+                                </div>
+                                <div class="form-group" style="padding-top: 17px;">
+                                    <div class="left" style="padding-left:31px;">
+                                        <label>服务地点：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 8px;">
+                                        <select class="form-control" style=" width: 160px; height:35px;float: left; margin-right: 10px;" name="region_1" id="region_1">
+                                        {foreach $region_level_1 as $key=>$val }
+                                            <!--<option value="" selected disabled hidden>请选择省市</option>-->
+                                            <option value="{$key}">{$val}</option>
+                                        {/foreach}
+                                        </select>
+                                        <select class="form-control" style="width: 160px; height:35px;float: left; margin-bottom: 18px;" name="district" id="district">
+
+                                        </select>
+                                        <textarea class="form-control" rows="3" name="detail_address" id="detail_address" style="height: 90px;" placeholder="请输入详细地址..."></textarea>
+                                        <a  class="btn button-select-existing-address" data-target="#receiver" data-toggle="modal" style="color: white;">选择已有地址</a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="left" style="padding-left:31px;">
+                                        <label>联系人：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 8px;">
+                                        <input type="text" class="form-control" name="contact" id="contact"/>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="border-bottom: none;">
+                                    <div class="left" style="padding-left:31px;">
+                                        <label>联系电话: </label>
+                                    </div>
+                                    <div class="right" style="margin-left: 8px;">
+                                        <input type="text" class="form-control" name="contact_phone" id="contact_phone"/>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab3">
+                            <div class="form-body" style="margin-right: 21px;">
+                                <div class="form-group" style="padding-top: 7px; ">
+                                    <div class="left left-label-tab3">
+                                        <label>需求类型：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 9px;margin-right: -69px;">
+                                        <input type="text" class="form-control input-custom input-width" id="demand_type_confirm" name="demand_type_confirm" readonly="readonly">
+                                    </div>
+                                    <div class="left ">
+                                        <label>发布时间：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 3px;width: 0px;">
+                                        <input type="text" class="form-control input-custom input-width" data-toggle="published_time" name="published_time" id="published_time" placeholder="请选择日期">
+                                    </div>
+                                </div>
+                                <div class="form-group " style="padding-top: 7px; ">
+                                    <div class="left left-label-tab3">
+                                        <label>支付时间币：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 9px;margin-right: -69px;">
+                                        <input type="text" class="form-control input-custom input-width" name="payment_time_confirm" id="payment_time_confirm">
+                                    </div>
+                                    <div class="left ">
+                                        <label>有效期：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 3px;width: 0px;">
+                                        <input type="text" class="form-control input-custom input-width" data-toggle="valid_time_confirm" name="valid_time_confirm" id="valid_time_confirm">
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="padding-top: 7px; ">
+                                    <div class="left left-label-tab3">
+                                        <label>联系人：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 9px;margin-right: -69px;">
+                                        <input type="text" class="form-control input-custom input-width" name="contact_confirm" id="contact_confirm">
+                                    </div>
+                                    <div class="left ">
+                                        <label>联系电话：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 3px;width: 0px;">
+                                        <input type="text" class="form-control input-custom input-width" name="contact_phone_confirm" id="contact_phone_confirm">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="left  left-label-tab3">
+                                        <label>服务地址：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 8px;margin-right: -72px;">
+                                        <textarea class="form-control" rows="3" name="service_address_confirm" id="service_address_confirm" style="height: 80px;width: 665px;" placeholder="请输入详细地址..." readonly="readonly"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" >
+                                    <div class="left left-label-tab3">
+                                        <label>服务时间：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 9px;margin-right: -69px;">
+                                        <input type="text" class="form-control input-custom input-width" name="service_hours" id="service_hours">
+                                    </div>
+                                    <div class="left ">
+                                        <label>所需时间：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 3px;width: 0px;">
+                                        <input type="text" class="form-control input-custom input-width" name="time_required_confirm" id="time_required_confirm">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="left  left-label-tab3">
+                                        <label>服务内容：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 7px;margin-right: -72px;">
+                                        <textarea class="form-control" rows="3" name="detail_confirm" id="detail_confirm" style="height: 98px;width: 665px;" placeholder="请输入详细地址..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="left  left-label-tab3">
+                                        <label>承接要求：</label>
+                                    </div>
+                                    <div class="right" style="margin-left: 8px;margin-right: -73px;">
+                                        <textarea class="form-control" rows="3" name="apply_requirement_confirm"  id="apply_requirement_confirm" style="height: 77px;width: 665px;" placeholder="请输入详细地址..."></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group form-group-tab3" style="border-bottom: none;">
+                                    <div class="left  left-label-tab3 " style="margin-left:9px;">
+                                        <label>验 证 码：</label>
+                                    </div>
+                                    <div style=" float: left;margin-right: 15px;">
+                                        <input type="text" class="form-control input-custom input-width" name="verify_code" id="verify_code" style="width: 247px;height: 42px;"/>
+                                    </div>
+
+                                    <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;"/></div>
+                                    <!--http://localhost:82/index/index/verify.html/-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="border-bottom: none;">
+                            <div style="float: left;height: 1px;">
+
+                            </div>
+                            <div class="rights">
+                                <div class="form-actions" style="margin-left: 352px; border-bottom: none; ">
+                                    <div class="row">
+                                        <a href="javascript:;" class="btn button-previous" id="btn_prev">
+                                            上一步 </a>
+                                        <a href="javascript:;" class="btn button-next" id="btn_next" style="width:140px"> 下一步
+                                        </a>
+                                        <a href="javascript:;" class="btn button-submit"> 确认并发布</a>
+                                        <a href="javascript:;" class="btn button-save"> 保存</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="receiver" class="modal fade show" role="dialog" tabindex="-1"  aria-hidden="true" style="padding:0px;" >
+        <div class="modal-dialog container" style="width: 663px;margin-top:200px;max-width:none;">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 1px solid #fde4e4;padding-left:295px;padding-top:10px;padding-bottom:12px;">
+                    <h4 class="modal-title">选择地址</h4>
+                    <button type="button" class="close" data-dismiss="modal" style="margin-right:7px; margin-top:5px;"></button>
+                </div>
+                <div class="modal-body" style="padding-top:17px;padding-bottom:30px">
+                    <div class="candidate-list">
+                        {foreach $addressList as $key => $val}
+                        <div class="candidate-item">
+                            <div class="form-group">
+                                <input type="radio" name="candidate" id="candidate_{$val.id}" value="{$val.id}">
+                                <label for="candidate_{$val.id}"></label>
+                            </div>
+                            <div class="candidate-desc">
+                                <p>{$val.detail}</p>
+                                <p>{$val.name} {$val.phone}</p>
+                            </div>
+                            <input type="hidden" id="contact_region1_id_{$val.id}" value="{$val.region_id_1}"/>
+                            <input type="hidden" id="contact_region2_id_{$val.id}" value="{$val.region_id_2}"/>
+                            <input type="hidden" id="contact_onlyDetail_{$val.id}" value="{$val.onlyDetail}"/>
+                            <div class="clearfix"></div>
+                        </div>
+                        {/foreach}
+
+                    </div>
+                    <button class="btn" onclick="insertAddress();" style="width:200px;height:40px;background-color:#ff5656;font-size:18px;color:white;margin-top:28px;margin-left:215px;">确认选择</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block} {block name="custom-css"}
+
+<link href="/assets/css/index/servicemanage/publish.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
+{/block}
+{block name="custom-js"}
+<script src="/assets/js/app.js" type="text/javascript"></script>
+<script src="/assets/js/form-validation/select2.full.min.js" type="text/javascript"></script>
+<script src="/assets/js/form-validation/jquery.validate.js" type="text/javascript"></script>
+<script src="/assets/js/form-validation/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+<script src="/assets/js/form-validation/form-wizard.js" type="text/javascript"></script>
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script src="/assets/js/jquery-scrollto.js" type="text/javascript"></script>
+<!--datepicker js start-->
+<script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
+<!--datepicker js end-->
+<script>
+    var current_tab = 1;
+    $(document).ready(function ()
+    {
+        //first task bar initial
+        $("#step-1").removeClass();
+        $("#step-1").addClass("progtrckr-done");
+        showTree();
+        calendars();
+        $("#region_1").change();
+        //Get each demandtype's text
+        getDemandTypeText();
+        //first element checked in address list
+        $('input[name="candidate"]:first').attr('checked',true);
+        //first element checked in demand type list
+        $('input[name=demand_type]:first').attr('checked',true);
+        $(".set .acc-plus").first().addClass("active").siblings(".content").slideDown(100);
+    });
+    //Get each demandtype's text
+    var demand_type_val,demand_type_id;
+    var getDemandTypeText = function ()
+    {
+
+        $("[id*=radio_]").change(function ()
+        {
+            demand_type_id  = $('input[name="demand_type"]:checked').val();
+            demand_type_val = $('input[name = "demand_type"]:checked').next('label').text();
+            $('div.progress-bar-container').ScrollTo();
+        });
+
+        $('div.accordion-container').on('click', '*', function () {
+            $("div.progress-bar-container").ScrollTo();
+        });
+
+        return demand_type_val;
+    }
+
+
+    function showTree() {
+        $(".content ul").removeClass();
+        $(".set > a").on("click", function () {
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+                $(this)
+                    .siblings(".content")
+                    .slideUp(200);
+                $(".set > a i")
+                    .removeClass("fa-minus")
+                    .addClass("fa-plus");
+            } else {
+                $(".set > a i")
+                    .removeClass("fa-minus")
+                    .addClass("fa-plus");
+                $(this)
+                    .find("i")
+                    .removeClass("fa-plus")
+                    .addClass("fa-minus");
+                $(".set > a").removeClass("active");
+                $(this).addClass("active");
+                $(this).addClass("active");
+                $(".content").slideUp(200);
+                $(this)
+                    .siblings(".content")
+                    .slideDown(200);
+            }
+        });
+    }
+
+    function calendars()
+    {
+        //datepicker
+        $('[data-toggle="valid_time"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+
+        $('[data-toggle="valid_time_confirm"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+
+        $('[data-toggle="service_time_from"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+
+        $('[data-toggle="service_time_to"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+
+        $('[data-toggle="published_time"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+        });
+        $('#valid_time').datepicker().datepicker('setDate',new Date());
+        $('#service_time_from').datepicker().datepicker('setDate',new Date());
+        $('#service_time_to').datepicker().datepicker('setDate',new Date());
+        $('#published_time').datepicker().datepicker('setDate',new Date());
+    }
+
+
+    $("#region_1").change(region1Change);
+    /*
+        User show one item of address detail
+     */
+    function insertAddress()
+    {
+        var checked_id = $("input[name='candidate']:checked").val();
+        var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
+        var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
+        var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+
+        $("#receiver").modal('hide');
+        $("#region_1").val(contact_region1_id);
+        $("#district").val(contact_region2_id);
+        $("#detail_address").val(contact_onlyDetail_id);
+        $("#region_1").change()
+    }
+
+    function reset()
+    {
+        var $inputs = $('#release_requirement_form :input');
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val('');
+        });
+        $("input#title").focus();
+    }
+
+    function resetForm(id_form){
+        $("#" + id_form).find('input[type="text"]').val('');
+        $("#" + id_form).find('input[type="password"]').val('');
+        $("#" + id_form).find('input[type="checkbox"]').removeAttr("checked");
+        $("#" + id_form).find('select option').removeAttr("selected");
+        $("#" + id_form).find('textarea').val('');
+    }
+</script>
+{/block}

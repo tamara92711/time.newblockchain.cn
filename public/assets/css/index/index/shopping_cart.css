@@ -1,0 +1,114 @@
+.table-header{
+    background-color: #fff5f5;
+    margin-top: 43px;
+    padding-top: 13px;
+    padding-bottom: 29px;
+    font-size: 15px;
+    font-family: ms-yahei-regular;
+    margin-bottom: 8px;
+}
+
+.checkbox label::before{
+    border:1px solid #b4b4b4;
+    margin-top: -9px;
+    margin-left: -15px;
+}
+
+.checkbox input[type="checkbox"]:checked + label::after {
+    margin-top: -12px;
+    margin-left: -18px;
+}
+
+.left{
+    float: left;
+}
+
+.right{
+    float: right;
+}
+
+.rows-container{
+    padding-top: 21px;
+    padding-bottom: 16px;
+    border-bottom: 1px dotted #c0c0c0;
+}
+.rows{
+    border: 1px solid #ff5656;
+    padding: 19px 20px 21px 3px;
+    overflow: hidden;
+}
+
+.min-add-button {
+    width: 90px;
+    margin: 20px auto;
+}
+
+.description-1{
+    width:307px;
+    float: left;
+    padding: 37px 0px 37px 10px;
+}
+
+.currency-1{
+    color: #ff5656;
+    float:left;
+    padding: 43px 20px 37px 50px;
+    font-size: 18px;
+}
+
+.min-and-plus-region{
+    float:left;
+    padding: 19px 20px 27px 65px;
+}
+
+.minus{
+    border: 1px solid #c0c0c0;
+    padding: 6px 9px 0px 6px;
+}
+
+.plus{
+    border: 1px solid #c0c0c0;
+    padding: 6px 9px 0px 6px;
+}
+
+.currency-2{
+    color: #ff5656;
+    font-family: ms-yahei-bold;
+    float: left;
+    font-size: 18px;
+    padding: 42px 0px 37px 74px;
+}
+
+.button-delete{
+    float: right;
+    padding: 27px 0px 5px 77px;
+}
+
+.button-clearing{
+    background-color: #ff5656;
+    color: white;
+    font-size: 20px;
+    font-family: ms-yahei-regular;
+    padding: 9px 33px 3px 30px;
+    float: right;
+}
+
+.counts{
+    color: #ff5656;
+    font-family:ms-yahei-bold;
+    font-size: 15px;
+}
+
+.total-money{
+    color: #ff5656;
+    font-family: ms-yahei-bold;
+    font-size: 22px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+

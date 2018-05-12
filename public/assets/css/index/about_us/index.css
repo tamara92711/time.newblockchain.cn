@@ -1,0 +1,79 @@
+.header-topic-container{
+    background-color: #ff5656;
+    padding-top: 3px;
+    margin-bottom: 56px;
+}
+.aboutUs-topic{
+    font-family: ms-yahei-bold;
+    font-size: 20px;
+    color: white;
+    padding-top: 1px;
+    margin-top: 3px;
+    text-align: center;
+}
+
+.aboutUs-topic-2{
+    text-align: center;
+    color: white;
+    font-size: 19px;
+}
+
+.topic-2 {
+    width: 540px;
+    border-top: 1px solid white;
+    margin: -3px 198px 0px;
+}
+
+.t-news-center {
+    font-size: 18px;
+    font-family: ms-yahei-regular;
+    color: white;
+    margin-top: -2px;
+    margin-left: 183px;
+    background-color: #ff5656;
+    width: 175px;
+    padding-left: 43px;
+}
+
+.topic-3{
+    font-family: ms-yahei-bold;
+    font-size: 18px;
+    color: #ff5656;
+}
+
+.containers{
+    margin-left: 20px;
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+}
+
+.btn-searchs{
+    background-color: #ff5656;
+    color: white;
+    margin-left: 9px;
+    padding: 4px 34px;
+    float: left;
+}
+
+.map-con{
+    margin-top: 20px;
+    padding-bottom: 34px;
+    border-bottom: 1px dashed #ff5656;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.map {
+    width: 280px;
+    height: 160px;
+}
+.fl{
+    float: left;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+

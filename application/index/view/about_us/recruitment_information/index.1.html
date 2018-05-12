@@ -1,0 +1,45 @@
+{extend name="/common/templates/tpl-wo-sb2"} {block name="page-title"}关于我们{/block} {block name="main-part"}
+<div class="containers" style="height: 1800px;">
+    <div class="header-topic-container">
+        <div class="aboutUs-topic"> 招聘信息</div>
+        <div class="topic-2">
+            <p class="t-news-center">Recruitment Information</p>
+        </div>
+    </div>
+    <div class="des-con">
+        <div class="description">联系方式：
+            <span>18965352653</span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="description" style="letter-spacing: 14px;">邮箱：</div>
+        <span>1000@q.com</span>
+        <div class="clearfix"></div>
+        <div class="description" style="letter-spacing: 14px;">格式：</div>
+        <span>请将简历发送到【邮箱】中，邮件标题为：岗位+姓名</span>
+    </div>
+
+    
+    <div class="accordion">
+        {foreach $job_offers as $key => $value}
+        <div class="tab blue">
+                <input id="tab-four" type="radio" name="tabs2">
+                <label for="tab-four">招聘岗位名称1
+                    <span class="d1">工作地点：某某市区某某路某某机构某某市区某某路某某机构</span>
+                </label>
+                <div class="tab-content" style="display: block;">
+                    <p style="font-family: ms-yahei-bold;">岗位描述：</p>
+                    <p>{$value.description}</p>
+                    <p style="font-family: ms-yahei-bold;">岗位要求：</p>
+                    <p>{$value.requirements}</p>
+                </div>
+            </div>
+        {/foreach}
+    </div>
+
+
+</div>
+{/block} {block name="custom-css"}
+<link href="/assets/css/index/about_us/recruitment_information.css" rel="stylesheet" type="text/css" /> {/block} {block name="custom-js"}
+<script>
+
+</script> {/block}

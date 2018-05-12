@@ -1,0 +1,121 @@
+{extend name="/common/templates/tpl-wo-sb"} {block name="page-title"}用户登录{/block} {block name="main"}
+<div class="blank">
+    <div class="box" style="width: 371px;border: 1px solid #d2d2d2;margin: 39px auto auto auto;">
+        <div class="login" style="width:330px;border-top:1px solid #ff5656">
+            <form id="login_form" action="/login" method="post">
+            <div class="login-title">
+                <p style="font-size:18px;font-family:ms-yahei-bold;color:#ff5656;margin-top:-15px;margin-left:109px;background-color:white;width:111px;padding-left:20px">用户登录</p>
+            </div>
+            <?php if(Session::has('error')) {?>
+                <div style="text-align: center">
+                    <?php echo Session::get('error');?>
+                </div>
+            <?php } ?>
+            <div class="u-msg-wrap">
+                <div class="msg msg-warn" style="display:none;"> <i></i>
+                    <span>公共场所不建议自动登录，以防帐号丢失</span>
+                </div>
+                <div class="msg msg-err" style="display:none;"> <i></i>
+                    <span class="J-errorMsg"></span>
+                </div>
+            </div>
+            <div class="login-body container form" style="width:300px;margin-top:0px">
+                <div class="input-icon">
+                    <i>
+                        <img src="/assets/img/phone.png" />
+                    </i>
+                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="请输入您的手机号码">
+                </div>
+                <div class="input-icon">
+                    <i>
+                        <img src="/assets/img/lock_light.png" />
+                    </i>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="请输入您的密码">
+                </div>
+                <div class="input-icon">
+                    <i>
+                        <img src="/assets/img/verify.png" />
+                    </i>
+                    <input type="text" class="form-control" name="vertify_code" id="vertify_code" placeholder="请输入验证码" style="width:180px;display:inline">
+                    <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src+'?'" alt="captcha" style="float:right;" />
+                </div>
+                <div class="clearfix"></div>
+                <button class="btn btn-login" onclick="checkLogin()">登录</button>
+                <div style="padding-top: 4px;padding-left: 17px;">
+                    <span style="margin-right: 135px;"><a href="/index/index/forgotpassword">忘记密码？</a></span>
+                    <span><a href="/register_form">免费注册</a></span>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="custom-js"}
+<script>
+
+
+    function checkLogin()
+    {
+        $('.msg-err').hide();
+        $('.J-errorMsg').empty();
+        var phone_number       = $.trim($('#phone_number').val());
+        var password           = $.trim($('#password').val());
+        var vertify_code       = $.trim($('#vertify_code').val());
+
+        if(phone_number = '')
+        {
+            showErrorMsg('用户名不能为空!');
+            return false;
+        }
+        if(password = '')
+        {
+            showErrorMsg('密码不能为空!');
+            return false;
+        }
+        if(vertify_code = '')
+        {
+            showErrorMsg('验证码不能为空!');
+            return false;
+        }
+        if(verify.length != 4)
+        {
+            showErrorMsg('用户名不能为空!');
+            return false;
+        }
+        else
+            $('#login_form').submit()
+
+    }
+    
+    document.onkeydown=function(event)
+    {
+        e = event ? event :(window.event ? window.event : null);
+        if(e.keyCode==13){
+            checkLogin();
+        }
+    }
+    function detectBrowser()
+    {
+        var browser = navigator.appName
+        if(navigator.userAgent.indexOf("MSIE")>0){
+            var b_version = navigator.appVersion
+            var version = b_version.split(";");
+            var trim_Version = version[1].replace(/[ ]/g,"");
+            if ((browser=="Netscape"||browser=="Microsoft Internet Explorer"))
+            {
+                if(trim_Version == 'MSIE8.0' || trim_Version == 'MSIE7.0' || trim_Version == 'MSIE6.0'){
+                    alert('请使用IE9.0版本以上进行访问');
+                    return;
+                }
+            }
+        }
+    }
+    detectBrowser();
+
+    function showErrorMsg(msg){
+        $('.msg-err').show();
+        $('.J-errorMsg').html(msg);
+    }
+</script>
+{/block}

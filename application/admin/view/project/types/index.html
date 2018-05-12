@@ -1,0 +1,79 @@
+{extend name="common/templates/tpl-blank"} {block name="page-title"}项目分类-项目管理{/block} {block name="custom-css"}
+<link rel="stylesheet" href="/assets/plugins/jquery-edit-tree-table/jquery.edittreetable.css"> {/block} {block name="custom-js"}
+<script src="/assets/plugins/jquery-edit-tree-table/jquery.edittreetable.js"></script>
+<script>
+    var typeList = [];
+    var a = 0;
+    $('document').ready(function () {
+        getArticleTypes();
+        $("#container").bstreetable({
+            data: window.typeList,
+            maintitle: "项目分类",
+            nodeaddCallback: function (data, callback) {
+                $.ajax({
+                    data: { name: data.name, description: data.description, pid: data.pid },
+                    url: '/admin/project/types/save',
+                    type: 'POST',
+                    async: false,
+                    success: function (result) {
+                        data.id = result;
+                    }
+                });
+                return data;
+            },
+            noderemoveCallback: function (data, callback) {
+                $.ajax({
+                    url: '/admin/project/types/' + data,
+                    type: 'DELETE',
+                    success: function (result) {
+                    }
+                });
+            },
+            nodeupdateCallback: function (data, callback) {
+                $.ajax({
+                    data: { name: data.name, description: data.description, pid: data.pid },
+                    url: '/admin/project/types/' + data.id,
+                    type: 'PUT',
+                    success: function (result) {
+                    }
+                });
+            },
+            extfield: [
+                { title: "描述", key: "description", type: "input" },
+                // { title:"id", key: "id", type:"input"},
+            ],//{title:"列名",key:"",type:"input"} input表示是输入框,
+        });
+    });
+
+    function getArticleTypes() {
+        // var data;
+        $.ajax({
+            url: '/admin/project/types/0',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                json = JSON.parse(result);
+                typeList = json.data;
+            }
+        });
+    }
+
+
+
+</script> {/block} {block name="breadcrumb"}
+<ul class="page-breadcrumb">
+    <li>
+        <span>项目管理</span>
+        <i class="fa fa-circle"></i>
+    </li>
+    <li>
+        <span>项目分类</span>
+    </li>
+</ul>
+{/block} {block name="page-content-title"}
+<h1 class="page-title">项目管理
+    <small>项目分类</small>
+</h1>
+{/block} {block name="page-content"}
+<div id="container" class="treetable"></div>
+{/block}

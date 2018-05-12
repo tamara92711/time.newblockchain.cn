@@ -1,0 +1,128 @@
+.search-header-container{
+    margin-top: 20px;
+    border: 1px solid #eeeeee;
+
+}
+
+.cri-key {
+    font-size: 17px;
+    font-family: ms-yahei-bold;
+    color: black;
+    width: 101px;
+    text-align: start;
+    margin-top: 6px;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+    text-decoration: underline #ff5656;
+    color: #ff5656;
+    background-color: white;
+    font-family: ms-yahei-bold;
+}
+
+.search-header-container div.row > label {
+    font-size: 16px;
+    margin-top: -2px;
+    font-family: ms-yahei-regular;
+}
+
+
+.radio-inline__label {
+    display: inline-block;
+    padding: 9px 37px 2px 1px;
+    margin-right: -16px;
+    transition: all 0.2s;
+    text-align:  center;
+}
+
+.btn-search{
+    background-color: #ff5656;
+    color: white;
+    margin-left: 16px;
+    padding: 0px 30px;
+    margin-top: 5px;
+}
+
+.table-header{
+    background-color: #fff5f5;
+    margin-top: 19px;
+    font-size: 15px;
+    font-family: ms-yahei-regular;
+    /* margin-bottom: 8px; */
+    overflow: hidden;
+}
+
+.sorting{
+    background-color: #ff5656;
+    padding: 15px 24px;
+    color: white;
+}
+
+.col{
+    width: 266px;
+    margin-top: 13px;
+    margin-right: 12px;
+    float:left;
+    padding: 0px;
+    overflow: hidden;
+    /* clear: left; */
+}
+
+.contents{
+    padding: 10px;
+    border: 1px solid #c4c4c4;
+    border-top: none;
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+}
+
+p{
+    margin: 0px;
+}
+
+.fl{
+    float: left;
+}
+
+.col p:first-child{
+    color: #959595;
+}
+ p:nth-child(2){
+     margin-top: 6px;
+     margin-bottom: 3px;
+         height: 40px;
+    overflow: hidden;
+    min-height: 40px;
+ }
+
+div.actions {
+    margin-top: 6px;
+}
+
+a.add-to-cart {
+    border: 1px solid #ff5656;
+    background-color: white;
+    color: #ff5656;
+    margin-right: 15px;
+}
+a.delete-from-cart {
+    border: 1px solid #ff5656;
+    background-color: #8a8a8a;
+    color: #ff5656;
+    margin-right: 15px;
+}
+
+a.buy-now {
+    background-color: #fb9191;
+    color: white;
+    border: 1px solid #fb9191;
+}
+
+.actions a.btn {
+    height: 32px;
+    width: 113px;
+    margin-left: -1px;
+    font-size: 14px;
+    border-radius: 16px;
+}
+

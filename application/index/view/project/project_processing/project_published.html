@@ -1,0 +1,114 @@
+{extend name="/common/templates/tpl-wh-sb"}
+{block name="page-title"}项目详细页(发布中){/block}
+{block name="main"}
+<div>
+    <div class="header-topic" style="text-align: center">
+        <p>{$data[0]['title']}</p>
+    </div>
+    <div class="row">
+        <button type="submit" class="btn published">已发布</button>
+    </div>
+    <div class="row">
+        <label class="texts">发布人：<span>{$data[0]['name']}</span></label>
+        <label class="texts" style="margin-left: 80px;margin-top: 20px;">需求类型:<span style="margin-left:7px;">{$data[0]['demand_type']}</span></label>
+        <label class="texts" style="margin-left: 82px;margin-top: 20px;">支付时间币<span style="margin-left:11px;">{$data[0]['pay_amount']}</span></label>
+        <label class="texts" style="margin-left: 84px;margin-top: 20px;">发布时间<span style="margin-left:11px;">{$data[0]['published_time']}</span></label>
+    </div>
+    <div class="row portlet-box">
+        <div class="content-box">
+            {$data[0]['project_detail']}
+        </div>
+        <div class="item-box">
+            <div class="left-box">
+                <div style="margin-bottom: 17px">
+                    <img class="title-icon" src="/assets/img/time1.png">
+                    <span class="title-text">服务时间</span>
+                    <?php
+                        $year_from=explode("-",$data[0]['service_time_from'])[0];
+                        $month_from=explode("-",$data[0]['service_time_from'])[1];
+                        $day_from=explode("-",$data[0]['service_time_from'])[2];
+                        $year_to=explode("-",$data[0]['service_time_to'])[0];
+                        $month_to=explode("-",$data[0]['service_time_to'])[1];
+                        $day_to=explode("-",$data[0]['service_time_to'])[2];
+                    ?>
+                    <div class="row"><span style="margin-left: 29px;margin-top: 2px;">{$year_from}年{$month_from}月{$day_from}-{$year_to}年{$month_to}月{$day_to}，{$data[0]['time_total']}小时</span></div>
+                </div>
+                <div style="margin-bottom: 17px">
+                    <img class="title-icon" src="/assets/img/personal.png">
+                    <span class="title-text">联系人</span>
+                    <div class="row"><span style="margin-left: 29px;margin-top: 2px;">{$data[0]['contact_name']}</span></div>
+                </div>
+                <div>
+                    <img class="title-icon" src="/assets/img/valid_until.png">
+                    <span class="title-text">有效期至</span>
+                    <div class="row"><span style="margin-left: 29px;margin-top: 2px;">{$data[0]['valid_times']}</span></div>
+                </div>
+            </div>
+            <div class="right-box">
+                <div style="margin-bottom: 15px">
+                    <img class="title-icon" src="/assets/img/service_point.png" style="margin-left: 18px;">
+                    <span class="title-text">服务地点</span>
+                    <div class="row"><span style="margin-left: 45px;margin-top: 2px;">{$data[0]['total_detail']}</span></div>
+                </div>
+                <div style="margin-bottom: 17px">
+                    <img class="title-icon" src="/assets/img/contact_number.png" style="margin-left: 18px;">
+                    <span class="title-text">联系电话</span>
+                    <div class="row"><span style="margin-left: 48px;margin-top: 4px;">{$data[0]['contact_phone']}</span></div>
+                </div>
+                <div style="margin-bottom: 17px">
+                    <img class="title-icon" src="/assets/img/undertake_request.png" style="margin-left: 18px;">
+                    <span class="title-text">承接要求</span>
+                    <div class="row"><span style="margin-left: 48px;margin-top: 4px;">{$data[0]['apply_requirement']}</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row" style="margin-bottom: 69px;">
+            <?php if ($mode == 1)
+            {
+                echo "<button type='submit' class='btn undertake' onclick='handleBid();'>承接</button>";
+                echo "<button  class='btn return' >返回</button>";
+            }
+            else
+                echo "<button  class='btn return' style='margin-left: 478px; background-color: #ff5656;'>返回</button>";
+            ?>
+
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="custom-css"}
+<link href="/assets/css/index/index/project.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="custom-js"}
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script>
+
+    $(document).ready(function () {
+
+    })
+    function handleBid()
+    {
+        var demand_id = {$data[0]['id']};
+        $.ajax({
+            url  : '/index/project.project_processing/insertApplier',
+            method : 'POST',
+            data : {demand_id:demand_id},
+            success:function (result)
+            {
+                if(result=="not")
+                {
+                    alert("you don't bid because you don't verified ");
+                }
+                else
+                {
+                    alert("bid success");
+                    history.go(-1);
+                }
+            }
+        })
+    }
+</script>
+{/block}

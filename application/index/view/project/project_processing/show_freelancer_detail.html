@@ -1,0 +1,149 @@
+{extend name="/common/templates/tpl-w-sb"} {block name="page-title"}承接的服务{/block} {block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/serviceManage/undertaker_details.css">
+{/block}
+{block name="main-part"}
+<div style="width:939px;padding-top:18px">
+    <div style="text-align:center">
+        <p style="font-family:ms-yahei-bold;font-size:18px;color:#ff5656;margin-top:15px;margin-bottom:14px">{$data[0]['title']}</p>
+        <span class="label label-danger" style="font-family:ms-yahei-bold;font-size:16px;background-color:#ff5656;padding: 4px 21px;border-radius:4px">已发布</span>
+        <div style="padding-top: 24px;padding-left: 138px;padding-bottom:23px;font-size: 12px;width: 897px;text-align:left">
+            <div style="float:left;width:164px;">发布人：{$data[0]['name']}</div>
+            <div style="float:left;width:189px">需求类型：{$data[0]['demand_type']}</div>
+            <div style="float:left;width:177px">支付时间币：{$data[0]['pay_amount']}</div>
+            <div style="float:left">发布时间：{$data[0]['published_time']}</div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div style="background-color:#fff7f7;border-top: 4px solid #eb3d3d;border-bottom: 4px solid #eb3d3d;width: 938px;padding-top: 21px;padding-left: 19px;margin-bottom:9px">
+        <div style="border:1px dotted #ff5656;width:899px;background-color:white;text-align:left;padding: 21px 20px 21px 20px;margin-bottom:20px">
+            <span style="padding-top: 13px;font-family: ms-yahei-bold;font-size: 14px;line-height: 24px;">{$data[0]['project_detail']}</span>
+        </div>
+        <div style="border-top:1px dotted #ff5656;width:899px;padding-top:17px">
+            <div style="width:50%;float:left;border-right:1px dotted #ff5656">
+                <?php
+                    $year_from=explode("-",$data[0]['service_time_from'])[0];
+                    $month_from=explode("-",$data[0]['service_time_from'])[1];
+                    $day_from=explode("-",$data[0]['service_time_from'])[2];
+                    $year_to=explode("-",$data[0]['service_time_to'])[0];
+                    $month_to=explode("-",$data[0]['service_time_to'])[1];
+                    $day_to=explode("-",$data[0]['service_time_to'])[2];
+                ?>
+                <img src="/assets/img/time-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">服务时间</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$year_from}年{$month_from}月{$day_from}-{$year_to}年{$month_to}月{$day_to}，{$data[0]['time_total']}</div>
+                <img src="/assets/img/lianxiren-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">联系人</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$data[0]['contact_name']}</div>
+                <img src="/assets/img/calendar-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">有效期至</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$data[0]['valid_times']}</div>
+            </div>
+            <div style="width:50%;float:left;padding-left:20px">
+                <img src="/assets/img/location-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">服务地点</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$data[0]['total_detail']}</div>
+                <img src="/assets/img/phone-call-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">联系电话</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$data[0]['contact_phone']}</div>
+                <img src="/assets/img/doc-light-red.png" style="margin-right:5px"/>
+                <span style="color:#ff5656;font-size:14px">承接要求</span>
+                <div style="margin-left:29px;margin-top:6px;margin-left: 29px;margin-top: 6px;margin-bottom: 14px;">{$data[0]['apply_requirement']}</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <div style="border:1px solid #e4e4e4;width:938px;padding:20px 18px;margin-bottom:35px;">
+        <div style="height:220px;margin-bottom:26px">
+            <img src="/uploads/{$avarta[0]}" style="float:left;width: 182px;height: 222px;"/>
+            <div style="float:left;padding-left:20px;padding-top:30px">
+                <div style="margin-bottom:47px">
+                    <img src="/assets/img/undertake-light-red.png" align="middle" style="margin-right:7px"/>
+                    <span style="word-spacing:4px;color:#ff5656;margin-right:21px">承 接 人：</span>
+                    <span>{$user_data[0]['name']}：</span>
+                </div>
+                <div style="margin-bottom:46px">
+                    <img src="/assets/img/phone.png" align="middle" style="margin-right:14px"/>
+                    <span style="color:#ff5656;margin-right:21px">手机号码：</span>
+                    <span>{$user_data[0]['mobile']}：</span>
+                </div>
+                <div>
+                    <img src="/assets/img/good-review-light-red.png" align="middle" style="margin-right:10px"/>
+                    <span style="color:#ff5656;word-spacing:4px;margin-right:19px">好 评 度：</span>
+                    <span>{$user_data[0]['rate']}%</span>
+                </div>
+            </div>
+        </div>
+        <div class="qk-portlet" style="margin-bottom:10px">
+            <div class="qk-portlet-title" style="padding-left:23px">
+                <img class="qk-portlet-title-icon" src="/assets/img/star-light-red.png" />
+                <span class="qk-portlet-title-text">专业等级证书</span>
+            </div>
+            <div class="qk-portlet-content">
+                <table>
+                    <thead>
+                    <tr>
+                        <th width="155px">证书编号</th>
+                        <th width="429px">证书名称</th>
+                        <th width="149px">专业等级</th>
+                        <th width="165px">审核状态</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($certi_data as $val) {?>
+                      <tr>
+                           <td>{$val['certificate_no']}</td>
+                           <td>{$val['certificate_name']}</td>
+                          <?php if ($val['professional_level']==1)
+                              echo   "<td>中级</td>";
+                            else if ($val['professional_level']==2)
+                               echo "<td>初级</td>";
+                            else if ($val['professional_level']==3)
+                                echo "<td>高级</td>";
+                            if ($val['approval_status']==0)
+                                echo "<td style='color: #ff5656;'>未审核</td>";
+                            else if ($val['approval_status']==0)
+                                echo "<td style='color: #00d9ae;'>已审核</td>";
+                          ?>
+                      </tr>
+                     <?php }?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="selected_user" name="selected_user" value="{$user_id}"/>
+    <input type="hidden" id="demand_id" name="demand_id" value="{$demand_id}"/>
+    <div style="text-align: center;margin-bottom:101px">
+        <button class="btn submit" style="background-color:#ff5656;color:white;height:40px;width:140px;font-family:ms-yahei-bold;font-size:14px;margin-right:95px;" onclick="selectConfirm();">确认</button>
+        <button class="btn return" style="background-color:#ffc750;color:white;height:40px;width:140px;font-family:ms-yahei-bold;font-size:14px;">返回</button>
+    </div>
+</div>
+{/block}
+{block name="custom-js"}
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+
+    })
+
+    function selectConfirm()
+    {
+        var checkId = $("#selected_user").val();
+        var demandId = $("#demand_id").val();
+
+        $.ajax({
+            url: '/index/service_management/show_published/acceptBid',
+            method: 'POST',
+            data: {checkId: checkId,demandId:demandId},
+            success: function (result) {
+                if (result=="ok")
+                {
+                    $('#demand_status').val(2);//set 已发布=>已承接
+                    history.go(-1);
+                    search();
+                }
+            }
+        })
+    }
+</script>
+{/block}

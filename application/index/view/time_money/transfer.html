@@ -1,0 +1,221 @@
+{extend name="/common/templates/tpl-w-sb"} {block name="page-title"}时间币明细表{/block} {block name="main-part"}
+<div style="height: 1349px;">
+    <div class="qk-portlet">
+        <div class="qk-portlet-title">
+            <img class="qk-portlet-title-icon" src="/assets/img/shape-14.png" />
+            <span class="qk-portlet-title-text" style="font-size: 18px">时间币捐赠</span>
+        </div>
+    </div>
+    <div class="qk-portlet-content">
+        <form role="form">
+            <div class="form-group">
+                <div class="left">
+                    <label>时间币数量：</label>
+                </div>
+                <div class="right">
+                    <span class="numbers" id="total_amount">{$total_amount}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="left">
+                    <label>转入用户名：</label>
+                </div>
+                <div class="right">
+                    <input type="text" class="form-control" id="user_name">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="left">
+                    <label>会员姓名：</label>
+                </div>
+                <div class="right">
+                    <input type="text" class="form-control" id="real_name">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="left">
+                    <label>会员手机号：</label>
+                </div>
+                <div class="right">
+                    <input type="text" class="form-control" id="mobile">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="left">
+                    <label>转入数量：</label>
+                </div>
+                <div class="right">
+                    <input type="text" class="form-control" id="amount">
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-5 col-md-6">
+                        <button class="btn conformation-transfer">确定转赠</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="table-container">
+            <div class="qk-portlet-title" style="height: 44px;">
+                <img class="qk-portlet-title-icon" src="/assets/img/record_copy.png" />
+                <span class="qk-portlet-title-text">转赠记录</span>
+            </div>
+            <div class="form-search-content" style="width: 100%;">
+                <form role="form">
+                    <div class="ohter-form-group">
+                        <div class="other-left">
+                            <label>日期：</label>
+                        </div>
+                        <div class="other-right" style="width:100px; margin-right: 8px;">
+                            <input type="text" class="form-control" id="time_from">
+                        </div>
+                    </div>
+                    <div class="ohter-form-group">
+                        <div class="other-left">
+                            <label>至：</label>
+                        </div>
+                        <div class="other-right" style="width:100px; margin-right: 8px; margin-left: 0px;">
+                            <input type="text" class="form-control" id="time_to">
+                        </div>
+                    </div>
+                    <div class="ohter-form-group">
+                        <div class="other-left" style="margin-left: 22px;">
+                            <label>用户名：</label>
+                        </div>
+                        <div class="other-right" style="width:100px; margin-right: 8px; margin-left: 0px;">
+                            <input type="text" class="form-control" id="user_name">
+                        </div>
+                    </div>
+                    <div class="ohter-form-group">
+                        <div class="other-left" style="margin-left: 31px;">
+                            <label>方式：</label>
+                        </div>
+                        <div class="other-right" style="margin-right: 33px">
+                            <select class="form-control" style="padding: 0px 19px;font-size:14px" id="transaction_type">
+                                <option value="1">充值</option>
+                                <option value="2">转赠</option>
+                                <option value="3">购买</option>
+                                <option value="4">发布项目</option>
+                                <option value="5">承接项目</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ohter-form-group">
+                        <div class="other-right" style="margin-left: 29px">
+                            <button class="btn inquire">查询</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div style="clear: both"></div>
+            <div class="data-container">
+
+            </div>
+            <div id="pagination" style="float: right"></div>
+        </div>
+
+    </div>
+
+</div>
+{/block} {block name="custom-css"}
+<link href="/assets/css/index/timemoney/transfer.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" /> {/block} {block name="custom-js"}
+<script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
+<script src="/assets/jsondata/json.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $(".inquire").click(function() {
+            displayTransactionHistory();
+        });
+        $(".conformation-transfer").click(function () {
+            var user_name = $("#user_name").val();
+            var real_name = $("#real_name").val();
+            var mobile = $("#mobile").val();
+            var amount = $("#amount").val();
+            $.ajax({
+                url: "/index/time_money/confirmtransfer/",
+                method: "GET",
+                data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (response.is_error) {
+                        alert(response.error_message);
+                        return;
+                    }
+                    $("#total_amount").text(response.total_amount);
+                    displayTransactionHistory();
+                }
+            });
+        });
+
+
+        displayTransactionHistory();
+    });
+
+    var container = $('#pagination');
+
+    function displayTransactionHistory() {
+        var time_from = $("#time_from").val();
+        var time_to = $("#time_to").val();
+        var transaction_type = $("#transaction_type").val();
+        var user_name = $("#user_name").val();
+        $.ajax({
+            url: "/index/time_money/gettransactionhistory",
+            method: "GET",
+            data: {time_from: time_from, time_to: time_to, transaction_type: transaction_type, user_name: user_name},
+            success: function (response) {
+                response = JSON.parse(response);
+                response = response.items;
+                var options = {
+                    dataSource: response,
+                    callback: function (response, pagination) {
+                        var dataHtml = '<div class="qk-portlet-content-1">';
+                        dataHtml += '<table>';
+                        dataHtml += '<thead>';
+                        dataHtml += '<tr>';
+                        dataHtml += '<th width="126px">序号</th>';
+                        dataHtml += '<th width="303px">时间</th>';
+                        dataHtml += '<th width="120px">方式</th>';
+                        dataHtml += '<th width="188px">用户名</th>';
+                        dataHtml += '<th width="122px">数量</th>';
+                        dataHtml += '</tr>';
+                        dataHtml += '</thead>';
+                        dataHtml += '<tbody>';
+                        var transaction_type = "";
+                        var amount = "";
+                        $.each(response, function (index, item) {
+                            switch (item.transaction_type) {
+                                case 1: transaction_type = "充值"; break;
+                                case 2: transaction_type = "转赠"; break;
+                                case 3: transaction_type = "购买"; break;
+                                case 4: transaction_type = "发布项目"; break;
+                                case 5: transaction_type = "承接项目"; break;
+                            }
+                            if (item.action) {
+                                transaction_type = '<td style="color:#01dc96">' + transaction_type + '</td>';
+                                amount = '<td style="color:#01dc96">' + '+' + item.amount + '</td>';
+                            }
+                            else {
+                                transaction_type = '<td style="color:#ff5656">' + transaction_type + '</td>';
+                                amount = '<td style="color:#ff5656">' + '-' + item.amount + '</td>';
+                            }
+                            dataHtml += '<tr>'
+                            dataHtml += '<td>' + item.id + '</td>';
+                            dataHtml += '<td>' + item.create_time + '</td>';
+                            dataHtml += transaction_type;
+                            dataHtml += '<td>' + item.user_name + '</td>';
+                            dataHtml += amount;
+                            dataHtml += '</tr>'
+                        });
+                        dataHtml += '</tbody>';
+                        dataHtml += '</table>';
+
+                        container.prev().html(dataHtml);
+                    }
+                };
+                container.pagination(options);
+            }
+        });
+    }
+</script> {/block}

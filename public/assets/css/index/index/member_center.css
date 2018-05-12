@@ -1,0 +1,34 @@
+.qk-portlet-content > table > thead > tr > th {
+    padding-top: 16px;
+    padding-bottom: 13px;
+}
+
+.qk-portlet-title {
+    padding-left: 21px;
+}
+
+.qk-portlet-content > table > tbody > tr > td {
+    padding-top: 11px;
+    padding-bottom: 8px;
+}
+
+p {
+    margin: 0px;
+    margin-bottom: 17px;
+}
+
+p img {
+    margin-right: 3px;
+}
+
+p .subtitle {
+    color: #ff5656;
+}
+
+.yellow-colored img {
+    margin-right: 9px;
+}
+
+.yellow-content {
+    margin-left: 26px;
+}

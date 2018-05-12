@@ -1,0 +1,153 @@
+
+.topic{
+    font-family:ms-yahei-bold;
+    font-size:18px;
+    color:#ff5656;
+    margin-top:15px;
+    margin-bottom:14px;
+    text-align: center;
+}
+
+.button-complted{
+    font-family:ms-yahei-bold;
+    font-size:16px;
+    background-color:#ff5656;
+    padding: 4px 21px;
+    border-radius:4px;
+    margin-left: 406px;
+}
+
+.description{
+    padding-top: 24px;
+    padding-left: 119px;
+    padding-bottom:23px;
+    font-size: 12px;
+    width: 897px;
+    text-align:left
+}
+
+.description-container{
+    background-color:#fff7f7;
+    border-top: 4px solid #eb3d3d;
+    border-bottom: 4px solid #eb3d3d;
+    margin-bottom: 28px;
+    padding: 21px 17px 0px 19px;
+}
+
+.first-content-container{
+    border:1px dotted #ff5656;
+    height:127px;
+    background-color:white;
+    text-align:left;
+    padding: 14px 14px 14px 20px;
+    margin-bottom:20px
+}
+
+.first-contents{
+    padding-top: 13px;
+    font-family: ms-yahei-bold;
+    font-size: 14px;
+    line-height: 24px;
+}
+
+
+.second-content-container{
+    border-top:1px dotted #ff5656;
+    padding-top:17px
+}
+
+.third-content-line{
+    float:left;
+    padding:16px 20px;
+    border-right: 1px dotted #e9e9e9;
+    border-top: 1px dotted #e9e9e9;
+    width:450px;
+}
+
+
+.left{
+    float:left
+}
+
+.right{
+    float: left;
+    margin-top: -6px;
+    margin-left: 4px;
+
+}
+
+.qk-portlet-content{
+    border-top: 1px solid #ff5656;
+    padding-left: 20px;
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: 31px;
+}
+
+.form-control{
+    font-size: 12px;
+}
+
+.inquire{
+    padding: 5px 32px;
+    background-color: #ff5656;
+    color: white;
+    font-size: 14px;
+}
+
+.qk-portlet-content-1{
+    border: 1px solid #ff5656;
+    width: 96%;
+    margin-bottom: 90px;
+}
+
+.qk-portlet-content-1 > table > thead {
+    border-bottom: 1px dashed #ff5656;
+    background-color: #fff7f7
+}
+
+.qk-portlet-content-1 > table > thead > tr > th {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 11px;
+}
+
+.qk-portlet-content-1 > table > tbody > tr {
+    border-top: 1px dotted grey;
+}
+
+.qk-portlet-content-1 > table > tbody > tr > td {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    padding-top: 11px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+
+.img-box{
+    float:left;
+    margin-top: 37px;
+    padding-right: 56px;
+    margin-left: 48px;
+    margin-bottom: 31px;
+    border-right: 1px dotted #e4e4e4;
+}
+
+.return{
+    background-color:#ff5656;
+    color:white;
+    font-size:14px;
+    font-family:ms-yahei-bold;
+    padding:9px 55px;
+    margin-bottom:87px;
+    margin-left: 381px;
+}
+
+
+
+
+
+

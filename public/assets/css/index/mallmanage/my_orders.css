@@ -1,0 +1,196 @@
+.row {
+    margin:0px;
+    padding: 0px;
+}
+
+#all-orders {
+    border: 1px solid #ff5656;
+    width: 400px;
+    margin:0px;
+}
+#all-orders > div:first-child {
+    background-color: #ff5656;
+    font-size: 16px;
+    color: white;
+    font-family: ms-yahei-bold;
+    margin: 0px;
+    padding: 7px 0px;
+}
+
+#all-orders > div:nth-child(3) {
+    border-left: 1px solid #ff5656;
+    border-right: 1px solid #ff5656;
+}
+
+#all-orders .col-md-3 {
+    text-align: center;
+    font-size: 14px;
+    margin: 7px 0px;
+}
+
+#fromto {
+        font-size: 12px;
+    margin-top: 11px;
+    margin-left: 9px;
+    margin-right: 11px;
+}
+#search-orders {
+    margin:0px;
+}
+#search-orders span:first-child{
+    margin-top: 9px;
+    margin-right: 5px;
+}
+
+#search-orders span:first-child,
+#search-orders .search-button {
+    font-size: 14px;
+    font-family: ms-yahei-bold;
+}
+#search-orders .calendar,
+#search-orders .search-button {
+    width: 100px;
+    height: 32px;
+    margin-top: 4px;
+}
+
+#search-orders .search-button {
+    background-color: #ff5656;
+    color: white;
+}
+
+#time_to {
+    margin-right: 19px;
+}
+.gap {
+    width: 73px;
+}
+
+#order-list-header {
+    background-color: #ff5656;
+    height: 48px;
+    padding-top: 11px;
+    margin-bottom: 10px;
+}
+.hitem {
+    font-size: 16px;
+    font-family: ms-yahei-bold;
+    color: white;
+    text-align: center;
+}
+
+#order-list-header div:last-child {
+        padding: 1px 38px;
+        margin-top: -8px;
+}
+#order-status {
+    background-color: #ff5656;
+    border: none;
+    color: white;
+    font-size: 16px;
+    font-family: ms-yahei-bold;
+    padding: 0px;
+}
+
+.vline {
+    height:29px;
+    width:0px;
+    border-right:1px solid white;
+}
+
+.order-item {
+    border: 1px solid #ffbaba;
+}
+.order-item-header .row{
+    border-bottom: 1px dashed #ffbaba;
+}
+
+.order-item-header div {
+    font-family: ms-yahei-bold;
+    font-size: 14px;
+    color: #ff5656;
+    padding:0px;
+    padding-top: 13px;
+    padding-left: 17px;
+}
+.qk-portlet-content .row {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-top: 0px;
+}
+
+img.order-image {
+    vertical-align: middle;
+    width: 110px;
+    height: 110px;
+}
+
+.order-detail div {
+    width:336px;
+    padding: 35px 22px;
+}
+div.vline1 {
+    height:111px;
+    width:0px;
+    border:1px solid #e4e4e4;
+}
+div.order-receiver {
+    width: 125px;
+}
+
+div.order-receiver p {
+        margin: 42px 27px;
+}
+
+div.order-amount {
+    width: 139px;
+    text-align: center;
+}
+
+span.currency {
+    font-size: 14px;
+}
+p.amount {
+    font-size: 20px;
+    font-family: ms-yahei-bold;
+    color: #fe8383;
+    margin-bottom: 10px;
+}
+
+div.order-amount span.label {
+    margin: 0px;
+    background-color: white;
+    color: #b4b4b4;
+    border-radius: 15px;
+    border: 1px solid #b4b4b4;
+}
+
+div.order-status {
+    text-align: center;
+    width: 162px;
+    padding-top: 23px;
+}
+
+.order-item div.order-item-body {
+    padding: 19px;
+    padding-right: 0px;
+}
+
+div.status-info {
+        border: 1px solid #ff8309;
+    background-color: #fff9f4;
+    color: #ff8309;
+    margin-left: auto;
+    margin-right: auto;
+    width: 126px;
+    margin-top:6px;
+}
+div.status-info p {
+    margin: 0px;
+}
+
+div.order-box {
+    border-bottom: 1px dashed #e4e4e4;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}

@@ -1,0 +1,159 @@
+.qk-portlet-content{
+    /* height: 1259px; */
+    border: 1px solid #eeeeee;
+    border-top: 1px solid #ff5656;
+    margin-left: 1px;
+    width: 938px;
+}
+
+.form-container{
+    width: 898px;
+    height: 432px;
+    margin-left: 20px;
+    margin-right: 20px;
+    position: relative;
+}
+
+
+.left {
+    float: left;
+    padding-left: 20px;
+    width: 149px;
+    padding-top: 2px;
+}
+
+.left label {
+    color: #ff5656;
+}
+
+.right {
+    float: left;
+    margin-top: -3px;
+}
+
+.right input {
+    height: 35px;
+    width: 332px;
+}
+
+.form {
+    margin-left: 35px;
+}
+.form-group {
+    clear: both;
+    margin-left: 21px;
+    padding-top: 21px;
+    width: 898px;
+    padding-bottom: 43px;
+    margin-bottom: 0px;
+    border-bottom: 1px dotted #d4d4d4;
+}
+
+.numbers{
+    font-family: ms-yahei-regular;
+    font-size: 22px;
+    color: #f8cd6b;
+}
+
+.conformation-transfer{
+    margin:-4px 170px;
+    padding: 8px 41px;
+    background-color: #ff5656;
+    color: white;
+    font-size: 14px;
+}
+
+.table-container{
+    width: 898px;
+    height: 765px;
+    border: 1px solid #eeeeee;
+    margin: 49px 18px;
+}
+
+.qk-portlet-title-text{
+    font-size: 14px;
+}
+
+.qk-portlet-title{
+    background-color: #fee6e6;
+    height: 50px;
+    padding-top: 14px;
+}
+
+.form-search-content{
+    margin:26px 50px 47px 44px;
+    border: none;
+}
+
+.other-left {
+    float: left;
+}
+
+.other-right {
+    float: left;
+    margin-top: -6px;
+    margin-left: 4px;
+}
+
+select.form-control:not([size]):not([multiple]) {
+    height: 28px;
+}
+
+.form-control{
+    padding: 3px 4px;
+}
+
+.inquire{
+    padding: 5px 36px;
+    background-color: #ff5656;
+    color: white;
+    font-size: 14px;
+}
+
+.qk-portlet-content-1{
+    border: 1px solid #ff5656;
+    margin-left: 20px;
+    width: 96%;
+    margin-top: 48px;
+    margin-bottom: 80px;
+}
+
+.qk-portlet-content-1 > table > thead {
+    border-bottom: 1px dashed #ff5656;
+    background-color: #fff7f7
+}
+
+.qk-portlet-content-1 > table > thead > tr > th {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 11px;
+}
+
+.qk-portlet-content-1 > table > tbody > tr {
+    border-top: 1px dotted grey;
+}
+
+.qk-portlet-content-1 > table > tbody > tr > td {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    padding-top: 7px;
+    padding-bottom: 12px;
+    text-align: center;
+}
+
+.red{
+    color: #ffb2b2;
+}
+
+.green {
+    color: #01dc96;
+}
+
+.paginationjs .paginationjs-pages {
+    float: right;
+    /* margin-top: 89px; */
+    /* margin-bottom: 141px; */
+}
+

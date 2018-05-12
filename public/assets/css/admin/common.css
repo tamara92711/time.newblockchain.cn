@@ -1,0 +1,13 @@
+@font-face {
+  font-family: ms-yahei-regular;
+  src: url("/assets/fonts/chinese.msyh.ttf");
+}
+
+@font-face {
+  font-family: ms-yahei-bold;
+  src: url("/assets/fonts/microsoft-yahei-bold.ttf");
+}
+
+body {
+    font-family: ms-yahei-regular;
+}

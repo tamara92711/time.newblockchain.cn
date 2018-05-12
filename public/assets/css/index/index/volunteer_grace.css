@@ -1,0 +1,123 @@
+
+.volunter-container{
+    margin-bottom: 58px;
+    border: 1px solid #eeeeee;
+}
+
+.list-item{
+    margin-top: 17px;
+    margin-left: 0px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-right: 1px dotted #e4e4e4;
+
+}
+
+.left{
+    float: left;
+}
+
+
+.description{
+    float: left;
+    width: 379px;
+    padding-right: 20px;
+    padding-left: 22px;
+}
+
+p{
+    margin: 5px 0px 11px -4px;
+    /* margin-left: -4px; */
+    /* margin-right: 0px; */
+}
+
+.description > p:first-child{
+    font-size: 16px;
+    font-family: ms-yahei-bold;
+}
+
+.description > p:nth-child(3){
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    border-bottom: 1px dotted #e4e4e4;
+    padding-bottom: 13px;
+}
+
+.letters{
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+
+}
+
+.list-item > img{
+    float: left;
+    width: 150px;
+    height: 200px;
+}
+
+.boxs {
+    margin-left: 18px;
+    margin-right: 18px;
+    border-bottom: 1px solid #e4e4e4;
+    overflow: hidden;
+}
+
+.volunter-container>.data-container>.boxs:last-child {
+    margin-bottom: 130px;
+}
+
+
+/*body { font-size: 18px; }*/
+
+/*.stars-container {*/
+    /*position: relative;*/
+    /*display: inline-block;*/
+    /*color: transparent;*/
+/*}*/
+
+/*.stars-container:before {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*content: '★★★★★';*/
+    /*color: lightgray;*/
+/*}*/
+
+/*.stars-container:after {*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*left: 0;*/
+    /*content: '★★★★★';*/
+    /*color: gold;*/
+    /*overflow: hidden;*/
+/*}*/
+
+/*.stars-0:after { width: 0%; }*/
+/*.stars-1:after { width: 20%; }*/
+/*.stars-11:after { width: 32%; }*/
+/*.stars-2:after { width: 40%; }*/
+/*.stars-3:after { width: 60%; }*/
+/*.stars-4:after { width: 80%; }*/
+/*.stars-5:after { width: 100%; }*/
+
+
+.fa-star:before {
+    content: "\f005";
+    color: gold;
+    font-size: 23px;
+}
+
+.fa-star-half-empty:before, .fa-star-half-full:before, .fa-star-half-o:before {
+    content: "\f123";
+    color: gold;
+    font-size: 23px;
+}
+
+.fa-star-o:before {
+    content: "\f006";
+    color: gold;
+    font-size: 23px;
+}
+

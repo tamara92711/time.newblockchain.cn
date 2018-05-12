@@ -1,0 +1,218 @@
+<!-- BEGIN SIDEBAR MENU -->
+<!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
+<!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
+<!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
+<!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
+<!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
+<!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
+<ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"
+    style="padding-top: 20px">
+    <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+    <li class="sidebar-toggler-wrapper hide">
+        <div class="sidebar-toggler">
+            <span></span>
+        </div>
+    </li>
+    <!-- END SIDEBAR TOGGLER BUTTON -->
+
+    <li class="nav-item start ">
+        <a href="/admin/main" class="nav-link nav-toggle">
+            <i class="icon-home"></i>
+            <span class="title">基本设置
+            </span>
+        </a>
+    </li>
+    <li class="nav-item  ">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-diamond"></i>
+            <span class="title">文章管理
+            </span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item  ">
+                <a href="/admin/article.types" class="nav-link ">
+                    <span class="title">文章分类
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/article.index" class="nav-link ">
+                    <span class="title">文章管理
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/article.local_institutions" class="nav-link ">
+                    <span class="title">各地机构
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/article.recruitment_information" class="nav-link ">
+                    <span class="title">招聘信息
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item  ">
+        <a href="/admin/volunteers" class="nav-link nav-toggle">
+            <i class="icon-puzzle"></i>
+            <span class="title">志愿者
+            </span>
+        </a>
+    </li>
+    <li class="nav-item  ">
+        <a href="/admin/love_enterprise" class="nav-link nav-toggle">
+            <i class="icon-settings"></i>
+            <span class="title">爱心企业
+            </span>
+        </a>
+    </li>
+    <li class="nav-item  ">
+        <a href="/admin/charitable_organizations" class="nav-link nav-toggle">
+            <i class="icon-bulb"></i>
+            <span class="title">慈善公益组织
+            </span>
+        </a>
+    </li>
+    <li class="nav-item  ">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-briefcase"></i>
+            <span class="title">项目管理
+            </span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item  ">
+                <a href="/admin/project.types" class="nav-link ">
+                    <span class="title">项目分类
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/project.index" class="nav-link ">
+                    <span class="title">项目管理
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item  ">
+        <a href="#" class="nav-link nav-toggle">
+            <i class="icon-wallet"></i>
+            <span class="title">会员管理
+            </span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item  ">
+                <a href="/admin/member.index" class="nav-link ">
+                    <span class="title">会员列表
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/member.real_name_verify" class="nav-link ">
+                    <span class="title">实名认证
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/member.certificate" class="nav-link ">
+                    <span class="title">专业证书管理
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item  ">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-bar-chart"></i>
+            <span class="title">商城管理
+            </span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item  ">
+                <a href="/admin/product.categories" class="nav-link ">
+                    <span class="title">商品分类
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/product.index" class="nav-link ">
+                    <span class="title">商品管理
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/product.orders" class="nav-link ">
+                    <span class="title">订单管理
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item  ">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-pointer"></i>
+            <span class="title">投诉与建议
+            </span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item  ">
+                <a href="/admin/complaints.categories" class="nav-link ">
+                    <span class="title">投诉类型设置
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/complaints.index" class="nav-link ">
+                    <span class="title">投诉管理
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item ">
+        <a href="javascript:;" class="nav-link nav-toggle">
+            <i class="icon-layers"></i>
+            <span class="title">公告管理</span>
+            <span class="arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li class="nav-item">
+                <a href="/admin/news.types" class="nav-link ">
+                    <span class="title">动态类型设置
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item  ">
+                <a href="/admin/news.index" class="nav-link ">
+                    <span class="title">信息发布
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li class="nav-item  ">
+        <a href="/admin/links" class="nav-link nav-toggle">
+            <i class="icon-feed"></i>
+            <span class="title">友情链接
+            </span>
+        </a>
+    </li>
+    <li class="nav-item  ">
+        <a href="/admin/report" class="nav-link nav-toggle">
+            <i class="icon-paper-plane"></i>
+            <span class="title">运营报表
+            </span>
+        </a>
+    </li>
+</ul>
+<!-- END SIDEBAR MENU -->
+<!-- END SIDEBAR MENU -->

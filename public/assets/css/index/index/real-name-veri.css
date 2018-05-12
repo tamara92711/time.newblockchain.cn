@@ -1,0 +1,77 @@
+.qk-portlet-title {
+    padding-left: 24px;
+    padding-top: 12px;
+}
+
+.qk-portlet-title-icon {
+    margin-right: 5px;
+}
+
+.left label {
+    font-size: 14px;
+    color: #ff5656;
+}
+
+.left {
+    float: left;
+    padding-left: 35px;
+    width: 164px;
+}
+
+.right {
+    float: left;
+    width: 300px;
+    margin-top: -6px;
+}
+
+.right input {
+    height: 36px;
+}
+.form-group {
+    clear: both;
+    margin-left: 23px;
+    padding-top: 21px;
+    width: 898px;
+    padding-bottom: 43px;
+    margin-bottom: 0px;
+    border-bottom: 1px dotted #d4d4d4;
+}
+
+.add-picture {
+    position: relative;
+    overflow: hidden;
+    border: 1px dashed #ff5656;
+    height: 120px;
+    width: 180px;
+    border-radius: 4px;
+    background: url("/assets/img/plus.png") no-repeat center;
+}
+
+.add-picture input{
+    line-height: 200px;
+    font-size: 200px;
+    position: absolute;
+    opacity: 0;
+    z-index: 10;
+}
+
+.add-avatar {
+    float: left;
+    border-bottom: 1px dotted #d2d2d2;
+    width: 242px;
+    height: 278px;
+    padding-top: 15px;
+    padding-left: 22px;
+}
+
+.error{
+    color: #ff5656;
+    padding-left: 20px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

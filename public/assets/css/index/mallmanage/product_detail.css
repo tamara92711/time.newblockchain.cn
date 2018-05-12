@@ -1,0 +1,306 @@
+.product-main {
+  border: 1px solid #e4e4e4;
+      padding-top: 20px;
+    padding-left: 17px;
+    margin-top: 16px;
+    margin-left: 3px;
+    padding-bottom: 14px;
+    margin-bottom: 110px;
+}
+
+.product-gallery {
+  float: left;
+    width: 430px;
+    margin-right: 18px;
+}
+
+.product-img {
+  margin-bottom: 4px;
+}
+.slick-img-lg {
+  width: 430px;
+}
+
+.slick-img-sm {
+  width: 70px;
+  /* margin-left: 10px; */
+}
+
+.product-detail {
+  border: 1px solid #ff5656;
+  width: 100%;
+}
+
+
+.header {
+  margin-bottom: 15px;
+}
+
+span.bread-crumb {
+  margin-left: 2px;
+}
+
+button.slick-next {
+  right: 0px;
+}
+
+button.slick-prev {
+  left: 0px;
+}
+.product-img {
+  width: 430px;
+}
+.product-small-img {
+  width: 430px;
+}
+
+.product-info {
+  float: left;
+}
+
+.collect {
+  margin-bottom: 14px;
+}
+
+.share {
+  padding-left: 24px;
+}
+.share > button {
+  font-size: 14px;
+  width: 105px;
+}
+.btn-add-to-cart,
+.btn-buy-now {
+  width: 130px;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 0px;
+    margin-right: 10px;
+}
+
+.btn-add-to-cart {
+  background-color: white;
+  border-color: #ff5656;
+  color: #ff5656;
+}
+
+.btn-buy-now {
+  background-color: #ff5656;
+  border-color: #ff5656;
+  color: white;
+}
+
+div.prop-name {
+  font-family: ms-yahei-bold;
+  float: left;
+  margin-left:21px;
+  width: 85px;
+}
+
+div.prop-value {
+  float:left;
+}
+
+div.prop-value > span {
+  color: #ff3a3a;
+  font-family: ms-yahei-bold;
+}
+
+.tick-radio::after + .radio-inline__input:checked {
+  background:url("/../assets/img/corner-tick.png");
+}
+
+.radio-inline__input + .radio-inline__label {
+    background-color: white;
+    color: black;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #e4e4e4;
+    width: 120px;
+    height: 40px;
+    margin:0px;
+    font-size: 14px;
+    padding-top: 8px;
+    padding-left: 45px;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+  background-color: white;
+  color: black;
+  border-color: #ff5656;
+}
+
+.radio-inline__input:checked ~ .tick-img{
+  visibility: visible;
+}
+div.tick-radio {
+  position: relative;
+  float: left;
+  margin-right: 8px;
+}
+img.tick-img {
+  float: right;
+      position: absolute;
+    top: 12px;
+    right: 0px;
+    visibility: hidden;  
+}
+.radio-inline__input:focus + .radio-inline__label {
+  outline: none;
+}
+
+.radio-line {
+  padding-top: 5px;
+}
+
+#count {
+  text-align: center;
+  font-size: 16px;
+  margin: 0px 12px;
+}
+
+.button::before {
+  width: 25px;
+    height: 25px;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 19px;
+    border-width: 2px;
+    border-style: solid;
+    margin: 0px;
+    font-size: 26px;
+    display: block;
+}
+
+p.button {
+  margin: 0px;
+}
+#plus::before {
+  content: "\002b";
+  border-color: #ff5656;
+  color: #ff5656;
+}
+
+#minus::before {
+  content: "\2212";
+  border-color: #888888;
+  color: #888888;
+}
+
+.button, #count {
+  float: left;
+}
+
+img.pay-img {
+      margin-left: 4px;
+    margin-right: 2px;
+}
+
+.tab-container {
+  border: 1px solid #ff5656;
+  background-color: #ffa0a0;
+}
+
+/*---------------TAB CONTAINER STARTS-------------------*/
+.tab-container {
+    margin: 0 auto;
+    width: 100%;  /* Ancho del contenedor */
+}
+
+.tab-container .tab-btn {
+	height: 2.5em;
+	visibility: hidden;
+}
+
+.tab-container label {
+	color: white;  /* Color del texto de las pestañas */
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 14px;  /* Tamaño del texto de las pestañas */
+	height: 50px;
+	line-height: 2.5em;
+	margin-right: .25em;
+	padding: 6px 1.5em;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+.tab-container .tab-btn:hover + label {
+	background: white;  /* Fondo de las pestañas al pasar el cursor por encima */
+	color: #ff5656;  /* Color del texto de las pestañas al pasar el cursor por encima */
+}
+
+.tab-container .tab-btn:checked + label {
+	background: white;  /* Fondo de las pestañas al presionar */
+	color: #ff5656; /* Color de las pestañas al presionar */
+	position: relative;
+	z-index: 6;
+	/*
+	-webkit-transition: .1s;
+	-moz-transition: .1s;
+	-o-transition: .1s;
+	-ms-transition: .1s;
+	*/
+}
+
+.tab-content {
+  background: white;
+	border-radius: 0 .25em .25em .25em;
+	min-height: 20em;  /* Alto del contenido */
+	position: relative;
+	width: 100%;
+	z-index: 5;
+}
+
+.tab-content > div {
+  /* opacity: 0; */
+  display:none;
+	padding: 1.5em;
+	/* position: absolute; */
+	z-index: -100;
+	/*
+	transition: all linear 0.1s;
+	*/
+}
+
+.tab-container input#tab-1:checked ~ .tab-content #content-1,
+.tab-container input#tab-2:checked ~ .tab-content #content-2,
+.tab-container input#tab-3:checked ~ .tab-content #content-3 {
+    display:block;
+    z-index: 100;
+}
+
+input.visible {
+  visibility: visible !important;
+}
+/*---------------TAB CONTAINER ENDS-------------------*/
+div#content-1 {
+  padding-top: 31px;
+}
+
+#content-1 > div:first-child > div{
+  float:left;
+}
+div#content-1 p {
+  font-size: 16px;
+  margin: 0px;
+  margin-bottom: 19px;
+}
+
+div.column-1 {
+  width: 363px;
+}
+
+div.column-2 {
+  width: 363px;
+}
+
+div.img-list {
+  padding-left: 88px;
+  display: inline-block;
+}
+div.img-list  img {
+  max-width: 881px;
+  margin: 0px auto;
+}

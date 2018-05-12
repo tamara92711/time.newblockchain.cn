@@ -1,0 +1,147 @@
+
+
+.left{
+    float:left
+}
+
+.right{
+    float: left;
+    margin-top: -6px;
+    margin-left: 4px;
+
+}
+
+.qk-portlet-content{
+    border-top: 1px solid #ff5656;
+    padding-left: 20px;
+}
+
+select.form-control:not([size]):not([multiple]) {
+     height: 31px;
+}
+
+.form-control{
+    font-size: 12px;
+}
+
+.inquire{
+    padding: 5px 32px;
+    background-color: #ff5656;
+    color: white;
+    font-size: 14px;
+}
+
+.qk-portlet-content-1{
+    border: 1px solid #ff5656;
+    width: 96%;
+    margin-bottom: 90px;
+}
+
+.qk-portlet-content-1 > table > thead {
+    border-bottom: 1px dashed #ff5656;
+    background-color: #fff7f7
+}
+
+.qk-portlet-content-1 > table > thead > tr > th {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 11px;
+}
+
+.qk-portlet-content-1 > table > tbody > tr {
+    border-top: 1px dotted grey;
+}
+
+.qk-portlet-content-1 > table > tbody > tr > td {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    padding-top: 11px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+
+.modal-title {
+    color: #ff5656;
+    font-size: 18px;
+    font-family: ms-yahei-bold;
+    margin-left: 255px;
+    margin-top: 11px;
+}
+
+.modal-header {
+    background-color: #fff7f7;
+    height: 50px;
+}
+
+.modal-body th {
+    font-size: 14px;
+    font-family: ms-yahei-bold;
+    padding-bottom: 13px;
+    border-bottom: 1px dashed #ff5656;
+}
+
+.modal-body tr {
+    text-align: center;
+}
+
+.modal-body tr td:nth-child(6) {
+    color: #ff5656;
+}
+.modal-body td {
+        /*padding-top: 10px;*/
+    /*padding-bottom: 9px;*/
+    border-bottom: 1px dotted #d8d8d8;
+}
+
+.user-item {
+    float: left;
+    border: none;
+    padding: 0px;
+    margin-top: 9px;
+    margin-right: 6px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label:before {
+    content: "\2713";
+    color: #ff5656;
+    border: 1px solid #ff5656;
+    font-size: 13px;
+    text-align: center;
+    line-height: 12px;
+}
+
+input[type="radio"] + label:before {
+    height: 15px;
+    border: 1px solid #b8b8b8;
+    border-radius: 2px;
+    content: " ";
+    display: inline-block;
+    width: 15px;
+    vertical-align: middle;
+    margin-right: 10px;
+    position: relative;
+    top: -1px;
+}
+/*#display-images{*/
+    /*width:350px;*/
+    /*height:220px;*/
+    /*border:1px dashed #ffbaba;*/
+    /*background-color:#f9f9f9;*/
+    /*padding-top:78px*/
+/*}*/
+
+#image-preview-front input{
+    line-height: 86px;
+    position: absolute;
+    opacity: 0;
+    z-index: 10;
+    width: 202px;
+}
+
+

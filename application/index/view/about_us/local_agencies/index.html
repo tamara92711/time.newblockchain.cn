@@ -1,0 +1,66 @@
+{extend name="/common/templates/tpl-wo-sb2"} {block name="page-title"}关于我们{/block} {block name="main-part"}
+<div class="containers">
+</div>
+{/block} {block name="custom-css"}
+<link href="/assets/css/index/about_us/index.css" rel="stylesheet" type="text/css" /> {/block} {block name="custom-js"}
+<script src="http://api.map.baidu.com/api?v=2.0"></script>
+<script>
+    function search() {
+        displayInstitutions();
+    }
+    var map_array = [];
+    function displayInstitutions() {
+        var search_key = $("#search-key").val();
+        $.ajax({
+            url: "/index/about_us/local_agencies/getinstitutions",
+            method: "GET",
+            data: { search_key: search_key },
+            success: function (response) {
+                response = JSON.parse(response);
+                var insts = response.data;
+                var html = "";
+                html += '<div class="header-topic-container" style="margin-bottom: 30px;">';
+                html += '<div class="aboutUs-topic"> 各地机构</div>';
+                html += '<div class="topic-2">';
+                html += '<p class="t-news-center" style="width: 219px; margin-left: 150px;">Local institutions</p>';
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="form-group">';
+                html += '<input type="text" class="form-control" style="width: 300px;height: 33px;float: left;" id="search-key"/>';
+                html += '<button class="btn btn-searchs" id="search-btn" onclick="search()">查找</button>';
+                html += '</div>';
+                html += '<div class="clearfix"></div>';
+                $.each(insts, function (key, value) {
+                    html += '<div class="map-con">';
+                    html += '<div style="float:left;">';
+                    html += '<p style="font-size: 18px;margin-top: 34px;color: #ff5656;font-family: ms-yahei-bold">' + value.name + '</p>';
+                    html += '<p>联系电话：' + value.phone + '</p>';
+                    html += '<p style="margin-top: -5px;">公司地址：' + value.address + '</p>';
+                    html += '</div>';
+                    html += '<div style="float: right;" id="map_' + value.id + '" class="map">';
+                    html += '</div>';
+                    html += '</div>';
+                });
+                $("div.containers").html(html);
+
+                $.each(insts, function (key, value) {
+                    var map = new BMap.Map("map_" + value.id);
+                    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+                    var myGeo = new BMap.GeoCoder();
+                    myGeo.getPoint(value.address, function(point) {
+                        if (point) {
+                            map.centerAndZoom(point, 16);
+                            map.addOverlay(new BMap.Marker(point));
+                        }else{
+                            alert("");
+                        }
+                    }, "北京市");
+                    map_array.push(map);
+                });
+            }
+        });
+    }
+    $(document).ready(function () {
+        displayInstitutions();
+    });
+</script> {/block}

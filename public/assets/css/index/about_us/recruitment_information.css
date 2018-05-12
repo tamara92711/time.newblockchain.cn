@@ -1,0 +1,149 @@
+/* Acordeon styles */
+.tab {
+    position: relative;
+    margin-bottom: 1px;
+    width: 100%;
+    color: black;
+    overflow: hidden;
+}
+input {
+    position: absolute;
+    opacity: 1;
+    z-index: -1;
+}
+label {
+    position: relative;
+    display: block;
+    padding: 0 0 0 1em;
+    background: white;
+    line-height: 3;
+    cursor: pointer;
+    color: #ff5656;
+    font-family: ms-yahei-bold;
+    font-size:18px;
+    border: 1px dotted #ff5656;
+    border-bottom: none;
+    margin-bottom: 0px;
+}
+.blue label {
+    background: #ffffff;
+}
+.tab-content {
+    max-height: 0;
+    overflow: hidden;
+    background: #1abc9c;
+    -webkit-transition: max-height .35s;
+    -o-transition: max-height .35s;
+    transition: max-height .35s;
+    margin-bottom: 30px;
+    border: 1px dotted #ff5656;
+}
+
+.blue .tab-content {
+    background: white;
+}
+.tab-content p {
+    margin: 1em;
+}
+/* :checked */
+input:checked ~ .tab-content {
+    max-height: 100em;
+    overflow: hidden;
+}
+/* Icon */
+label::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: block;
+    width: 3em;
+    height: 3em;
+    line-height: 3;
+    text-align: center;
+    -webkit-transition: all .35s;
+    -o-transition: all .35s;
+    transition: all .35s;
+}
+input[type=checkbox] + label::after {
+    content: "+";
+}
+input[type=radio] + label::after {
+    /*content: "\25BC"; */
+    content: url("/assets/img/down.png");
+}
+input[type=checkbox]:checked + label::after {
+    transform: rotate(315deg);
+}
+input[type=radio]:checked + label::after {
+    transform: rotateX(180deg);
+}
+
+.d1{
+    padding-left: 100px;
+    color: black;
+    font-size: 14px;
+    font-family: ms-yahei-regular;
+}
+
+.header-topic-container{
+    background-color: #ff5656;
+    padding-top: 3px;
+    margin-bottom: 33px;
+}
+
+.aboutUs-topic{
+    font-family: ms-yahei-bold;
+    font-size: 20px;
+    color: white;
+    padding-top: 1px;
+    margin-top: 3px;
+    /* padding-bottom: 0px; */
+    text-align: center;
+    margin-left: -25px;
+    /* border-bottom: 1px solid white; */
+}
+
+.aboutUs-topic-2{
+    text-align: center;
+    color: white;
+    font-size: 19px;
+}
+
+.topic-2 {
+    width: 556px;
+    border-top: 1px solid white;
+    margin: -3px 167px 0px;
+}
+
+
+.des-con{
+    background-color: #fef4f4;
+    padding-left: 20px;
+    padding-top: 15px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.description{
+    padding-bottom: 15px;
+    float: left;
+}
+
+
+.containers{
+    margin-left: 20px;
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+}
+
+.t-news-center {
+    font-size: 18px;
+    font-family: ms-yahei-regular;
+    color: white;
+    margin-top: -2px;
+    margin-left: 150px;
+    /* margin-right: 197px; */
+    background-color: #ff5656;
+    width: 258px;
+    padding-left: 25px;
+}

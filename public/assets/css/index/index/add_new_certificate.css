@@ -1,0 +1,98 @@
+.add-picture {
+    margin-top: -5px;
+    border: 1px dashed #ff5656;
+    height: 180px;
+    width: 275px;
+    border-radius: 4px;
+    background: url("/assets/img/plus.png") no-repeat;
+    background-position: center 42px;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-picture input{
+    line-height: 200px;
+    font-size: 200px;
+    position: absolute;
+    opacity: 0;
+    z-index: 10;
+}
+
+.qk-portlet-title {
+    padding-left: 23px;
+    padding-top: 12px;
+}
+
+.qk-portlet-title-icon {
+    margin-right: 5px;
+}
+
+.left {
+    float: left;
+    padding-left: 35px;
+    width: 166px;
+}
+
+.left label {
+    color: #ff5656;
+}
+.right {
+    float:left;
+    /* width: 300px; */
+}
+
+.right input {
+    width: 300px;
+    margin-top: -6px;
+    height: 36px;
+}
+
+.radio {
+    width: 50%;
+    float: left;
+}
+.right input[type="radio"] {
+    width:0px;
+    height:0px;
+}
+
+.form-group {
+    clear: both;
+    margin-left: 21px;
+    padding-top: 21px;
+    width: 898px;
+    padding-bottom: 43px;
+    margin-bottom: 0px;
+    border-bottom: 1px dotted #d4d4d4;
+}
+
+.right .btn {
+    width: 140px;
+    height: 40px;
+    color: white;
+    font-size: 14px;
+}
+
+.add-picture>P:nth-child(3){
+    margin-top: 0px;
+    margin-left: 102px;
+    position: absolute;
+}
+
+.add-picture>P:nth-child(2){
+    margin-top: 100px;
+    margin-left: 77px;
+    position: relative;
+}
+
+p{
+    margin-bottom: 0px;
+}
+
+.return{
+    margin-left: 186px;
+    margin-top: 38px;
+    padding: 7px 53px;
+    color: white;
+    background-color: #ff5656;
+}

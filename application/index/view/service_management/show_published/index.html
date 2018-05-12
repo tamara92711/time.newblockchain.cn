@@ -1,0 +1,289 @@
+{extend name="/common/templates/tpl-w-sb"}
+{block name="page-title"}项目详细页(发布中){/block}
+{block name="main-part"}
+<div>
+    <div class="qk-portlet" style="margin-top:1px;width: 940px;margin-left:-2px">
+        <div class="qk-portlet-title" style="padding-left:26px;">
+            <img class="qk-portlet-title-icon" src="/assets/img/paper-plane.png" />
+            <span class="qk-portlet-title-text">发布的需求</span>
+        </div>
+
+        <div class="qk-portlet-content" style="width: 100%;padding-top: 25px;padding-left:25px;">
+            <div style="padding-left:29px">
+                <div class="form-group">
+                    <div class="left">
+                        <label style="font-family:ms-yahei-bold">需求类型：</label>
+                    </div>
+                    <div class="right" style="margin-right: 33px;width:100px">
+                        <select class="form-control" id="demand_type" name="demand_type">
+                            <!--<option value="" selected disabled hidden>请选择需求类型</option>-->
+                            {foreach $demand_type as $key=>$val }
+                            <option value="{$val.id}">{$val.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="left">
+                        <label style="font-family:ms-yahei-bold">服务时间：</label>
+                    </div>
+                    <div class="right" style=" width:96px; margin-right: 8px;">
+                        <input type="text" class="form-control" data-toggle="time_from" name="time_from" id="time_from" placeholder="请选择日期" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="left">
+                        <label style="font-family:ms-yahei-bold">至：</label>
+                    </div>
+                    <div class="right" style=" width:96px; margin-right: 30px;">
+                        <input type="text" class="form-control" data-toggle="time_to" name="time_to" id="time_to" placeholder="请选择日期"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="left">
+                        <label style="font-family:ms-yahei-bold">状态：</label>
+                    </div>
+                    <div class="right" style="margin-right: 33px">
+                        <select class="form-control" id="demand_status" name="demand_status">
+                            <!--<option value="" selected disabled hidden>选择需求状态</option>-->
+                            {foreach $demand_status as $key=>$val }
+                            <option value="{$val.id}">{$val.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="right" style="margin-right: 33px">
+                        <button class="btn inquire" style="font-family:ms-yahei-bold" onclick="search();">查询</button>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both"></div>
+            <div class="qk-portlet-content-1" style="margin-top:47px">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="white-space:nowrap;width:5%">序号</th>
+                        <th style="white-space:nowrap;width:8%">需求类型</th>
+                        <th style="white-space:nowrap;width:20%">需求名称</th>
+                        <th style="white-space:nowrap;width:5%">时间币</th>
+                        <th style="white-space:nowrap;width:10%">发布时间</th>
+                        <th style="white-space:nowrap;width:7%">状态</th>
+                        <th style="white-space:nowrap;width:6%">承接人</th>
+                    </tr>
+                    </thead>
+                    <tbody id="fetchData">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="receiver" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changePhoneNumberLabel" aria-hidden="true"
+     style="display: none;">
+    <div class="modal-dialog container" style="width:600px;margin-top:200px;max-width:none;">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom: 1px solid #fde4e4;">
+                <h4 class="modal-title">承接人列表</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+            </div>
+            <input type="hidden" id="selected_user" name="selected_user"/>
+            <input type="hidden" id="demand_id" name="demand_id"/>
+            <div class="modal-body" style="padding-top:25px;padding-bottom:30px">
+                <table>
+                    <thead>
+                    <tr class="form-group">
+                        <th width="30px"></th>
+                        <th width="36px">序号</th>
+                        <th width="157px">姓名</th>
+                        <th width="95px">手机号码</th>
+                        <th width="153px">好评度</th>
+                        <th width="66px">查看详情</th>
+                    </tr>
+                    </thead>
+                    <tbody id ="modalData">
+
+                    </tbody>
+                </table>
+                <button class="btn" style="width:200px;height:40px;background-color:#ff5656;font-size:18px;color:white;margin-top:15px;margin-left:183px;" onclick="selectConfirm();">确认选择</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+{block name="custom-css"}
+<link href="/assets/css/index/servicemanage/service_undertaken.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
+{/block}
+{block name="custom-js"}
+<script src="/assets/datepicker/datepicker.min.js" type="text/javascript"></script>
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        displayCalendars();
+        search();
+
+    })
+
+
+
+    function displayCalendars()
+    {
+        //datepicker
+        $('[data-toggle="time_from"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+
+        $('[data-toggle="time_to"]').datepicker({
+            autoHide: true,
+            zIndex: 2048,
+            format:'yyyy-mm-dd'
+        });
+        var firstMonthDay = getFirstMonthDay();
+        $('#time_from').datepicker().datepicker('setDate',firstMonthDay);
+        $('#time_to').datepicker().datepicker('setDate',new Date());
+    }
+
+    function search()
+    {
+        var container = $('#fetchData');
+        var demand_type = $("#demand_type").val();
+        var time_from = $("#time_from").val();
+        var time_to = $("#time_to").val();
+        var demand_state = $("#demand_status").val();
+        var dataString = 'demand_type='+demand_type+'&time_from='+time_from+'&time_to='+time_to+'&demand_state='+demand_state;
+        // console.log(dataString);
+        var dataHtml = '';
+
+        $.ajax({
+            url  : '/index/service_management/show_published/1',
+            type : 'GET',
+            dataType : 'json',
+            data : dataString,
+            success:function (result)
+            {
+                json = JSON.parse(result);
+                var response = json.data;
+                // console.log(response);
+                if(response.length>0)
+                {
+                    $.each(response, function (index, item) {
+                        dataHtml +=
+                            '<tr>\n' +
+                            '   <td>' + (++index) + '</td>\n' +
+                            '   <td>'+item.demand_type+'</td>\n' +
+                            '   <td><a href="/index/service_management/show_published/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.ds_id+'">'+item.title+'</a></td>\n' +
+                            '   <td>'+item.pay_amount+'</td>\n' +
+                            '   <td>'+item.published_time+'</td>\n' +
+                            '   <td>'+item.state_name+'</td>\n';
+                            if(item.applyUser=='')
+                            {
+                                if(item.bidCount>0)
+                                {
+                                    dataHtml+='<td style="text-decoration:underline;"><a data-toggle="modal" style="color: red;" onclick="show_modal('+item.id+');">承接人('+item.bidCount+')</a></td>\n';
+                                }
+                                else
+                                {
+                                    dataHtml+='<td style="text-decoration:underline;"><a  style="color: red;">承接人('+item.bidCount+')</a></td>\n';
+                                }
+
+                            }
+                            else
+                                dataHtml+='<td>'+item.name+'</td>\n';
+                            '</tr>';
+
+                    });
+                }
+                else
+                {
+                    dataHtml+=
+                        '<tr>' +
+                        '<td colspan="7" class="merge">没有搜索结果</td>'
+                    '</tr>'
+                }
+
+                container.html(dataHtml);
+
+
+            }
+        })
+    }
+
+    function user_select(user_id,demand_id)
+    {
+        $("#selected_user").val(user_id);
+        $("#demand_id").val(demand_id);
+    }
+
+    var show_modal = function (demand_id)
+    {
+        var dataHtml = '';
+        var container = $('#modalData');
+        console.log("test");
+        $.ajax({
+            url  : '/index/service_management/show_published/getModalContent',
+            method:'POST',
+            data:{demand_id:demand_id},
+            success:function (result)
+            {
+
+                $.each(result,function (index,item)
+                {
+                    dataHtml+=
+                        '<tr>\n' +
+                        '    <td>\n' +
+                        '    <div class="user-item">\n' +
+                        '       <input onclick="user_select('+item.user_id+','+demand_id+')" type="radio" name="userlist" id="userlist_'+item.user_id+'" value="'+item.user_id+'">\n' +
+                        '           <label for="userlist_'+item.user_id+'"></label>\n' +
+                        '     </div>\n' +
+                        '     </td>\n' +
+                        '     <td>'+(++index)+'</td>\n' +
+                        '     <td>'+item.name+'</td>\n' +
+                        '     <td>'+item.mobile+'</td>\n' +
+                        '     <td>'+item.rate+'%</td>\n' +
+                        '     <td><a href="/index/project.project_processing/show_freelancer_detail/demand_id/'+demand_id+'/user_id/'+item.user_id+'">详情</a></td>\n' +
+                        '</tr>';
+
+                })
+
+                container.html(dataHtml);
+            }
+        })
+        $('#receiver').modal();
+
+
+    }
+    /*
+        when user clicked modal confirm  accept applied use id
+     */
+    function selectConfirm()
+    {
+        var checkId = $("#selected_user").val();
+        var demandId = $("#demand_id").val();
+        // var checkedLength = $('input[name=userlist]:checked').length;
+        // if (checkedLength > 0){
+        //     $("#receiver").modal('show');
+        //     console.log("please select one mane");
+        //     return false;
+        // }
+        $.ajax({
+            url: '/index/service_management/show_published/acceptBid',
+            method: 'POST',
+            data: {checkId: checkId,demandId:demandId},
+            success: function (result) {
+                if (result=="ok")
+                {
+                    $('#demand_status').val(2);
+                    $("#receiver").modal('hide');
+                    search();
+                }
+            }
+        })
+    }
+</script>
+{/block}

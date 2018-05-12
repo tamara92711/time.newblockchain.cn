@@ -1,0 +1,48 @@
+.qk-portlet{
+    margin-top: 3px;
+    width: 936px;
+    margin-left: 1px;
+}
+
+.qk-portlet-content{
+    height: 573px;
+    border: 1px solid #eeeeee;
+    border-top: 1px solid #ff5656;
+    margin-left: -3px;
+}
+
+.qk-portlet-table{
+    border: 1px solid #ff5656;
+    width: 897px;
+    /* height: 468px; */
+    margin: 20px 21px;
+}
+
+.qk-portlet-table > table > thead {
+    border-bottom: 1px dashed #ff5656;
+    background-color: #fff7f7
+}
+
+.qk-portlet-table > table > thead > tr > th {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 12px;
+    padding-bottom: 13px;
+}
+
+.qk-portlet-table > table > tbody > tr {
+    border-top: 1px dotted grey;
+}
+
+.qk-portlet-table > table > tbody > tr > td {
+    font-family: ms-yahei-regular;
+    font-size: 14px;
+    padding-top: 11px;
+    padding-bottom: 9px;
+    text-align: center;
+}
+
+.tr-container{
+
+}

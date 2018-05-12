@@ -1,0 +1,222 @@
+{extend name="/common/templates/tpl-w-sb1"}
+{block name="page-title"}服务分类{/block}
+{block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/servicemanage/undertake.css">
+<link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="container"}
+<div class="main container"  style="margin-top:10px">
+    <div class="sidebar">
+        <div class="sidebar-box" style="width:inherit;">
+            <div class="sidebar-title" style="padding-left:9px;padding-top:2px;border-bottom: 1px dashed #ff5656;padding-bottom: 29px;margin-bottom:12px">
+                <img src="/assets/img/four_leaves.png">
+                <span style="color:#ff5656" style="margin-left: 6px">服务分类</span>
+            </div>
+            <nav class="sidebar-list">
+                <ul style="margin-bottom:12px">
+                    {foreach $demand_type as $key=>$val}
+                    <li>
+                        <input id="dt{$val.id}" class="radio-inline__input" type="radio" name="demand_type" value="{$val.id}" />
+                        <label class="radio-inline__label" for="dt{$val.id}" style="padding: 0px;margin-bottom: 0px;">{$val.name}</label>
+                    </li>
+                    {/foreach}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="main-part">
+        <div>
+            <div class="qk-portlet" style="margin-bottom: 30px;">
+                <div class="qk-portlet-title" style="width: 939px;padding-left:39px;padding-top:11px;height:auto;">
+                    <div class="row" id>
+                        <div class="cri-key">需求类型：</div>
+                        <div id="detailDemandTypes"></div>
+                    </div>
+                    <div class="row">
+                        <div class="cri-key">需求状态：</div>
+                        <div id="demand_status">
+                            <input id="ds-1" class="radio-inline__input" type="radio" name="demand_status" value="0" />
+                            <label class="radio-inline__label" for="ds-1">全部</label>
+                            {foreach $demand_status as $key=>$val}
+                            <input id="demand_status_{$val.id}" class="radio-inline__input" type="radio" name="demand_status" value="{$val.id}" />
+                            <label class="radio-inline__label" for="demand_status_{$val.id}">{$val.name}</label>
+                            {/foreach}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cri-key">时 间 币：</div>
+                        <div id="time_currency">
+                            <input id="tc-1" class="radio-inline__input" type="radio" name="time_currency" value="1"/>
+                            <label class="radio-inline__label" for="tc-1">全部</label>
+                            <input id="tc-2" class="radio-inline__input" type="radio" name="time_currency" value="2" />
+                            <label class="radio-inline__label" for="tc-2">0-5</label>
+                            <input id="tc-3" class="radio-inline__input" type="radio" name="time_currency" value="3" />
+                            <label class="radio-inline__label" for="tc-3">5-10</label>
+                            <input id="tc-4" class="radio-inline__input" type="radio" name="time_currency" value="4" />
+                            <label class="radio-inline__label" for="tc-4">10以上</label>
+                            <input id="tc-5" class="radio-inline__input" type="radio" name="time_currency" value="5" />
+                            <label class="radio-inline__label" for="tc-5">
+                                <input type="text" style="margin-top: -4px;" name="time_currency_from" id="time_currency_from"/>
+                                <span style="padding: 0px 9px;">至</span>
+                                <input type="text" style="margin-top: -4px"; name="time_currency_to" id="time_currency_to"/>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="cri-key">发布时间：</div>
+                        <div id="release_time">
+                            <input id="rt-1" class="radio-inline__input" type="radio" name="release_time" value="0" />
+                            <label class="radio-inline__label" for="rt-1">
+                                全部
+                            </label>
+                            {foreach $release_time as $key=>$val}
+                            <input id="release_time_{$val.id}" class="radio-inline__input" type="radio" name="release_time" value="{$val.id}" />
+                            <label class="radio-inline__label" for="release_time_{$val.id}">{$val.name}</label>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+                <div class="qk-portlet-content">
+                    <div class="qk-post-list" style="padding-left:19px;">
+
+                        <div class="data-container">
+
+                        </div>
+                        <div id="pagination" style="margin-top: 23px;float: right;margin-bottom: 28px;margin-right: 41px;"></div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+{/block}
+{block name="custom-js"}
+<script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        $("#dt1").prop("checked", true);
+        $("#dt1").change();
+        //all setting at initial
+        // inintialSetting();
+        search();
+    });
+
+    //container as public
+    var container = $('#pagination');
+    $.extend($.fn.pagination.defaults, {
+        pageSize: 5
+    })
+
+    function inintialSetting() {
+
+        $("#ds-1").prop('checked',true);
+        $("#tc-1").prop('checked',true);
+        $("#rt-1").prop('checked',true);
+    }
+
+    $("#time_currency_to").focus(function () {
+        $("#tc-5").prop('checked',true);
+
+    })
+
+
+    $(".sidebar-list ul li").change(function () {
+
+        // $("#first").hide();
+        var demandType = $('input[name=demand_type]:checked').val();
+        var container = $("#detailDemandTypes");
+
+
+        $.ajax({
+            url : '/index/service_management/undertake_service/getDetailByDemandType/demandType/'+demandType,
+            success:function (result)
+            {
+
+                var response = JSON.parse(result);
+                var dataHtml = '<input id="detaildemand_'+demandType+'" class="radio-inline__input" type="radio" name="detaildemand_type" value='+demandType+' />\n' +
+                    '<label class="radio-inline__label" for="detaildemand_'+demandType+'">全部</label>';
+                $.each(response, function (index, item) {
+                    dataHtml +='<input id=detaildemand_'+item.id+' class="radio-inline__input" type="radio" name="detaildemand_type" value='+item.id+' />\n' +
+                        '<label id="type" class="radio-inline__label" for=detaildemand_'+item.id+'>' + item.name + '</label>'
+
+                });
+
+                container.html(dataHtml);
+                // $("#detaildemand_1").prop('checked',true);
+            }
+        })
+    })
+
+    //when detail demand type's is clicked.
+    $("#detailDemandTypes").change(search);
+    //when detail demand type's is clicked.
+    $("#demand_status").change(search);
+    //when detail demand type's is clicked.
+    $("#time_currency").change(search);
+    //when detail demand type's is clicked.
+    $("#release_time").change(search);
+
+    function search() {
+        var demand_type = $('input[name=detaildemand_type]:checked').val();
+        var demand_status = $('input[name=demand_status]:checked').val();
+        var time_currency = $('input[name=time_currency]:checked').val();
+        var release_time = $('input[name=release_time]:checked').val();
+        var time_currency_from = $("#time_currency_from").val();
+        var time_currency_to = $("#time_currency_to").val();
+        if (typeof demand_type === 'undefined') demand_type = -1;
+        if (typeof(demand_status)==="undefined") demand_status = -1;
+        if (typeof(time_currency)==="undefined") time_currency = -1;
+        if (typeof(release_time)==="undefined") release_time = -1;
+        if (typeof(time_currency_from)==="undefined") time_currency_from = -1;
+        if (typeof(time_currency_to)==="undefined") time_currency_to = -1;
+
+        var dataString = 'demand_type='+demand_type+'&demand_status='+demand_status+'&time_currency='+time_currency+'&release_time='+release_time+'&time_currency_from='+time_currency_from+'&time_currency_to='+time_currency_to;
+        console.log(dataString);
+        $.ajax({
+            url  : '/index/service_management/undertake_service/1',
+            data : dataString,
+            method:'GET',
+            success:function (result)
+            {
+                response = JSON.parse(result);
+                console.log(response);
+                var options = {
+                    dataSource: response,
+                    callback: function (response, pagination) {
+
+                        var dataHtml = '';
+
+                        $.each(response, function (index, item) {
+                            dataHtml += '<div class="qk-post-item" style="width:899px;">';
+                            dataHtml += '<div class="qk-post-content">';
+                            dataHtml += '<div class="qk-post-title">';
+                            dataHtml += '<img src="/assets/img/title.png" class="qk-post-title-img" />';
+                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.ds_id+'/uid/'+item.user_id+'">'+item.title+'</a></span>'
+
+                            dataHtml += '<span class="qk-post-title-status">'+item.state_name+'</span>';
+                            dataHtml += '</div>';
+                            dataHtml += '<div class="qk-post-body">';
+                            dataHtml += '<div style="border-bottom: 1px solid #e4e4e4;">';
+                            dataHtml += '<div class="style-1">时间币：'+item.pay_amount+'</div>';
+                            dataHtml += '<div class="style-2">需求类型：'+item.demand_type+'</div>';
+                            dataHtml += '<div class="clearfix"></div>';
+                            dataHtml += '<div class="style-1">需求时间：'+generateYear(item.service_time_from)+'年'+generateMonth(item.service_time_from)+'月'+generateDay(item.service_time_from)+'日-'+generateYear(item.service_time_to)+'年'+generateMonth(item.service_time_to)+'月'+generateDay(item.service_time_to)+'日，'+item.time_total+'</div>';
+                            dataHtml += '<div class="style-2">发布时间：'+item.published_time+'</div>';
+                            dataHtml += '</div>';
+                            dataHtml += '<div class="clearfix"></div>';
+                            dataHtml += '</div>';
+                            dataHtml += '</div>';
+                            dataHtml += '</div>';
+                        });
+                        container.prev().html(dataHtml);
+                    }
+                };
+                container.pagination(options);
+            }
+        })
+    }
+</script>
+{/block}

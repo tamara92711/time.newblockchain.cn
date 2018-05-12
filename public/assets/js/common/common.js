@@ -1,0 +1,57 @@
+$(document).ready(function () {
+    $(".return").on("click",function (e) {
+        e.preventDefault();
+        history.go(-1);
+    })
+})
+
+
+function generateYear(date)
+{
+    var year = date.substring(0,4);
+    return year;
+}
+
+function generateMonth(date)
+{
+    var month = date.substring(5,7);
+    if(month<10)
+        month = month.substring(1,2);
+    return month;
+}
+
+function generateDay(date)
+{
+    var day = date.substring(8,10);
+    if (day<10)
+        day = day.substring(1,2);
+    return day;
+}
+
+function region1Change()
+{
+    var region1=$("#region_1").val();
+    var container = $('#district');
+    $.ajax({
+        url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
+        success : function (result) {
+            var jsonData = JSON.parse(result);
+            var response = jsonData.data;
+            var dataHtml = '';
+            // dataHtml+='<option value="" selected disabled hidden>全部</option>';
+            // <option selected="" value="全部" >全部</option>
+            $.each(response, function (index, item) {
+                dataHtml +='<option value="'+index+'">'+item+'</option>';
+            });
+            container.html(dataHtml);
+        }
+    })
+}
+
+function getFirstMonthDay()
+{
+   var date = new Date();
+   var firstDay = new Date(date.getFullYear(),date.getMonth(),1);
+   return firstDay;
+
+}

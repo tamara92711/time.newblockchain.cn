@@ -1,0 +1,206 @@
+.border-red{
+    border :4px solid #ff5656
+}
+
+#new_shipping_address
+{
+    width: 130px;
+    height: 30px;
+    background: #ffbc1b;
+    float: right;
+    margin-top: 1px;
+    margin-right: 19px;
+    color: white;
+    padding: 6px 8px;
+    cursor: pointer;
+    border-radius: 0px;
+    line-height: 18px;
+    font-family: ms-yahei-regular;
+    text-decoration: none;
+}
+
+#new_shipping_address::before {
+    content: url(/assets/img/zu-13.png);
+    vertical-align: sub;
+    margin-right: 8px;
+}
+
+.qk-portlet-content {
+    overflow: hidden;
+    border: 1px solid #f2f2f2;
+    border-top: 4px solid #ff5656;
+}
+
+.left{
+    float:left;
+}
+
+.right{
+    float: right;
+    margin-right: 20px;
+}
+
+
+.checkbox label::before{
+    border:1px solid #b4b4b4;
+    margin-top: -5px;
+    margin-left: -16px;
+}
+
+.checkbox input[type="checkbox"]:checked + label::after {
+    margin-top: -8px;
+    margin-left: -19px;
+}
+
+.rows{
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e4e4e4;
+    overflow: hidden;
+}
+
+.first-spacing{
+    padding-left: 14px;
+    padding-right: 50px;
+    font-family: ms-yahei-bold;
+    font-size: 14px;
+}
+
+.qk-portlet-content>.rows:last-child{
+    border-bottom: none;
+}
+
+.payment_types{
+    height: 50px;
+    border: 1px dotted #ffbaba;
+    margin-right: 102px;
+    float: left;
+}
+
+.radio-inline__input + .radio-inline__label {
+    color: black;
+    margin: 0px;
+    padding: 10px 23px 17px 24px;
+}
+
+.product-row{
+    width: 939px;
+    border: 1px dotted #ff5656;
+    float: right;
+    margin-top: 63px;
+    margin-bottom: 41px;
+    background-color: #feeaea;
+}
+
+.radio-inline__input:checked ~ .tick-img {
+    visibility: visible;
+}
+
+img.tick-img {
+    bottom: 0px;
+    float: right;
+    visibility: hidden;
+    margin-top: 20px;
+}
+
+.product-row > p:first-child > span:first-child{
+    font-family: ms-yahei-bold;
+}
+
+
+.product-row > p:first-child > span:nth-child(2){
+    font-family: ms-yahei-bold;
+    color: #ff5656;
+    font-size: 24px;
+    /* margin-top: -18px; */
+}
+
+.product-first{
+    font-family: ms-yahei-bold;
+    padding-right: 54px;
+    float: right;
+}
+
+
+.product-second{
+    font-family: ms-yahei-regular;
+    padding-right: 46px;
+    float: right;
+}
+
+.product-third{
+    font-family: ms-yahei-regular;
+    float: right
+}
+
+.p-row{
+    margin-right: 20px;
+    padding-top: 24px;
+    padding-bottom: 28px;
+    overflow: hidden;
+}
+
+.button-submit-order{
+    background-color:#ff5656;
+    float: right;
+    color: white;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    padding: 9px 57px;
+}
+
+/*.product-row > p:nth-child(3)> span:first-child{*/
+    /*font-family: ms-yahei-bold;*/
+    /*padding-right: 48px;*/
+/*}*/
+
+/*.product-row > p:nth-child(3)> span:nth-child(2){*/
+    /*font-family: ms-yahei-regular;*/
+    /*padding-right: 42px;*/
+/*}*/
+
+/*.product-row > p:nth-child(3)> span:nth-child(3){*/
+    /*font-family: ms-yahei-regular;*/
+/*}*/
+
+P{
+    /* margin-top: 22px; */
+    margin-bottom: -8px;
+}
+
+.user-item {
+    float: left;
+    border: none;
+    padding: 0px;
+    margin-top: 9px;
+    margin-right: 6px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + label:before {
+    content: "\2713";
+    color: #ff5656;
+    border: 1px solid #ff5656;
+    font-size: 13px;
+    text-align: center;
+    line-height: 12px;
+}
+
+input[type="radio"] + label:before {
+    height: 15px;
+    border: 1px solid #b8b8b8;
+    border-radius: 2px;
+    content: " ";
+    display: inline-block;
+    width: 15px;
+    vertical-align: middle;
+    margin-right: 10px;
+    position: relative;
+    top: -1px;
+}
+

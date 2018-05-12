@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>{block name="page-title"}Blank{/block}</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/assets/css/common/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/common/components-rounded.min.css">
+    <link rel="stylesheet" href="/assets/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+    {block name="custom-css"}
+    {/block}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style>
+    </style>
+</head>
+
+<body>
+    {include file="/common/templates/header"}
+    <div class="main container">
+        {block name="main"}{/block}
+    </div>
+    {include file="/common/templates/footer"}
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/assets/js/common/jquery/jquery-3.3.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/assets/js/common/bootstrap/bootstrap.min.js"></script>
+    {block name="custom-js"}
+    {/block}
+</body>
+
+</html>

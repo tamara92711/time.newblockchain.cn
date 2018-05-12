@@ -1,0 +1,110 @@
+{extend name="/common/templates/tpl-w-sb"}
+{block name="page-title"}新增证书{/block}
+
+{block name="main-part"}
+<div style="height:896px">
+    <div class="qk-portlet" style="margin-top:1px;width: 940px;margin-left:-2px">
+        <div class="qk-portlet-title">
+            <img class="qk-portlet-title-icon" src="/assets/img/xiangzhuang-13.png" />
+            <span class="qk-portlet-title-text">专业等级证书</span>
+        </div>
+        <div class="qk-portlet-content form" style="height: 791px">
+            <form action="/index/data_management.professional_certificate/save" id="gradeForm" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="left">
+                        <label>证书编号：</label>
+                    </div>
+                    <div class="right">
+                        <input type="text" class="form-control" name="certificate_no" id="certificate_no"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="left">
+                        <label>证书名称：</label>
+                    </div>
+                    <div class="right">
+                        <input type="text" class="form-control" name="certificate_name" id="certificate_name"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="left">
+                        <label>专业等级：</label>
+                    </div>
+                    <div class="right">
+                        <div class="radio radio-danger" style="width: 106px;">
+                            <input type="radio" name="professional_level" id="chuji" value="1" checked="">
+                            <label for="chuji">
+                                初级
+                            </label>
+                        </div>
+                        <div class="radio radio-danger" style="width: 109px;">
+                            <input type="radio" name="professional_level" id="zhongji" value="2">
+                            <label for="zhongji">
+                                中级
+                            </label>
+                        </div>
+                        <div class="radio radio-danger" style="width: 70px;">
+                            <input type="radio" name="professional_level" id="gaoji" value="3">
+                            <label for="gaoji">
+                                高级
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" style="border-bottom: none;">
+                    <div class="left">
+                        <label>证书上传：</label>
+                    </div>
+                    <div class="right">
+                        <div id="image-preview-front" class="right add-picture" style="margin-right: 27px;">
+                            <input type="file" name="front-image" id="front-image" />
+                            <p>专业等级证书正面</p>
+                            <p>(点击上传)</p>
+                        </div>
+                        <div id="image-preview-back" class="right add-picture">
+                            <input type="file" name="back-image" id="back-image" />
+                            <p>专业等级证书背面</p>
+                            <p>(点击上传)</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn return">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/index/add_new_certificate.css">
+{/block}
+
+{block name="custom-js"}
+<script type="text/javascript" src="/assets/js/uploadpreview.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.uploadPreview({
+            input_field: "#front-image",
+            preview_box: "#image-preview-front",
+            label_selected: "Change File"
+        });
+        $.uploadPreview({
+            input_field: "#back-image",
+            preview_box: "#image-preview-back",
+            label_selected: "Change File"
+        });
+
+    });
+
+    // $('#image-preview-front').click(function () {
+    //     $("#image-preview-front p").html("");
+    //
+    // })
+    //
+    // $('#image-preview-back').click(function () {
+    //     $("#image-preview-back p").html("");
+    // })
+
+
+
+</script>
+{/block}

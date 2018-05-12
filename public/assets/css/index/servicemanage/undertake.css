@@ -1,0 +1,92 @@
+.cri-key {
+    font-size: 16px;
+    font-family: ms-yahei-bold;
+    color: black;
+    width: 85px;
+    text-align: left;
+}
+
+.data-container .qk-post-title-img {
+    margin-right: 9px;
+}
+
+.qk-portlet-title div.row {
+    height: 40px;
+}
+
+.qk-portlet-title div.row > label {
+    font-size: 16px;
+    margin: 0px;
+    padding: 0px;
+}
+.qk-portlet-title div.row #detailDemandTypes> label {
+
+    font-size: 16px;
+    margin: 0px 15px;
+    padding: 0px;
+}
+
+.qk-portlet-title div.row #demand_status> label {
+    font-size: 16px;
+    margin: 0px 15px;
+    padding: 0px;
+}
+
+.qk-portlet-title div.row #release_time> label {
+    font-size: 16px;
+    margin: 0px 15px;
+    padding: 0px;
+}
+
+.qk-portlet-title div.row #time_currency> label {
+    font-size: 16px;
+    margin: 0px 15px;
+    padding: 0px;
+}
+
+
+.qk-portlet-title div.row > label:nth-child(13) {
+    width: 100px;
+}
+
+.qk-portlet-title div.row > label:nth-child(5) {
+    width: 102px;
+}
+
+.qk-portlet-title div.row > label:nth-child(3) {
+    width: 55px;
+}
+
+.qk-portlet-title div.row > label:nth-child(7) {
+    width: 85px;
+}
+
+.qk-portlet-title div.row > label:nth-child(9) {
+    width: 100px;
+}
+
+.qk-portlet-title div.row > label:nth-child(11) {
+    width: 89px;
+}
+.qk-portlet-title div.row input[type='text'] {
+    width: 60px;
+    height: 30px;
+    border: 1px solid #ff5656;
+}
+.radio-inline__label {
+    text-align: center;
+}
+
+.radio-inline__input:checked + .radio-inline__label {
+    text-decoration:underline #ff5656;
+    color: #ff5656;
+    background-color: white;
+    font-family: ms-yahei-bold;
+}
+
+span.qk-post-title-text a {
+    text-decoration: none;
+    color: #ff5656;
+    font-family: ms-yahei-bold;
+    font-size: 16px;
+}

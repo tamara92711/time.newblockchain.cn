@@ -1,0 +1,106 @@
+.qk-portlet-title {
+    padding-left: 23px;
+    padding-top: 12px;
+}
+
+.qk-portlet-title-icon {
+    margin-right: 5px;
+}
+
+.modal-body .left {
+    float: left;
+    padding-left: 0px;
+    width: 100px;
+}
+
+.modal-body .right {
+    float: left;
+    width: 100px;
+}
+.left {
+    float: left;
+    padding-left: 35px;
+    width: 166px;
+}
+
+.left label {
+    color: #ff5656;
+}
+.right {
+    float:left;
+    width: 300px;
+}
+
+.right input {
+    width: 300px;
+    margin-top: -6px;
+    height: 36px;
+}
+
+.radio {
+    width: 50%;
+    float: left;
+}
+.right input[type="radio"] {
+    width:0px;
+    height:0px;
+}
+.right select {
+    width: 300px;
+    margin-top: -6px;
+    height: 36px;
+}
+.modal-body .form-group {
+    margin-left: 19px;
+    border-bottom: none;
+    padding-bottom: 30px;
+}
+.form-group {
+    clear: both;
+    margin-left: 21px;
+    padding-top: 21px;
+    width: 898px;
+    padding-bottom: 43px;
+    margin-bottom: 0px;
+    border-bottom: 1px dotted #d4d4d4;
+}
+
+.right .btn {
+    width: 140px;
+    height: 40px;
+    color: white;
+    font-size: 14px;
+}
+
+form div:nth-child(11),
+form div:nth-child(12) {
+    border-bottom: none;
+}
+
+.modal-body .form .form-group .right input {
+    height: 32px;
+    width: 280px;
+}
+.form-group .input-group {
+    width: 280px;
+}
+
+.modal-body .input-group-btn .btn {
+    width: 90px;
+    height: 32px;
+    margin-top: -6px;
+        border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.error{
+    color: #ff5656;
+    padding-left: 20px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}

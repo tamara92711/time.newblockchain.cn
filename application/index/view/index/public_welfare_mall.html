@@ -1,0 +1,284 @@
+{extend name="/common/templates/tpl-wo-sb"}
+
+{block name="page-title"}购买界面{/block}
+{block name="main"}
+<div style="overflow: hidden;">
+    <div class="search-header-container">
+        <div class="row" style="padding-top:16px;padding-left: 34px;">
+            <div class="cri-key" style="letter-spacing: 11px;">品    类：</div>
+            <input id="lx-1" class="radio-inline__input" type="radio" name="lx" value="0">
+            <label class="radio-inline__label" for="lx-1">
+                全部
+            </label>
+            <input id="lx-2" class="radio-inline__input" type="radio" name="lx" value="1">
+            <label class="radio-inline__label" for="lx-2">
+                家居用品
+            </label>
+            <input id="lx-3" class="radio-inline__input" type="radio" name="lx" value="2">
+            <label class="radio-inline__label" for="lx-3">
+                精选食品
+            </label>
+            <input id="lx-4" class="radio-inline__input" type="radio" name="lx" value="3">
+            <label class="radio-inline__label" for="lx-4">
+                健康护理
+            </label>
+            <input id="lx-5" class="radio-inline__input" type="radio" name="lx" value="4">
+            <label class="radio-inline__label" for="lx-5">
+                营养保健
+            </label>
+        </div>
+        <div class="row" style="padding-left: 34px;">
+            <div class="cri-key" style="letter-spacing: 3px;">时  间  币：</div>
+            <input id="zt-1" class="radio-inline__input" type="radio" name="zt" value="item-1">
+            <label class="radio-inline__label" for="zt-1">
+                全部
+            </label>
+            <input id="zt-2" class="radio-inline__input" type="radio" name="zt" value="item-1">
+            <label class="radio-inline__label" for="zt-2" style="padding-left: 14px;">
+                0-50
+            </label>
+            <input id="zt-3" class="radio-inline__input" type="radio" name="zt" value="item-1">
+            <label class="radio-inline__label" for="zt-3" style="padding-left: 25px;">
+                51-100
+            </label>
+            <input id="zt-4" class="radio-inline__input" type="radio" name="zt" value="item-1">
+            <label class="radio-inline__label" for="zt-4" style="padding-left: 6px;">
+                100-200
+            </label>
+            <input id="zt-5" class="radio-inline__input" type="radio" name="zt" value="item-1">
+            <label class="radio-inline__label" for="zt-5" style="padding-left: -14px;">
+                200以上
+            </label>
+        </div>
+        <div class="row" style="padding-left: 34px; padding-bottom: 13px;">
+            <div class="cri-key" style="letter-spacing: 3px;">关  键  字：</div>
+            <input type="text" class="form-control" id="search-key" style="float:left; width: 148px; height: 32px;margin-top: 5px;"/>
+            <button class="btn btn-search">查找</button>
+        </div>
+    </div>
+    <div class="table-header">
+        <div class="fl sorting">排序</div>
+        <label class="fl" id="total_sales" style="margin-top: -4px;padding: 16px 29px;font-size: 16px;position:relative;">销量
+            <div class="fa fa-sort-asc" style="position: absolute;margin-top: 3px;" id="sales_asc"></div>
+            <div class="fa fa-sort-desc" id="sales_desc"></div>
+        </label>
+        <label class="fl" id="time_coins" style="margin-top: -4px;padding: 16px 25px;font-size: 16px;">价格
+            <div class="fa fa-sort-asc" style="position: absolute;margin-top: 3px; color:#808080;" id="price_asc"></div>
+            <div class="fa fa-sort-desc" style="color:#808080;" id="price_desc"></div>
+        </label>
+        <label class="fl" id="comments" style="margin-top: -4px;padding: 16px 31px;font-size: 16px;">评论
+            <div class="fa fa-sort-asc" style="position: absolute;margin-top: 3px; color:#808080;" id="comments_asc"></div>
+            <div class="fa fa-sort-desc" style="color:#808080;" id="comments_desc"></div>
+        </label>
+    </div>
+    <!--onclick="sort('comments')"-->
+    <div class="data-container" style="margin-bottom: 36px;overflow: hidden;"></div>
+    <div id="pagination" class="fr" style="margin-bottom: 34px;"></div>
+
+</div>
+{/block}
+{block name="custom-css"}
+<link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/index/index/public_welfaremall.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="custom-js"}
+<script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
+<script src="/assets/jsondata/public_json.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        var data_json = JSON.parse(data);
+        $("#lx-1").attr("checked", true);
+        $("#zt-1").attr("checked", true);
+        $(".btn-search").click(function () {
+            var product_type = $("input[name='lx']:checked").val();
+            var time_money = $("input[name='zt']:checked").val();
+            var key = $("#search-key").val();
+            $.ajax({
+                method:"GET",
+            })
+        });
+        build_pagination(data_json);
+    });
+
+    function build_pagination(data_json)
+    {
+        var container = $('#pagination');
+        var tempData=[];
+        for(var i=0;i<data_json.items.length;i+=4)
+        {
+            var exItem=[];
+            exItem[0] = data_json.items[i];
+            exItem[1] = data_json.items[i+1];
+            exItem[2] = data_json.items[i+2];
+            exItem[3] = data_json.items[i+3];
+
+            tempData[i / 4] = exItem;
+        }
+
+        $.extend($.fn.pagination.defaults, {
+            pageSize: 4
+        })
+        var options = {
+            dataSource: tempData,
+            callback: function (response, pagination) {
+
+                var dataHtml = '';
+                $.each(response, function (index, item) {
+
+                    dataHtml += '<div class="col">\n' +
+                        '        <img src="'+item[0].img_src+'" width="266px" height="267px"/>\n' +
+                        '        <div class="contents">\n' +
+                        '            <p>\n' +
+                        '                <span>总销量：'+item[0].total_sales+'</span>\n' +
+                        '                <span style="float: right;">累计评论：'+item[0].comments+'</span>\n' +
+                        '            </p>\n' +
+                        '            <p>'+item[0].description+'</p>\n' +
+                        '            <p>\n' +
+                        '                <span>时间币：</span><span style="font-family: ms-yahei-bold;font-size: 16px;color: #ff5656">'+item[0].time_coins+'</span>\n' +
+                        '                <span style="float: right;">库存：'+item[0].stock+'</span>\n' +
+                        '            </p>\n' +
+                        '            <div class="actions">\n' +
+                        '                <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>\n' +
+                        '                <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>';
+                    if(item[1] != null)
+                        dataHtml+='    <div class="col">\n' +
+                            '        <img src="'+item[1].img_src+'" width="266px" height="267px"/>\n' +
+                            '        <div class="contents">\n' +
+                            '            <p>\n' +
+                            '                <span>总销量：'+item[1].total_sales+'</span>\n' +
+                            '                <span style="float: right;">累计评论：'+item[1].comments+'</span>\n' +
+                            '            </p>\n' +
+                            '             <p>'+item[1].description+'</p>\n' +
+                            '            <p>\n' +
+                            '                <span>时间币：</span><span style="font-family: ms-yahei-bold;font-size: 16px;color: #ff5656">100.00</span>\n' +
+                            '                <span style="float: right;">库存：'+item[1].stock+'</span>\n' +
+                            '            </p>\n' +
+                            '            <div class="actions">\n' +
+                            '                <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>\n' +
+                            '                <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '    </div>';
+
+                    if(item[2] != null)
+                        dataHtml+='    <div class="col">\n' +
+                            '        <img src="'+item[2].img_src+'" width="266px" height="267px"/>\n' +
+                            '        <div class="contents">\n' +
+                            '            <p>\n' +
+                            '                <span>总销量：'+item[2].total_sales+'</span>\n' +
+                            '                <span style="float: right;">累计评论：'+item[2].comments+'</span>\n' +
+                            '            </p>\n' +
+                            '             <p>'+item[2].description+'</p>\n' +
+                            '\n' +
+                            '            <p>\n' +
+                            '                <span>时间币：</span><span style="font-family: ms-yahei-bold;font-size: 16px;color: #ff5656">100.00</span>\n' +
+                            '                <span style="float: right;">库存：'+item[2].stock+'</span>\n' +
+                            '            </p>\n' +
+                            '            <div class="actions">\n' +
+                            '                <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>\n' +
+                            '                <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '    </div>';
+
+                    if(item[3] != null)
+                        dataHtml+='<div class="col" style="margin-right: 0px;">\n' +
+                            '        <img src="'+item[3].img_src+'" width="266px" height="267px"/>\n' +
+                            '        <div class="contents">\n' +
+                            '            <p>\n' +
+                            '                <span>总销量：'+item[3].total_sales+'</span>\n' +
+                            '                <span style="float: right;">累计评论：'+item[2].comments+'</span>\n' +
+                            '            </p>\n' +
+                            '             <p>'+item[3].description+'</p>\n' +
+                            '            <p>\n' +
+                            '                <span>时间币：</span><span style="font-family: ms-yahei-bold;font-size: 16px;color: #ff5656">100.00</span>\n' +
+                            '                <span style="float: right;">库存：'+item[3].stock+'</span>\n' +
+                            '            </p>\n' +
+                            '            <div class="actions">\n' +
+                            '                <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>\n' +
+                            '                <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '            </div>\n' +
+                            '        </div>\n' +
+                            '    </div>';
+                });
+                container.prev().html(dataHtml);
+            }
+        };
+
+
+        container.pagination(options);
+    }
+//json array sort function
+    function sortByKey(array, key,sortmethod) {
+        if(sortmethod == 'asc')
+        {
+            return array.sort(function(a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+        }
+        else if (sortmethod == 'desc')
+        {
+            return array.sort(function(a, b) {
+                var x = a[key]; var y = b[key];
+                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+            });
+        }
+
+    }
+
+    function sort(param,sortMethod){
+        var data_json = JSON.parse(data);
+
+        if (sortMethod == 'asc')
+        {
+            if (param == 'total_sales')
+                data_json.items = sortByKey(data_json.items,'total_sales','asc');
+            else if (param == 'time_coins')
+                data_json.items = sortByKey(data_json.items,'time_coins','asc');
+            else if (param == 'comments')
+                data_json.items = sortByKey(data_json.items,'comments','asc');
+        }
+        else if (sortMethod == 'desc')
+        {
+            if (param == 'total_sales')
+                data_json.items = sortByKey(data_json.items,'total_sales','desc');
+            else if (param == 'time_coins')
+                data_json.items = sortByKey(data_json.items,'time_coins','desc');
+            else if (param == 'comments')
+                data_json.items = sortByKey(data_json.items,'comments','desc');
+        }
+        build_pagination(data_json);
+    }
+
+    var clicked = true;
+    $(".table-header label").click(function () {
+        var valueElement = $('#'+$(this).attr('id'));
+
+        var idStr = valueElement.attr('id');
+        //initialize
+        $(".table-header label").css("color","#808080");
+        $(".table-header .fa-sort-asc").css("color","#808080");
+        $(".table-header .fa-sort-desc").css("color","#808080");
+
+        valueElement.css("color","#ff5656");
+
+        if(clicked)
+        {
+            $("#"+idStr+" .fa-sort-desc").css("color", "#808080");
+            $("#"+idStr+" .fa-sort-asc").css("color","#ff5656");
+            sort(idStr,'asc');
+            clicked = false;
+        }else
+        {
+            $("#"+idStr+" .fa-sort-desc").css("color", "#ff5656");
+            $("#"+idStr+" .fa-sort-asc").css("color", "#808080");
+            sort(idStr,'desc');
+            clicked = true;
+        }
+    })
+</script>
+{/block}

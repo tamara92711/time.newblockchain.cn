@@ -1,0 +1,101 @@
+{extend name="/common/templates/tpl-w-sb"}
+{block name="page-title"}时间币充值{/block}
+
+{block name="main-part"}
+<div id="shijianbi">
+        <div class="row">
+            <div class="qk-portlet" style="margin-top:1px;width: 940px;margin-left:-2px">
+                <div class="qk-portlet-title">
+                    <img class="qk-portlet-title-icon" src="/assets/img/juxing-6.png">
+                    <span class="qk-portlet-title-text">时间币充值</span>
+                </div>
+                <div class="qk-portlet-content">
+                    <form role="form">
+                        <div class="form-group">
+                            <div class="left">
+                                <label>现有数量：</label>
+                            </div>
+                            <div class="right">
+                                <span class="numbers" id="total_amount">{$total_amount}</span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="padding-bottom: 21px;">
+                            <div class="left">
+                                <label>购买数量：</label>
+                            </div>
+                            <div class="right">
+                                <input type="text" class="form-control" id="amount_to_buy" style="width: 332px;">
+                            </div>
+                            <span class="required" style="padding-left: 10px; color:#ff7474;"> *比例为1：1 </span>
+                        </div>
+                        <div class="form-group" style="border: 0px;">
+                            <div class="left">
+                                <label>支付方式：</label>
+                            </div>
+                            <div class="right">
+                            <?php foreach($payment_methods as $key=>$payment_method){?>
+                                <div class="payment_types">
+                                    <input id="payment_method_{$key}" class="radio-inline__input" type="radio" name="payment_method" value="{$key}">
+                                    <label class="radio-inline__label" for="payment_method_{$key}">
+                                        <img src="{$payment_method['image_url']}" style="padding-right: 17px;"/>{$payment_method['type_name']}
+                                    </label>
+                                    <img class="tick-img" src="/assets/img/corner-tick.png">
+                                </div>
+                            <?php }?>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn sure_to_buy" onclick="submit_charge()">确定购买</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+{block name="custom-css"}
+<link href="/assets/css/index/timemoney/buy.css" rel="stylesheet" type="text/css" />
+{/block}
+{block name="custom-js"}
+<script>
+    jQuery(document).ready(function () {
+    /*    $(".sure_to_buy").click(function() {
+            var amount = $("#amount_to_buy").val();
+            $.ajax({
+                url:"/index/time_money/confirmbuy/",
+                method:"POST",
+                data: {amount:amount},
+                success: function(response) {
+                    $("#total_amount").text(response);
+                }
+            })
+        });*/
+    });
+
+    function submit_charge()
+    {
+        var pay_method = $('input[name="payment_method"]:checked').val();
+        var amount = $("#amount_to_buy").val();
+        
+        if ( pay_method == "" || amount == "")
+            return;
+
+        var form = $("<form method='post'></form>");
+        form.attr({ "action": '/charge_coin' });
+        var input1 = $("<input type='hidden'>");
+        input1.attr("name", 'pay_type');
+        input1.val(pay_method);
+        form.append(input1);
+        var input2 = $("<input type='hidden'>");
+        input2.attr("name", 'amount');
+        input2.val(amount);
+        form.append(input2);
+        $(document.body).append(form);
+        form.submit();
+
+    }
+
+</script>
+{/block}
+

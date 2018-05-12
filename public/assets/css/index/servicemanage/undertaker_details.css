@@ -1,0 +1,8 @@
+.qk-portlet-content > table > thead > tr > th {
+    padding-bottom:15px;
+}
+
+.qk-portlet-content > table > tbody > tr > td {
+    padding-top: 10px;
+    padding-bottom: 9px;
+}
