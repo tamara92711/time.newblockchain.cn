@@ -275,7 +275,7 @@ class App implements \ArrayAccess
             if (is_file($path . 'middleware.php')) {
                 $middleware = include $path . 'middleware.php';
                 if (is_array($middleware)) {
-                    $this->middleware->import($middleware);
+                    //$this->middleware->import($middleware);
                 }
             }
 
