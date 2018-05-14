@@ -15,6 +15,8 @@ class RecruitmentInformationController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'article');
+        $this->assign('sub_nav', 'article_recruitment');
         return $this->fetch();
     }
 

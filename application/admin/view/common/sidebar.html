@@ -16,14 +16,14 @@
     </li>
     <!-- END SIDEBAR TOGGLER BUTTON -->
 
-    <li class="nav-item start ">
+    <li class="nav-item start {eq name="root_nav" value="main"} active{/eq}">
         <a href="/admin/main" class="nav-link nav-toggle">
             <i class="icon-home"></i>
             <span class="title">基本设置
             </span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="article"} active open{/eq} ">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-diamond"></i>
             <span class="title">文章管理
@@ -31,26 +31,26 @@
             <span class="arrow"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
-                <a href="/admin/article.types" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_types"} active{/eq}">
+                <a href="/admin/article.types" class="nav-link">
                     <span class="title">文章分类
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.index" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_index"} active{/eq}">
+                <a href="/admin/article.index" class="nav-link">
                     <span class="title">文章管理
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.local_institutions" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_local"} active{/eq}">
+                <a href="/admin/article.local_institutions" class="nav-link">
                     <span class="title">各地机构
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.recruitment_information" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_recruitment"} active{/eq}">
+                <a href="/admin/article.recruitment_information" class="nav-link">
                     <span class="title">招聘信息
                     </span>
                 </a>

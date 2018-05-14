@@ -20,6 +20,8 @@ class IndexController extends Controller
         $article_types1 = ArticleTypeModel::where('is_deleted', 0)->column(['id', 'name']);
         $this->assign('article_types', $article_types);
         $this->assign('article_types1', json_encode($article_types1));
+        $this->assign('root_nav', 'article');
+        $this->assign('sub_nav', 'article_index');
         return $this->fetch();
         // return json_encode($article_types1);
     }

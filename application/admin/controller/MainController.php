@@ -14,7 +14,7 @@ class MainController extends Controller
      */
     public function index()
     {
-        
+        $this->assign('root_nav', 'main');
         return $this->fetch();
     }
 
