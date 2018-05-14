@@ -47,12 +47,10 @@
                         else return "<span class='label label-danger'>否</span>";
                     }
                 },
-                { "data": "lat" },
-                { "data": "lng" },
                 {
                     "data": "id",
                     "render": function (id) {
-                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i> 编辑</button><button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i> 删除</button>";
+                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i></button><button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i></button>";
                     }
                 }
             ],
@@ -169,8 +167,6 @@
                 <th>联系电话</th>
                 <th>公司地址</th>
                 <th>显示</th>
-                <th>纬度</th>
-                <th>经度</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -220,24 +216,6 @@
                         </div>
                         <div class="col-md-9">
                             <input type="text" name="address" id="address" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label for="latitude">纬度：</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" name="latitude" id="latitude" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-md-3">
-                            <label for="longtitude">经度：</label>
-                        </div>
-                        <div class="col-md-9">
-                            <input type="text" name="longtitude" id="longtitude" class="form-control" />
                         </div>
                     </div>
                 </div>

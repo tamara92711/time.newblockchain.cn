@@ -44,8 +44,6 @@ class LocalInstitutionsController extends Controller
         $institution->phone = $request->param('phone');
         $institution->is_deleted = 0;
         $institution->address = $request->param('address');
-        $institution->lat = $request->param('latitude');
-        $institution->lng = $request->param('longtitude');  
         $institution->save();   
     }
 
@@ -93,8 +91,6 @@ class LocalInstitutionsController extends Controller
         $institution->phone = $request->param('phone');
         $institution->is_deleted = 0;
         $institution->address = $request->param('address');
-        $institution->lat = $request->param('latitude');
-        $institution->lng = $request->param('longtitude');  
         $institution->save();   
     }
 

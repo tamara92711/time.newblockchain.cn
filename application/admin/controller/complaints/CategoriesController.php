@@ -15,6 +15,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'complaints');
+        $this->assign('sub_nav', 'complaints_categories');
         return $this->fetch();
     }
 

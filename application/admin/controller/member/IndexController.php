@@ -19,6 +19,21 @@ class IndexController extends Controller
      */
     public function index()
     {
+        $root_regions = RegionModel::where('level', 1)->column('name', 'id');
+        $this->assign('regions', $root_regions);
+        $this->assign('regions1', json_encode($root_regions));
+
+        $job_types = JobTypeModel::all()->column('name', 'id');
+        $this->assign('job_types', $job_types);
+        $this->assign('job_types1', json_encode($job_types));
+
+        $edu_types = EducationTypeModel::all()->column('name', 'id');
+        $this->assign('edu_types', $edu_types);
+        $this->assign('edu_types1', json_encode($edu_types));
+
+
+        $this->assign('root_nav', 'member');
+        $this->assign('sub_nav', 'member_index');
         return $this->fetch();
     }
 
@@ -64,8 +79,7 @@ class IndexController extends Controller
     {
         if ($id == 0)
         {
-            $result = UserModel::where('is_deleted', 0)->select();
-            $result = $result->toArray();
+            $result = UserModel::all()->toArray();
             return json_encode(["data" => $result]);
         }
         $data = UserModel::get($id);

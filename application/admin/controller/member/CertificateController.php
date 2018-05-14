@@ -5,6 +5,7 @@ namespace app\admin\controller\member;
 use think\Controller;
 use think\Request;
 use app\common\model\UserModel;
+use app\common\model\RegionModel;
 use app\common\model\ProfessionalCertificateModel;
 
 class CertificateController extends Controller
@@ -16,6 +17,8 @@ class CertificateController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'member');
+        $this->assign('sub_nav', 'member_certificate');
         return $this->fetch();
     }
 
