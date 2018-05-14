@@ -15,6 +15,8 @@ class VolunteersController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'volunteers');
+        $this->assign('sub_nav', '');
         return $this->fetch();
     }
 

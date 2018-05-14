@@ -16,6 +16,8 @@ class TypesController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'article');
+        $this->assign('sub_nav', 'article_types');
         return $this->fetch();
     }
 

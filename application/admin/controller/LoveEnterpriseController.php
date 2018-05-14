@@ -15,6 +15,8 @@ class LoveEnterpriseController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'love_enterprise');
+        $this->assign('sub_nav', '');
         return $this->fetch();
     }
 

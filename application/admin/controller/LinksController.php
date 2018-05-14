@@ -15,7 +15,8 @@ class LinksController extends Controller
      */
     public function index()
     {
-        
+        $this->assign('root_nav', 'links');
+        $this->assign('sub_nav', '');
         return $this->fetch();
     }
 

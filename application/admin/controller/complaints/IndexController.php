@@ -17,6 +17,8 @@ class IndexController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'complaints');
+        $this->assign('sub_nav', 'complaints_index');
         $complaint_types = ComplaintTypeModel::where('is_deleted', 0)->column(['id', 'name']);
         $this->assign("complaint_types", $complaint_types);
         return $this->fetch();

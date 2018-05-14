@@ -28,6 +28,9 @@ class IndexController extends Controller
         $this->assign('demand_root_types', $demand_root_types);
         $this->assign('root_regions', $root_regions);
         $this->assign('state', $demand_status);
+
+        $this->assign('root_nav', 'project_nav');
+        $this->assign('sub_nav', 'project_index');
         return $this->fetch();
     }
 

@@ -20,6 +20,9 @@ class IndexController extends Controller
         $news_types1 = NewsTypeModel::where('is_deleted', 0)->column(['id', 'name']);
         $this->assign('news_types', $news_types);
         $this->assign('news_types1', json_encode($news_types1));
+
+        $this->assign('root_nav', 'news');
+        $this->assign('sub_nav', 'news_index');
         return $this->fetch();
     }
 

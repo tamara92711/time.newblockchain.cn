@@ -15,6 +15,8 @@ class CharitableOrganizationsController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'charitable_organizations');
+        $this->assign('sub_nav', '');
         return $this->fetch();
     }
 
