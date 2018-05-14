@@ -20,6 +20,7 @@ class IndexController extends Controller
     public function index()
     {
         $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 

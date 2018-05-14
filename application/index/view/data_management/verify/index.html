@@ -1,12 +1,5 @@
-{extend name="/common/templates/tpl-w-sb"}
-{block name="page-title"}实名认证{/block}
-
-{block name="custom-css"}
-<link rel="stylesheet" href="/assets/css/index/index/real-name-veri.css">
-
-{/block}
-
-{block name="main-part"}
+{extend name="/common/templates/tpl-w-sb"} {block name="page-title"}实名认证{/block} {block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/index/real-name-veri.css"> {/block} {block name="main-part"}
 <div>
     <div class="qk-portlet" style="margin-top:1px;width: 940px;margin-left:-2px">
         <div class="qk-portlet-title">
@@ -18,38 +11,40 @@
                 <div>
                     <div style="float:left;width:675px">
                         <div class="form-group" style="width:652px">
-                            <div class="left"><label>姓名：</label></div>
+                            <div class="left">
+                                <label>姓名：</label>
+                            </div>
                             <div class="right">
-                                <input type="text" class="form-control" name="name" id="name"/>
+                                <input type="text" class="form-control" name="name" id="name" />
                             </div>
                             <!--<label class="error" for="name" id="name_error">这是必填栏。</label>-->
                         </div>
                         <div class="form-group" style="width:652px">
-                            <div class="left"><label>身份证号码：</label></div>
+                            <div class="left">
+                                <label>身份证号码：</label>
+                            </div>
                             <div class="right">
-                                <input type="text" class="form-control" name="iden_number" id="iden_number"/>
+                                <input type="text" class="form-control" name="iden_number" id="iden_number" />
                             </div>
                             <!--<label class="error" for="iden_number" id="iden_number_error">这是必填栏。</label>-->
                         </div>
                         <div class="form-group" style="height: 148px;width:652px">
-                            <div class="left"><label>身份证正面：</label></div>
+                            <div class="left">
+                                <label>身份证正面：</label>
+                            </div>
                             <div id="image-preview-positive" class="right add-picture">
                                 <input type="file" name="positive_id" id="positive_id" />
                             </div>
                         </div>
                     </div>
                     <div class="add-avatar">
-                        <video id="video" style="width: 220px;height: 240px;border: 1px solid #ff5656;" autoplay></video>
-                        <!--<div style="width: 220px;height: 240px;border: 1px solid #ff5656;background:url('/assets/img/plus.png') no-repeat;background-position:center 65px;">
-                            <video id="video" width="640" height="480" autoplay></video>
-                            <p style="margin-top: 138px;margin-left: 67px;">添加会员头像</p>
-                            <p style="    margin-top: -24px;margin-left: 69px;">(摄像头拍摄)</p>
-                        </div>-->
                     </div>
                 </div>
 
                 <div class="form-group" style="height: 148px">
-                    <div class="left"><label>身份证反面：</label></div>
+                    <div class="left">
+                        <label>身份证反面：</label>
+                    </div>
                     <div id="image-preview-negative" class="right add-picture">
                         <input type="file" name="negative_id" id="negative_id" />
                     </div>
@@ -58,7 +53,9 @@
 
 
                 <div class="form-group" style="height: 147px;border-bottom:none">
-                    <div class="left"><label>手持身份证：</label></div>
+                    <div class="left">
+                        <label>手持身份证：</label>
+                    </div>
                     <div id="image-preview-handheld" class="right add-picture">
                         <input type="file" name="handheld_id" id="handheld_id" />
                     </div>
@@ -67,28 +64,64 @@
                 <div class="form-group" style="border-bottom:none">
                     <div class="left" style="height:1px"></div>
                     <div class="right">
-                        <button class="btn" style="background-color: #ff5656;width: 180px;margin-top: -9px;height: 40px;color: white;font-size:14px;font-family:ms-yahei-bold">提交</button>
+                        <button class="btn" style="background-color: #ff5656;width: 180px;margin-top: -9px;height: 40px;color: white;font-size:14px;font-family:ms-yahei-bold" id="confirm">提交</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 </div>
-{/block}
-{block name="custom-js"}
+{/block} {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/uploadpreview.min.js"></script>
 <script>
-    var video = document.getElementById('video');
+    $(document).ready(function () {       
+        var video, $output;
+        var scale = 0.25;
+        var is_captured = false;
 
-        // Get access to the camera!
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-                video.src = window.URL.createObjectURL(stream);
-                video.play();
+        var initialize = function () {
+            $output = $("#output");
+            displayVideo();
+            $(".add-avatar").click(function () {
+                if (is_captured)
+                {
+                    is_captured = false;
+                    displayVideo();
+                }
+                else{
+                    is_captured = true;
+                    captureImage();
+                }
             });
+        };
+        
+        var displayVideo = function() {
+            var html = '<video id="video" style="width: 220px;height: 240px;border: 1px solid #ff5656;" autoplay></video>';
+            $(".add-avatar").html(html);
+            video = $("#video").get(0);
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Not adding `{ audio: true }` since we only want video now
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                    video.src = window.URL.createObjectURL(stream);
+                    video.play();
+                });
+            }
         }
-    $(document).ready(function () {
+        var captureImage = function () {
+            var canvas = document.createElement("canvas");
+            canvas.width = 220;
+            canvas.height = 240;
+            canvas.getContext('2d')
+                .drawImage(video, 0, 0, canvas.width, canvas.height);
+            var html = '<img id="captured-image" />';
+            html += '<input type="hidden" id="avatar_image" name="avatar_image">';
+            $(".add-avatar").html(html)
+            $("#captured-image").attr('src', canvas.toDataURL());
+            $("#avatar_image").val(canvas.toDataURL());
+        };
+
+        $(initialize);           
+
         $.uploadPreview({
             input_field: "#positive_id",
             preview_box: "#image-preview-positive",
@@ -106,32 +139,37 @@
             preview_box: "#image-preview-handheld",
             label_selected: "Change File"
         });
-    });
 
-    // function validation()
-    // {
-    //     $('.error').hide();
-    //     var name = $("input#name").val();
-    //     console.log(name);
-    //     if (name == "") {
-    //         $("label#name_error").show();
-    //         $("input#name").focus();
-    //         return false;
-    //     }
-    //     var iden_number = $("input#iden_number").val();
-    //     if (iden_number == "") {
-    //         $("label#iden_number_error").show();
-    //         $("input#iden_number").focus();
-    //         return false;
-    //     }
-    // }
-    //
-    // $("#verifyForm").submit(function (e) {
-    //     // e.preventDefault();
-    //     validation();
-    //     var formData = $(this).serialize();
-    //     $.post("/index/data_management.verify/save",formData);
-    //
-    // })
-</script>
-{/block}
+        $("#verifyForm").submit(function () {
+            if ($("#name").val() == "") {
+                alert("你应该添加“姓名”！");
+                return false;
+            }
+
+            if ($("#iden_number").val() == "") {
+                alert("你应该添加“身份证号码”！");
+                return false;
+            }
+
+            if ($("#positive_id").val() == "") {
+                alert("你应该添“加身份证正面”！");
+                return false;
+            }
+
+            if ($("#negative_id").val() == "") {
+                alert("你应该添加“身份证反面”！");
+                return false;
+            }
+
+            if ($("#handheld_id").val() == "") {
+                alert("你应该添加“手持身份证”！");
+                return false;
+            }
+
+            if ($("#captured-image").length == 0) {
+                alert("你应该拍照“头像”！")
+                return false;
+            }
+        });
+    });
+</script> {/block}

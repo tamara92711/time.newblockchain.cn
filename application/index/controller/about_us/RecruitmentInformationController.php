@@ -19,6 +19,7 @@ class RecruitmentInformationController extends Controller
         $job_offers = RecruitmentModel::all()->toArray();
         $this->assign('job_offers', $job_offers);
         $this->assign('header_nav', 'about_us');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'recruitment_information');
         return $this->fetch();
     }

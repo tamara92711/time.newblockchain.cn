@@ -18,6 +18,7 @@ class PersonalInformationController extends Controller
     public function index()
     {
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'personal_info');
         $user_data = UserModel::getAlluserInformation();
         $this->assign('user_data',$user_data);

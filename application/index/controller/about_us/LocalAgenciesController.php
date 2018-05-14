@@ -19,6 +19,7 @@ class LocalAgenciesController extends Controller
         $this->assign('institutions', $institutions);
         $this->assign('header_nav', 'about_us');
         $this->assign('side_nav', 'local_agencies');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 

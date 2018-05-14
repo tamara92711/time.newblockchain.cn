@@ -27,6 +27,7 @@ class ShowUndertakenController extends Controller
 
         $this->assign('side_nav', 'project_applied');
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
 
         return $this->fetch();
     }

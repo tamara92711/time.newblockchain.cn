@@ -19,6 +19,7 @@ class ComplaintsController extends Controller
         $complaint_type = Db::table('qkl_complaint_types')->field('id,type')->select();
         $this->assign('complaint_type',$complaint_type);
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 0);
         $this->assign('side_nav', 'complaints');
         return $this->fetch();
     }

@@ -17,6 +17,7 @@ class NewsCenterController extends Controller
     public function index()
     {
         $this->assign('header_nav', 'news_center');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
