@@ -118,6 +118,10 @@ class UserController extends Controller
             $user_id = $user_record->update_user($user_id, $input);
             return redirect('/login_form');
         }
+        else 
+        {
+            return redirect('/register_form');
+        }
     }
 
     public function sign_out()
@@ -157,20 +161,20 @@ class UserController extends Controller
         $resp = $this->httpRequest($url,'POST',$post_string);
         $resp = json_decode($resp);
 
-        //短信发送成功返回True，失败返回false
-        //if (!$resp)
-        // if ($resp && $resp->code=='0')   // if($resp->result->success == true)
-        // {
-        //     // 从数据库中查询是否有验证码
-        //     $data = M('sms_log')->where("code = '$code' and add_time > ".(time() - 60*60))->find();
-        //     // 没有就插入验证码,供验证用
-        //     empty($data) && M('sms_log')->add(array('mobile' => $mobile, 'code' => $code, 'add_time' => time(), 'session_id' => SESSION_ID));
-        //     return true;
-        // }
-        // else
-        // {
-        //     return false;
-        // }
+        // 短信发送成功返回True，失败返回false
+        // if (!$resp)
+        if ($resp && $resp->code=='0')   // if($resp->result->success == true)
+        {
+            // 从数据库中查询是否有验证码
+            // $data = M('sms_log')->where("code = '$code' and add_time > ".(time() - 60*60))->find();
+            // 没有就插入验证码,供验证用
+            // empty($data) && M('sms_log')->add(array('mobile' => $mobile, 'code' => $code, 'add_time' => time(), 'session_id' => SESSION_ID));
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public function httpRequest($url, $method, $postfields = null, $headers = array(), $debug = false) {
