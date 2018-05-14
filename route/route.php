@@ -129,6 +129,8 @@ Route::resource('index/index/volunteer_grace','@index/index/volunteer_grace');
 
 Route::resource('index/index/news_center','@index/index/news_center');
 
+Route::get('/membercenter','index/index/membercenter')->middleware('AuthMiddleware');
+
 Route::resource('index/service_management/release_requirement','@index/service_management/release_requirement');
 
 Route::get('/publish_demand', '/index/service_management.release_requirement')->middleware('AuthMiddleware');

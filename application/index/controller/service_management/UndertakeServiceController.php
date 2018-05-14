@@ -31,6 +31,7 @@ class UndertakeServiceController extends Controller
         $this->assign("demand_status",$demand_status);
         $this->assign("release_time",$release_time);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_apply');
 
        return $this->fetch();

@@ -26,6 +26,7 @@ class UserController extends Controller
     public function login_form() 
     {
         $this->assign('header_nav', '');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
@@ -35,6 +36,7 @@ class UserController extends Controller
 
         $this->assign('region_level_1', $regions_level_1);
         $this->assign('header_nav', '');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 

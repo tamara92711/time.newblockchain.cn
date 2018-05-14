@@ -17,6 +17,7 @@ class VerifyController extends Controller
     {
         $this->assign('side_nav', 'real_name_verify');
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
@@ -39,7 +40,8 @@ class VerifyController extends Controller
     public function save(Request $request)
     {
         $link = new RealNameVerifyModel();
-        $link->real_name = $request->param('name');
+        $link->user_id = session("user_id");
+        $link->user_name = $request->param('name');
         $link->id_card_number = $request->param('iden_number');
 
         if (!empty($request->file('positive_id')))
@@ -56,9 +58,24 @@ class VerifyController extends Controller
         }
         if (!empty($request->file('handheld_id')))
         {
-            $logo_image = $request->file('handheld_id');
-            $info = $logo_image->move('./uploads/');
+            $image = $request->file('handheld_id');
+            $info = $image->move('./uploads/');
             $link->card_handled_image = $info->getSaveName();
+        }
+        if (!empty($request->post('avatar_image')))
+        {
+            $data = $request->post('avatar_image');
+
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+            $avatar_path = './uploads/avarta/' . time() . '.png';
+            
+            file_put_contents($avatar_path, $data);
+            $link->avarta_image = $avatar_path;
+            // $image = $request->file('handheld_id');
+            // $info = $image->move('./uploads/');
+            // $link->avarta_image = $info->getSaveName();
         }
         $link->save();
         return redirect('/index/data_management.verify');

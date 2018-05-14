@@ -16,6 +16,7 @@ class IndexController extends Controller
     {
         $this->assign('header_nav', 'about_us');
         $this->assign('side_nav', 'about_us');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 

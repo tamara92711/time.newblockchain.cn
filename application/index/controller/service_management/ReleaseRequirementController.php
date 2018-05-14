@@ -37,6 +37,7 @@ class ReleaseRequirementController extends Controller
         $this->assign('jsonData', $jsonData);
         $this->assign('region_level_1', $regions_level_1);
         $this->assign('header_nav', 'project_publish');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_publish');
         return $this->fetch();
     }

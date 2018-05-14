@@ -44,7 +44,7 @@ class IndexController extends Controller
         $this->assign("news", $news);
         $this->assign("organizations", $organizations);
         $this->assign("header_nav", "home");
-        $this->assign("header_nav", "home");
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
@@ -65,6 +65,10 @@ class IndexController extends Controller
 
     public function memberCenter() //05会员中心
     {
+        $this->assign("header_nav", "personal_home");
+        $this->assign("nav_type", 1);
+        $this->assign("side_nav", "");
+        $this->assign("nav_type", 0);
         return $this->fetch();
     }
 
@@ -135,6 +139,10 @@ class IndexController extends Controller
 
     public function message()  //40消息 message
     {
+        $this->assign("header_nav", "message");
+        $this->assign("nav_type", 1);
+        $this->assign("side_nav", "");
+        $this->assign("nav_type", 0);
         return $this->fetch();
     }
 

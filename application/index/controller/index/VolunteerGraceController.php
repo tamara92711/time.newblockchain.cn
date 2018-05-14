@@ -17,7 +17,7 @@ class VolunteerGraceController extends Controller
     public function index()
     {
         $this->assign('header_nav', 'volunteers');
-
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
