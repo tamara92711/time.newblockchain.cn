@@ -21,6 +21,7 @@ class MyCollectionController extends Controller
     {
         //
         $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 0);
         $this->assign('side_nav', '');
         $this->assign('products',CartModel::alias('cart')->where(['state'=>1,'user_id'=>session('user_id')])->join('qkl_product','qkl_product.id = cart.product_id')->select());
         return $this->fetch();
@@ -29,6 +30,7 @@ class MyCollectionController extends Controller
     public function order_view()
     {
         $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', '');
         $this->assign('products',CartModel::alias('cart')->where(['state'=>3,'user_id'=>session('user_id')])->join('qkl_product','qkl_product.id = cart.product_id')->select());
         return $this->fetch();
@@ -43,6 +45,7 @@ class MyCollectionController extends Controller
        // }
 
         $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', '');
         $address_model = new AddressModel();
         $address_data = $address_model->getAddressList(session('user_id'));
@@ -82,6 +85,7 @@ class MyCollectionController extends Controller
     public function published_orders_view()
     {
         $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 0);
         $this->assign('side_nav', 'orders');
         $this->assign('orders',OrdersModel::alias('order')->field('order.*,qkl_address.name as person_name, qkl_product.thumbnail,qkl_product.description')->where(['order.user_id'=>session('user_id')])->join('qkl_product','qkl_product.id = order.product_id')->join('qkl_address','qkl_address.id = order.contact_id')->select());
         return $this->fetch();

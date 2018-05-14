@@ -17,6 +17,7 @@ class ProfessionalCertificateController extends Controller
     {
         $this->assign('side_nav', 'certification');
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
@@ -28,6 +29,7 @@ class ProfessionalCertificateController extends Controller
     public function create()
     {
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'certification');
         return $this->fetch();
     }

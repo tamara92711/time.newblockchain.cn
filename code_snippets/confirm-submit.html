@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <form id="form_id" action="http://google.ca">
+        <input type="submit" value="text 1" />
+    </form>
+</body>
+<script>
+    $("#form_id").submit(function () {
+        if ($("input[type='submit']").val() == "text 1") {
+            alert("Please confirm if everything is correct");
+            $("input[type='submit']").val("text 2");
+            return false;
+        }
+    });
+</script>
+
+</html>
