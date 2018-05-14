@@ -95,6 +95,7 @@
         $("#region").val(1);
         $("#region").change();
     });
+    
     function create_phone_verify_code() {
         if ($("#mobile").val() == "") {
             alert("input your phone number");
@@ -104,7 +105,7 @@
         $.ajax({
             url: "create_phone_verify_code",
             method: "post",
-            data: "phone_number=" + $("#mobile").val(),
+            data: {phone_number: $("#mobile").val()},
             success: function (result) {
                 if(result == "error") {
                     alert("this phone is already registered");
