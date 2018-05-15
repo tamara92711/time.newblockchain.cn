@@ -26,8 +26,14 @@ class LocalAgenciesController extends Controller
     public function getInstitutions()
     {
         $search_key = request()->param('search_key');
-        $institutions = LocalInstitutionModel::where('name', 'like', '%' . $search_key . '%')
-                        ->whereOr('address', 'like', '%' . $search_key . '%')->select();
+        // $institutions = LocalInstitutionModel::where('name', 'like', '%' . $search_key . '%')
+        //                 ->whereOr('address', 'like', '%' . $search_key . '%')->select();
+        // $institutions = LocalInstitutionModel::where('is_deleted', 0)
+        //                 ->where(function ($query) {
+        //                     $query->where(['address', 'like', '%'.$search_key.'%'], ['name', 'like', '%'.$search_key.'%'], 'or');
+        //                 })->select();
+        $institutions = LocalInstitutionModel::where('(address like :address or name like :name) and is_deleted=0',
+                ['address' => '%'.$search_key.'%', 'name'=>'%'.$search_key.'%'])->select();
         // $institutions = LocalInstitutionModel::all();
         return json_encode(["data" => $institutions]);
     }

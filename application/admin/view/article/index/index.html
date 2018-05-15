@@ -65,7 +65,7 @@
                 {
                     "data": "id",
                     "render": function (id) {
-                        return "<button class='btn btn-primary update' id='"+id+"'><i class='fa fa-pencil'></i> 编辑</button><button class='btn btn-danger delete' id='"+id+"'><i class='fa fa-trash'></i> 删除</button>";
+                        return "<button class='btn btn-primary update' id='"+id+"'><i class='fa fa-pencil'></i></button><button class='btn btn-danger delete' id='"+id+"'><i class='fa fa-trash'></i></button>";
                     }
                 }
             ],
@@ -77,10 +77,25 @@
         $(document).on('submit', '#article_form', function (event) {
             event.preventDefault();
             var title = $("#article_title").val();
+            if (title.trim() == "")
+            {
+                alert("No title. Please input title...");
+                return;
+            }
             var description = $("#article_description").val();
+            if (description.trim() == "")
+            {
+                alert("No description. Please input description...");
+                return;
+            }
             var type = $("#article_type").val();
             var is_show = 0;
             var publish_time = $("#publish_time").val();
+            if (publish_time.trim() == "")
+            {
+                alert("No publish time. Plese input publish time...");
+                return;
+            }
             if ($("#is_show").is(":checked")) is_show = 1;
             if ($("#operation").val() == 'add')
             {
