@@ -5,8 +5,8 @@ namespace app\index\controller;
 use think\Controller;
 use think\Request;
 use think\facade\Session;
-
 use think\captcha\Captcha;
+
 use app\common\model\UserModel;
 use app\common\model\RegionModel;
 
@@ -17,7 +17,12 @@ class UserController extends Controller
      *
      * @return \think\Response
      */
+    var $captcha;
 
+    public function initialize()
+    {
+        $this->captcha = new Captcha;
+    }
     public function index()
     {
         login_form();
@@ -62,6 +67,13 @@ class UserController extends Controller
     {
         $mobile = $request->post('phone_number');
         $password = $request->post('password');
+        $captcha_code = $request->post('verify_code');
+
+        $captcha = $this->captcha;
+        if (!$captcha->check($captcha_code)) {
+           return redirect('/login_form');
+        }
+
         if (UserModel::where('mobile',$mobile)->count() == 0)
         {
             Session::flash('error',"This phone is not registered");
@@ -91,6 +103,13 @@ class UserController extends Controller
     {
         $input = $request->post();
         $user_name = $request->post('name');
+        $captcha_code = $input['captcha_code'];
+        
+        // $captcha_pass = $this->verify($captcha_code);
+        $captcha = $this->captcha;
+        if (!$captcha->check($captcha_code)) {
+           return redirect('/register_form');
+        }
 
         if ($input['mobile_verify_code'] == session('mobile_verify_code'))
         {
@@ -170,10 +189,11 @@ class UserController extends Controller
     }
 
 
-    public function verify($code='')
+    public function verify()
     {
-        $code =input( 'post.captcha' );
-        $captcha = new Captcha();
+        // $code =input( 'get.captcha_code' );
+        // $captcha = new Captcha;
+        $captcha = $this->captcha;
         $captcha->length = 4;
         $captcha->imageW = 120;
         $captcha->imageH = 35;
@@ -181,12 +201,12 @@ class UserController extends Controller
         $captcha->expire = 30;  //有效期
         $captcha->useNoise = true;  //不添加杂点
 
-        if (!$captcha->check($code)) {
-//            return false;
-        } else {
-//            return true;
-        }
-        return $captcha->entry($code);
+
+        // $result1 = $captcha->entry($type);
+        // $result2 = $captcha->entry($type);
+        // $result3 = $captcha->entry("other type");
+
+        return $captcha->entry();
     }
 
     /**
