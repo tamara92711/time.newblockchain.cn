@@ -101,7 +101,6 @@
     validation.password_confirm = false;
     $(document).ready(function () {
         $(".btn-register").prop("disabled", true);
-        $("#mobile_verify_code").prop("readonly", true);
         $("#region").val(1);
         $("#region").change();
         $("#name").focusout(function () {
@@ -194,8 +193,8 @@
                 if (result.error) {
                     $("#mobile").focus();
                 } else {
+                    console.log(result.code);
                     $("#mobile").prop("readonly", true);
-                    $("#mobile_verify_code").prop("readonly", false);
                 }
             }
         });
