@@ -52,26 +52,6 @@ class UserController extends Controller
         exit(json_encode(array('status'=>1,'msg'=>'验证码已发送，请注意查收')));
     }
 
-    public function sms_log($mobile,$code,$session_id){
-        //判断是否存在验证码
-        $data = M('sms_log')->where(array('mobile'=>$mobile,'session_id'=>$session_id))->order('id DESC')->find();
-        //获取时间配置
-        $sms_time_out = tpCache('sms.sms_time_out');
-        $sms_time_out = $sms_time_out ? $sms_time_out : 120;
-        //120秒以内不可重复发送
-        if($data && (time() - $data['add_time']) < $sms_time_out)
-            return array('status'=>-1,'msg'=>$sms_time_out.'秒内不允许重复发送');
-        $row = M('sms_log')->add(array('mobile'=>$mobile,'code'=>$code,'add_time'=>time(),'session_id'=>$session_id));
-        if(!$row)
-            return array('status'=>-1,'msg'=>'发送失败');
-        //$send = sendSMS($mobile,'您好，你的验证码是：'.$code);
-        $send = sendSMS($mobile,$code);
-        return array('status'=>1,'msg'=>'发送成功');
-        if(!$send)
-            return array('status'=>-1,'msg'=>'发送失败');
-        return array('status'=>1,'msg'=>'发送成功');
-    }
-
     function check_mobile($mobile){
         if(preg_match('/1[34578]\d{9}$/',$mobile))
             return true;
@@ -103,19 +83,22 @@ class UserController extends Controller
         }
     }
 
+    public function test_common_file(Request $request)
+    {
+        return log_register_code_sms('111111', '1234');
+    }
     public function submit_register(Request $request)
     {
-        $user_id = $request->post('id');
         $input = $request->post();
-        $user_model = new UserModel();
-        $user_record = UserModel::where("id",$user_id)->find();
+        $user_name = $request->post('name');
 
-        $input['password'] = md5($input['password']);
-        unset($input['id']);
-        unset($input['captcha_code']);
-        if ($input['mobile_verify_code'] == $user_record->mobile_verify_code)
+        if ($input['mobile_verify_code'] == session('mobile_verify_code'))
         {
-            $user_id = $user_record->update_user($user_id, $input);
+            $user_model = new UserModel();
+            $user_model->name = $user_name;
+            $user_model->mobile = $input['mobile'];
+            $user_model->password = md5($input["password"]);
+            $user_model->save();
             return redirect('/login_form');
         }
         else 
@@ -133,98 +116,43 @@ class UserController extends Controller
     public function create_phone_verify_code(Request $request)
     {
         $phone_number = $request->post('phone_number');
+        $response = [];
+        $response['error'] = false;
         if (UserModel::where('mobile',$phone_number)->select()->count() > 0)
         {
-            echo "error";
-            // There will be resend verify code login
+            $response['error'] = true;
+            $response['text'] = "手机号码已经存在";
+            return json_encode(["response" => $response]);
         }
         else
         {
-            $user_model = new UserModel();
-            $user_model->mobile = $phone_number;
-            
             $code = rand(1000, 9999);
-            $this->sendSMS($phone_number,$code);
-            $user_model->mobile_verify_code = $code;
-            $user_model->save();
-            echo "$user_model->id";
+            session("id", session_create_id());
+            session("mobile_verify_code", $code);
+
+            //sms content
+            $content = "您的区块链公益时间廊注册验证码是\n" . $code;
+
+            // sms config
+            $smsapi = 'http://api.smsbao.com/';
+            $user = 'gdbc';
+            $pass = md5('gdqkl2018'); //短信平台密码
+
+            //send sms
+            $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
+            $result =file_get_contents($sendurl) ;
+
+            $response['text'] = config('sms.send_status')[$result];
+            if ($result != 0)
+            {
+                $response['error'] = true;
+            }
+            $response['code'] = $code;
         }
+        return json_encode($response);
     }
 
-    public function sendSMS($mobile, $code)
-    {
-        $apikey = '6853533555ca8f58eb9e68d93eb060fe';
-        $text = "【区块链公益时间廊】您的验证码是".$code."。如非本人操作，请忽略本短信";
-        $url="http://yunpian.com/v2/sms/single_send.json";
-        $post_string=['apikey'=>$apikey,'mobile'=>$mobile,'text'=>$text];
-
-        $resp = $this->httpRequest($url,'POST',$post_string);
-        $resp = json_decode($resp);
-
-        // 短信发送成功返回True，失败返回false
-        // if (!$resp)
-        if ($resp && $resp->code=='0')   // if($resp->result->success == true)
-        {
-            // 从数据库中查询是否有验证码
-            // $data = M('sms_log')->where("code = '$code' and add_time > ".(time() - 60*60))->find();
-            // 没有就插入验证码,供验证用
-            // empty($data) && M('sms_log')->add(array('mobile' => $mobile, 'code' => $code, 'add_time' => time(), 'session_id' => SESSION_ID));
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public function httpRequest($url, $method, $postfields = null, $headers = array(), $debug = false) {
-        $method = strtoupper($method);
-        $ci = curl_init();
-        /* Curl settings */
-        curl_setopt($ci, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-        curl_setopt($ci, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 6.2; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0");
-        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 60); /* 在发起连接前等待的时间，如果设置为0，则无限等待 */
-        curl_setopt($ci, CURLOPT_TIMEOUT, 7); /* 设置cURL允许执行的最长秒数 */
-        curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
-        switch ($method) {
-            case "POST":
-                curl_setopt($ci, CURLOPT_POST, true);
-                if (!empty($postfields)) {
-                    $tmpdatastr = is_array($postfields) ? http_build_query($postfields) : $postfields;
-                    curl_setopt($ci, CURLOPT_POSTFIELDS, $tmpdatastr);
-                }
-                break;
-            default:
-                curl_setopt($ci, CURLOPT_CUSTOMREQUEST, $method); /* //设置请求方式 */
-                break;
-        }
-        $ssl = preg_match('/^https:\/\//i',$url) ? TRUE : FALSE;
-        curl_setopt($ci, CURLOPT_URL, $url);
-        if($ssl){
-            curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, FALSE); // https请求 不验证证书和hosts
-            curl_setopt($ci, CURLOPT_SSL_VERIFYHOST, FALSE); // 不从证书中检查SSL加密算法是否存在
-        }
-        //curl_setopt($ci, CURLOPT_HEADER, true); /*启用时会将头文件的信息作为数据流输出*/
-        curl_setopt($ci, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ci, CURLOPT_MAXREDIRS, 2);/*指定最多的HTTP重定向的数量，这个选项是和CURLOPT_FOLLOWLOCATION一起使用的*/
-        curl_setopt($ci, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ci, CURLINFO_HEADER_OUT, true);
-        /*curl_setopt($ci, CURLOPT_COOKIE, $Cookiestr); * *COOKIE带过去** */
-        $response = curl_exec($ci);
-        $requestinfo = curl_getinfo($ci);
-        $http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
-        if ($debug) {
-            echo "=====post data======\r\n";
-            var_dump($postfields);
-            echo "=====info===== \r\n";
-            print_r($requestinfo);
-            echo "=====response=====\r\n";
-            print_r($response);
-        }
-        curl_close($ci);
-        return $response;
-        //return array($http_code, $response,$requestinfo);
-    }
+    
     /**
      * 显示创建资源表单页.
      *
@@ -315,5 +243,17 @@ class UserController extends Controller
     public function delete($id)
     {
         //
+    }
+
+    public function name_exists($name)
+    {
+        $exists = UserModel::where('name', $name)->count();
+        return ($exists)? true: false;
+    }
+
+    public function mobile_exists($mobile)
+    {
+        $exists = UserModel::where('mobile', $mobile)->count();
+        return ($exists)? true: false;
     }
 }

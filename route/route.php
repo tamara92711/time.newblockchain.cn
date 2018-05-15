@@ -75,7 +75,7 @@ Route::resource('admin/member/real_name_verify','@admin/member/real_name_verify'
 Route::get('login_form','@index/user/login_form');
 Route::post('login','@index/user/submit_login');
 
-Route::get('register_form','@index/user/register_form');
+Route::get('register_form','@index/user/register_form');//->middleware('AuthMiddleware');
 Route::post('register','@index/user/submit_register');
 
 Route::get('sign_out','@index/user/sign_out');
