@@ -48,7 +48,7 @@
                         <select class="form-control" id="demand_status" name="demand_status">
                             <!--<option value="" selected disabled hidden>选择需求状态</option>-->
                             {foreach $demand_status as $key=>$val }
-                            <option value="{$val.id}">{$val.name}</option>
+                            <option value="{$key}">{$val}</option>
                             {/foreach}
                         </select>
                     </div>
@@ -125,12 +125,13 @@
         var demand_state = $("#demand_status").val();
         var dataString = 'demand_type='+demand_type+'&time_from='+time_from+'&time_to='+time_to+'&demand_state='+demand_state;
         var dataHtml = '';
-        // console.log("search");
+        console.log(dataString);
         $.ajax({
             url  : '/index/service_management/show_undertaken/1',
             type : 'GET',
             dataType : 'json',
             data : dataString,
+
             success:function (result) {
                 json = JSON.parse(result);
                 var response = json.data;
@@ -141,11 +142,12 @@
                             '<tr>\n' +
                             '   <td>' + (++index) + '</td>\n' +
                             '   <td>'+item.name+'</td>\n' +
-                            '   <td><a href="/index/service_management/show_undertaken/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.ds_id+'">'+item.title+'</a></td>\n' +
+                            '   <td><a href="/index/service_management/show_undertaken/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/is_reviewed/'+item.is_reviewed+'">'+item.title+'</a></td>\n' +
+
                             '   <td>'+item.publisher+'</td>\n' +
                             '   <td>'+item.pay_amount+'</td>\n' +
                             '   <td>'+item.published_time+'</td>\n' +
-                            '   <td>'+item.state+'</td>\n' +
+                            '   <td>'+getDemandStatusFreelancer(item.state,item.is_reviewed)+'</td>\n' +
                             '</tr>';
 
                     });

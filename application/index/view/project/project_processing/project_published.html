@@ -9,7 +9,7 @@
         <button type="submit" class="btn published">已发布</button>
     </div>
     <div class="row">
-        <label class="texts">发布人：<span>{$data[0]['name']}</span></label>
+        <label class="texts">发布人：<span>{$data[0]['publiser_name']}</span></label>
         <label class="texts" style="margin-left: 80px;margin-top: 20px;">需求类型:<span style="margin-left:7px;">{$data[0]['demand_type']}</span></label>
         <label class="texts" style="margin-left: 82px;margin-top: 20px;">支付时间币<span style="margin-left:11px;">{$data[0]['pay_amount']}</span></label>
         <label class="texts" style="margin-left: 84px;margin-top: 20px;">发布时间<span style="margin-left:11px;">{$data[0]['published_time']}</span></label>
@@ -31,7 +31,7 @@
                         $month_to=explode("-",$data[0]['service_time_to'])[1];
                         $day_to=explode("-",$data[0]['service_time_to'])[2];
                     ?>
-                    <div class="row"><span style="margin-left: 29px;margin-top: 2px;">{$year_from}年{$month_from}月{$day_from}-{$year_to}年{$month_to}月{$day_to}，{$data[0]['time_total']}小时</span></div>
+                    <div class="row"><span style="margin-left: 29px;margin-top: 2px;">{$year_from}年{$month_from}月{$day_from}-{$year_to}年{$month_to}月{$day_to}，{$data[0]['time_total']}</span></div>
                 </div>
                 <div style="margin-bottom: 17px">
                     <img class="title-icon" src="/assets/img/personal.png">
@@ -92,6 +92,7 @@
     function handleBid()
     {
         var demand_id = {$data[0]['id']};
+        // console.log(demand_id);
         $.ajax({
             url  : '/index/project.project_processing/insertApplier',
             method : 'POST',

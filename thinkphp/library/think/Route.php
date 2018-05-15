@@ -28,7 +28,7 @@ class Route
     protected $rest = [
         'index'  => ['get', '', 'index'],
         'create' => ['get', '/create', 'create'],
-        'edit'   => ['get', '/:id/edit', 'edit'],
+        'edit.html'   => ['get', '/:id/edit.html', 'edit.html'],
         'read'   => ['get', '/:id', 'read'],
         'save'   => ['post', '', 'save'],
         'update' => ['put', '/:id', 'update'],

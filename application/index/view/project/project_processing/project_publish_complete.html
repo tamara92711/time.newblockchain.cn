@@ -13,41 +13,49 @@
         </div>
         <div class="qk-portlet-content pl19 pr19">
 
-            <p class="topic">项目标题项目标题项目标题</p>
+            <p class="topic">{$data[0]['title']}</p>
             <span class="label label-danger button-complted">已完成</span>
             <div class="description">
-                <div class="left" style="width:164px;">发布人：某某某</div>
-                <div class="left" style="width:189px">需求类型：环境清洁</div>
-                <div class="left" style="width:177px">支付时间币：18.0</div>
-                <div class="left">发布时间：20118-02-23</div>
+                <div class="left" style="width:164px;">发布人：{$data[0]['publiser_name']}</div>
+                <div class="left" style="width:189px">需求类型：{$data[0]['demand_type']}</div>
+                <div class="left" style="width:177px">支付时间币：{$data[0]['pay_amount']}</div>
+                <div class="left">发布时间：{$data[0]['published_time']}</div>
                 <div class="clearfix"></div>
             </div>
             <div class="description-container">
                 <div class="first-content-container">
-                    <span class="first-contents">需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述需求描述</span>
+                    <span class="first-contents">{$data[0]['apply_requirement']}</span>
                 </div>
+                <?php
+                        $year_from=explode("-",$data[0]['service_time_from'])[0];
+                        $month_from=explode("-",$data[0]['service_time_from'])[1];
+                        $day_from=explode("-",$data[0]['service_time_from'])[2];
+                        $year_to=explode("-",$data[0]['service_time_to'])[0];
+                        $month_to=explode("-",$data[0]['service_time_to'])[1];
+                        $day_to=explode("-",$data[0]['service_time_to'])[2];
+                    ?>
                 <div class="second-content-container">
                     <div class="left br-red-dot width50">
                         <img src="/assets/img/time-light-red.png" class="mr6">
                         <span class="font-red-14">服务时间</span>
-                        <div class="ml29 mt6 mb14">2018年03月18-19日，预计一小时，时间可以自定</div>
+                        <div class="ml29 mt6 mb14">{$year_from}年{$month_from}月{$day_from}-{$year_to}年{$month_to}月{$day_to}，{$data[0]['time_total']}</div>
                         <img src="/assets/img/lianxiren-light-red.png" class="mr6">
                         <span class="font-red-14">联系人</span>
-                        <div class="ml29 mt6 mb14">某某某</div>
+                        <div class="ml29 mt6 mb14">{$data[0]['contact_name']}</div>
                         <img src="/assets/img/calendar-light-red.png" class="mr6">
                         <span class="font-red-14">有效期至</span>
-                        <div class="ml29 mt6 mb14">2018-03-19</div>
+                        <div class="ml29 mt6 mb14">{$data[0]['valid_times']}</div>
                     </div>
                     <div class="left pl20 width50">
                         <img src="/assets/img/location-light-red.png" style="margin-right:5px">
                         <span class="font-red-14">服务地点</span>
-                        <div class="ml29 mt6 mb14">广州市南沙区横沥******</div>
+                        <div class="ml29 mt6 mb14">{$data[0]['total_detail']}</div>
                         <img src="/assets/img/phone-call-light-red.png" style="margin-right:5px">
                         <span class="font-red-14">联系电话</span>
-                        <div class="ml29 mt6 mb14">15365236523</div>
+                        <div class="ml29 mt6 mb14">{$data[0]['contact_phone']}</div>
                         <img src="/assets/img/doc-light-red.png" style="margin-right:5px">
                         <span class="font-red-14">承接要求</span>
-                        <div class="ml29 mt6 mb14">公共环境清洁及相关服务。1级以上会员可承接，无专业技术要求</div>
+                        <div class="ml29 mt6 mb14">{$data[0]['apply_requirement']}</div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -58,7 +66,7 @@
                     <div class="third-content-line" style="border-top: none;">
                         <img src="/assets/img/undertake1-yellow.png" class="mr6" />
                         <span style="color:#f8a046">承接时间</span>
-                        <div class="mt6 ml29">2018-04-16 11：26：56</div>
+                        <div class="mt6 ml29">{$data[0]['accepted_time']}</div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -66,12 +74,12 @@
                     <div class="third-content-line">
                         <img src="/assets/img/time-yellow.png" class="mr6" />
                         <span style="color:#f8a046">承接时间</span>
-                        <div class="mt6 ml29">2018-04-16 11：26：56</div>
+                        <div class="mt6 ml29">{$data[0]['accepted_time']}</div>
                     </div>
                     <div class="third-content-line" style="width: 448px;">
                         <img src="/assets/img/tick-yellow.png" class="mr6" />
                         <span style="color:#f8a046">完成时间</span>
-                        <div class="mt6 ml29">2018-04-18 15：26：56</div>
+                        <div class="mt6 ml29">{$data[0]['complete_time']}</div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
@@ -80,16 +88,16 @@
                         <img src="/assets/img/feedback-heart-yellow.png" class="mr6" />
                         <span style="color:#f8a046">发布人评价</span>
                         <div class="mt6 ml29">
-                            <p style="margin:0px">【好评】</p>
-                            <p style="margin:0px;line-height:25px">评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价</p>
+                            <p style="margin:0px">{$freelancer_review_data[1]['review']}</p>
+                            <p style="margin:0px;line-height:25px">{$freelancer_review_data[0]['description']}</p>
                         </div>
                     </div>
                     <div class="third-content-line" style="width: 448px;">
                         <img src="/assets/img/flower-light-yellow.png" class="mr6" />
                         <span style="color:#f8a046">发布人评价</span>
                         <div class="mt6 ml29">
-                            <p style="margin:0px">【好评】</p>
-                            <p style="margin:0px;line-height:25px">评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价评价</p>
+                            <p style="margin:0px">{$publisher_review_data[1]['review']}</p>
+                            <p style="margin:0px;line-height:25px">{$publisher_review_data[0]['description']}</p>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -101,12 +109,10 @@
                     项目合照
                 </div>
                 <div class="img-box">
-                    <img src="/assets/img/zhiyuanzhe.png" style="width:170px;height: 220px;"/>
-                    <img src="/assets/img/fuwuduixiang.png" style="width:170px;height: 220px;"/>
+                    <img src="{$freelancer_review_data[2]['image']}" style="width:350px;height:220px"/>
                 </div>
-                <div class="img-box" style="border-right: none;">
-                    <img src="/assets/img/zhiyuanzhe.png" style="width:170px;height: 220px;"/>
-                    <img src="/assets/img/fuwuduixiang.png" style="width:170px;height: 220px;"/>
+                <div class="img-box" style="border-right: none;padding-right: 20px;">
+                    <img src="{$publisher_review_data[2]['image']}" style="width:350px;height:220px"/>
                 </div>
 
                 <div class="clearfix"></div>
@@ -118,4 +124,8 @@
         </div>
     </div>
 </div>
+{/block}
+{block name="custom-js"}
+<script src="/assets/datepicker/datepicker.min.js" type="text/javascript"></script>
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
 {/block}

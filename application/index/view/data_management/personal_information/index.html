@@ -221,16 +221,23 @@
         $("input#username").focus();
     })
 
-    $("#personal_form").submit(function (e) {
+    $("#personal_form").submit(function (e)
+    {
         e.preventDefault();
+        validation();
         var formData = $(this).serialize();
-
+        console.log(formData);
         $.ajax({
-            url : '/index/data_management.personal_information/save',
-            type : 'POST',
+            url : '/index/data_management.personal_information/0',
+            method : 'PUT',
             data : formData,
-            success:function (data) {
-                reset();
+            success:function (result) {
+                if(result=='ok')
+                    reset();
+                else if (result == "failure")
+                    alert("your old password is wrong,correctly insert password");
+                    // $("input#beforepass").focus();
+
             }
         })
     });

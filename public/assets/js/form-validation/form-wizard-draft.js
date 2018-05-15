@@ -273,20 +273,14 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-save').click(function (e) {
                 e.preventDefault();
                 var formData = $("#release_requirement_form").serialize();
+                // console.log(formData);
                 $.ajax({
-                    url : '/index/service_management.release_requirement/save/mode/0',
+                    url : '/index/service_management.release_requirement/draftUpdate/mode/0',
                     type : 'POST',
                     data : formData,
                     success:function (result)
                     {
-                        if (result == "not_verify")
-                        {
-                            alert("you don't verify so you don't submit project.please ask to admin!!!")
-                            window.location.href=('/index/service_management.release_requirement');
-                        }
-
-                        else
-                            window.location.href=('/index/service_management.show_published');
+                        window.location.href=('/index/service_management.show_published');
                     }
                 })
             }).hide();
@@ -294,21 +288,15 @@ var FormWizard = function () {
             $('#form_wizard_1 .button-submit').click(function (e) {
                 e.preventDefault();
                 var formData = $("#release_requirement_form").serialize();
-                var mode    = 1;
+                // console.log(formData);
+
                 $.ajax({
-                    url : '/index/service_management.release_requirement/save/mode/1',
+                    url : '/index/service_management.release_requirement/draftUpdate/mode/1',
                     type : 'POST',
                     data : formData,
                     success:function (result)
                     {
-                        if (result == "not_verify")
-                        {
-                            alert("you don't verify so you don't submit project.please ask to admin!!!")
-                            window.location.href=('/index/service_management.release_requirement');
-                        }
-
-                        else
-                            window.location.href=('/index/service_management.show_published');
+                        window.location.href=('/index/service_management.show_published');
                     }
                 })
             }).hide();
