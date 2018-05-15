@@ -79,9 +79,10 @@ class LoveEnterpriseController extends Controller
     {
         $data = LoveEnterpriseModel::get($id);
         if (!empty($data->image)) {
-            $path = explode('\\',$data->image);
-            $data->image = '/uploads/' . $path[0] . '/' . $path[1];
+            $data->image = '/uploads/'. $data->image;
         }
+        $this->assign('root_nav', 'love_enterprise');
+        $this->assign('sub_nav', '');
         $this->assign("data", $data);
         return $this->fetch();
     }
@@ -100,11 +101,13 @@ class LoveEnterpriseController extends Controller
         $le->description = $request->param('lo_description');
         $le->is_show = $request->param('is_show');
         $le->is_deleted = 0;
-        if (!empty($request->param('lo_photo')))
+        if (!empty($request->file('lo_photo')))
         {
             $logo_image = $request->file('lo_photo');
             $info = $logo_image->move('./uploads/');
-            $le->image = $info->getSaveName();
+            $save_path = $info->getSaveName();
+            $save_path = str_replace("\\", "/", $save_path);
+            $le->image = $save_path;
         }
         $le->save();
         return redirect('/admin/love_enterprise');
