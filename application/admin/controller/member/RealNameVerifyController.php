@@ -16,6 +16,8 @@ class RealNameVerifyController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'member');
+        $this->assign('sub_nav', 'member_verify');
         return $this->fetch();
     }
 

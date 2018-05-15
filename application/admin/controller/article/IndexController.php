@@ -3,6 +3,7 @@
 namespace app\admin\controller\article;
 
 use think\Controller;
+use think\Db;
 use think\Request;
 use app\common\model\ArticleModel;
 use app\common\model\ArticleTypeModel;
@@ -20,6 +21,8 @@ class IndexController extends Controller
         $article_types1 = ArticleTypeModel::where('is_deleted', 0)->column(['id', 'name']);
         $this->assign('article_types', $article_types);
         $this->assign('article_types1', json_encode($article_types1));
+        $this->assign('root_nav', 'article');
+        $this->assign('sub_nav', 'article_index');
         return $this->fetch();
         // return json_encode($article_types1);
     }
@@ -66,7 +69,13 @@ class IndexController extends Controller
         if ($id == 0)
         {
             $result = ArticleModel::where('is_deleted', 0)->select();
-            $result = $result->toArray();
+            $result = Db::table('qkl_article')
+                    ->alias('a')
+                    ->field('a.id, a.title, a.type, a.description, a.is_show, a.publish_time')
+                    ->join('qkl_article_type at', 'a.type=at.id')
+                    ->where('a.is_deleted',0)
+                    ->where('at.is_deleted',0)
+                    ->select();
             return json_encode(["data" => $result]);
         }
         $data = ArticleModel::get($id);

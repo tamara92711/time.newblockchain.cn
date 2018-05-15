@@ -38,8 +38,18 @@
             },
             "columns": [
                 { "data": "name" },
-                { "data": "description" },
-                { "data": "requirements" },
+                { 
+                    "data": "description",
+                    "render": function(description) {
+                        return description.substr(0, 50) + "...";
+                    }
+                },
+                { 
+                    "data": "requirements",
+                    "render": function (requirements) {
+                        return requirements.substr(0, 50) + "...";
+                    }
+                },
                 {
                     "data": "is_show",
                     "render": function (is_show) {
@@ -50,7 +60,7 @@
                 {
                     "data": "id",
                     "render": function (id) {
-                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i> 编辑</button><button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i> 删除</button>";
+                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i></button><button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i></button>";
                     }
                 }
             ],

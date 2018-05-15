@@ -2,6 +2,6 @@
 /.vscode
 *.log
 .env
-public/uploads/
-uploads/
 .svn/
+public/uploads/
+

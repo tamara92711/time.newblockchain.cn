@@ -14,6 +14,8 @@ class OrdersController extends Controller
      */
     public function index()
     {
+        $this->assign('root_nav', 'product');
+        $this->assign('sub_nav', 'product_orders');
         return $this->fetch();
     }
 

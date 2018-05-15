@@ -103,6 +103,7 @@ class ProjectProcessingController extends Controller
         }
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
         return $this->fetch();
     }
@@ -115,6 +116,7 @@ class ProjectProcessingController extends Controller
         $this->assign('data',$data);
         $this->assign('mode',$mode);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
         return $this->fetch();
     }
@@ -128,6 +130,7 @@ class ProjectProcessingController extends Controller
         $this->assign('data',$data);
         $this->assign('mode',$mode);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
         return $this->fetch();
     }
@@ -140,6 +143,7 @@ class ProjectProcessingController extends Controller
         $this->assign('data',$data);
         $this->assign('mode',$mode);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
         return $this->fetch();
     }
@@ -162,7 +166,6 @@ class ProjectProcessingController extends Controller
         $this->assign('publisher_avarta',$publisher_avarta);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
-        $this->assign('side_nav', 'project_applied');
 
         if ($mode == 0)
             $this->assign('mode',$mode);
@@ -174,6 +177,10 @@ class ProjectProcessingController extends Controller
 
         }
         $this->assign($data);
+
+        $this->assign("nav_type", 1);
+        $this->assign('side_nav', 'project_applied');
+
         return $this->fetch();
     }
     /*
@@ -195,6 +202,7 @@ class ProjectProcessingController extends Controller
         $this->assign('publisher_avarta',$publisher_avarta);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
 
         if ($mode == 0)
@@ -227,6 +235,7 @@ class ProjectProcessingController extends Controller
         $this->assign('data',$data);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
         return $this->fetch();
     }
@@ -257,6 +266,7 @@ class ProjectProcessingController extends Controller
     public function show_freelancer_detail($demand_id,$user_id)
     {
         $this->assign('header_nav', 'project_publish');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
 
         //get porject published detail

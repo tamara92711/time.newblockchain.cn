@@ -20,6 +20,9 @@ class IndexController extends Controller
         $product_types1 = ProductTypeModel::where('is_deleted', 0)->column(['id', 'name']);
         $this->assign('product_types', $product_types);
         $this->assign('product_types1', json_encode($product_types1));
+
+        $this->assign('root_nav', 'product');
+        $this->assign('sub_nav', 'product_index');
         return $this->fetch();
     }
 

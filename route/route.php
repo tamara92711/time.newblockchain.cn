@@ -75,7 +75,7 @@ Route::resource('admin/member/real_name_verify','@admin/member/real_name_verify'
 Route::get('login_form','@index/user/login_form');
 Route::post('login','@index/user/submit_login');
 
-Route::get('register_form','@index/user/register_form');
+Route::get('register_form','@index/user/register_form');//->middleware('AuthMiddleware');
 Route::post('register','@index/user/submit_register');
 
 Route::get('sign_out','@index/user/sign_out');
@@ -128,6 +128,8 @@ Route::get('complaints', '/index/index.complaints');//->middleware('AuthMiddlewa
 Route::resource('index/index/volunteer_grace','@index/index/volunteer_grace');
 
 Route::resource('index/index/news_center','@index/index/news_center');
+
+Route::get('/membercenter','index/index/membercenter')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/release_requirement','@index/service_management/release_requirement');
 

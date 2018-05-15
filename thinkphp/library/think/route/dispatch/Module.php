@@ -54,14 +54,14 @@ class Module extends Dispatch
                 }
                 $available = true;
             } elseif (!in_array($module, $this->app->config('app.deny_module_list')) && is_dir($this->app->getAppPath() . $module)) {
-                $available = true;
+                $available = true;                
             } elseif ($this->app->config('app.empty_module')) {
                 $module    = $this->app->config('app.empty_module');
                 $available = true;
             }
-
+            
             // 模块初始化
-            if ($module && $available) {
+            if ($module && $available) {                
                 // 初始化模块
                 $this->app['request']->module($module);
                 $this->app->init($module);

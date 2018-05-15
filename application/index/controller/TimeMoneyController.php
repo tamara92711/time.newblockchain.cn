@@ -38,6 +38,7 @@ class TimeMoneyController extends Controller
     {
         $user1_id = session('user_id');
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'transaction_history');
 
         $history = TransactionUserModel::where('user1_id', $user1_id)->order('create_time desc')->select();
@@ -48,6 +49,7 @@ class TimeMoneyController extends Controller
     public function buy() //24时间币充值
     {
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'buy');
         $this->assign('pay_image',config('pay.pay_type_img'));
         $this->assign('payment_methods',PayTypeModel::all('2,3'));//tempcode
@@ -98,6 +100,7 @@ class TimeMoneyController extends Controller
     {
         $user1_id = session('user_id');
         $this->assign('header_nav', 'home');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'transfer');
         $this->assign('total_amount', UserModel::get($user1_id)->total_amount);
         return $this->fetch();

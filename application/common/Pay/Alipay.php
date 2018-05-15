@@ -46,8 +46,8 @@ class Alipay extends AlipaySubmit
         //    $obj->showMessage($data, '参数错误');
         //}
         
-        $alipay_config['partner'] = '2088101568338364';//$conf['pay_account'];
-        $alipay_config['seller_id'] = 'alipay-test01@alipay.com';//$conf['mchid'];
+        $alipay_config['partner'] = '2088621900485456';//$conf['pay_account'];
+        $alipay_config['seller_id'] = 'forex_646917@alitest.com';//$conf['mchid'];
         $alipay_config['key'] = 'aozex57ukap7cw0nt0gzv513k6uhsd8h';//$conf['pay_key'];
         
         $alipay_config['private_key'] =  "";//$conf['private_pem'];
@@ -62,8 +62,8 @@ class Alipay extends AlipaySubmit
             
         $parameter = [
             "service" => $alipay_config['service'],
-            "partner" => '2088101568338364',//$conf['pay_account'],
-            "seller_email" => 'alipay-test01@alipay.com',////$conf['mchid'],
+            "partner" => '2088621900485456',//$conf['pay_account'],
+            "seller_email" => 'forex_646917@alitest.com',////$conf['mchid'],
             "payment_type" => $alipay_config['payment_type'],
             "notify_url" => $alipay_config['notify_url'],
             "return_url" => 'http://www.test.com/alipay/return_url.asp',/*$urlNofity*/

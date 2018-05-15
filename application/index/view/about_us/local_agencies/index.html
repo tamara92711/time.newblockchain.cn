@@ -10,7 +10,9 @@
     }
     var map_array = [];
     function displayInstitutions() {
-        var search_key = $("#search-key").val();
+        var search_key;
+        if ($("#search-key").length == 0) search_key = '';
+        else search_key = $("#search-key").val();
         $.ajax({
             url: "/index/about_us/local_agencies/getinstitutions",
             method: "GET",

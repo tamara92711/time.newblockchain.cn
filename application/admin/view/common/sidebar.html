@@ -16,83 +16,87 @@
     </li>
     <!-- END SIDEBAR TOGGLER BUTTON -->
 
-    <li class="nav-item start ">
+    <li class="nav-item start {eq name="root_nav" value="main"} active{/eq}">
         <a href="/admin/main" class="nav-link nav-toggle">
             <i class="icon-home"></i>
             <span class="title">基本设置
             </span>
+            <span class="selected"></span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="article"} active open{/eq} ">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-diamond"></i>
             <span class="title">文章管理
             </span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="article"}<span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="article"} open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
-                <a href="/admin/article.types" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_types"} active open{/eq}">
+                <a href="/admin/article.types" class="nav-link">
                     <span class="title">文章分类
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.index" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_index"} active open{/eq}">
+                <a href="/admin/article.index" class="nav-link">
                     <span class="title">文章管理
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.local_institutions" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_local"} active open{/eq}">
+                <a href="/admin/article.local_institutions" class="nav-link">
                     <span class="title">各地机构
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
-                <a href="/admin/article.recruitment_information" class="nav-link ">
+            <li class="nav-item {eq name="sub_nav" value="article_recruitment"} active open{/eq}">
+                <a href="/admin/article.recruitment_information" class="nav-link">
                     <span class="title">招聘信息
                     </span>
                 </a>
             </li>
         </ul>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="volunteers"} active open{/eq}">
         <a href="/admin/volunteers" class="nav-link nav-toggle">
             <i class="icon-puzzle"></i>
             <span class="title">志愿者
             </span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="love_enterprise"} active open{/eq}">
         <a href="/admin/love_enterprise" class="nav-link nav-toggle">
             <i class="icon-settings"></i>
             <span class="title">爱心企业
             </span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="charitable_organizations"} active open{/eq}">
         <a href="/admin/charitable_organizations" class="nav-link nav-toggle">
             <i class="icon-bulb"></i>
             <span class="title">慈善公益组织
             </span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="project_nav"} active open{/eq}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-briefcase"></i>
             <span class="title">项目管理
             </span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="project_nav"}
+            <span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="project_nav"} open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="project_types"} active open{/eq}">
                 <a href="/admin/project.types" class="nav-link ">
                     <span class="title">项目分类
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="project_index"} active open{/eq}">
                 <a href="/admin/project.index" class="nav-link ">
                     <span class="title">项目管理
                     </span>
@@ -100,27 +104,29 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="member"} active open{/eq}">
         <a href="#" class="nav-link nav-toggle">
             <i class="icon-wallet"></i>
             <span class="title">会员管理
             </span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="member"}
+            <span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="member"}open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="member_index"} active open{/eq}">
                 <a href="/admin/member.index" class="nav-link ">
                     <span class="title">会员列表
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="member_verify"} active open{/eq}">
                 <a href="/admin/member.real_name_verify" class="nav-link ">
                     <span class="title">实名认证
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="member_certificate"} active open{/eq}">
                 <a href="/admin/member.certificate" class="nav-link ">
                     <span class="title">专业证书管理
                     </span>
@@ -128,27 +134,29 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="product"} active open{/eq}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-bar-chart"></i>
             <span class="title">商城管理
             </span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="product"}
+            <span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="product"}open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="product_categories"} active open{/eq}">
                 <a href="/admin/product.categories" class="nav-link ">
                     <span class="title">商品分类
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="product_index"} active open{/eq}">
                 <a href="/admin/product.index" class="nav-link ">
                     <span class="title">商品管理
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="product_orders"} active open{/eq}">
                 <a href="/admin/product.orders" class="nav-link ">
                     <span class="title">订单管理
                     </span>
@@ -156,21 +164,23 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="complaints"} active open{/eq}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-pointer"></i>
             <span class="title">投诉与建议
             </span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="complaints"}
+            <span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="complaints"}open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="complaints_categories"} active open{/eq}">
                 <a href="/admin/complaints.categories" class="nav-link ">
                     <span class="title">投诉类型设置
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="complaints_index"} active open{/eq}">
                 <a href="/admin/complaints.index" class="nav-link ">
                     <span class="title">投诉管理
                     </span>
@@ -178,20 +188,22 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item ">
+    <li class="nav-item {eq name="root_nav" value="news"} active open{/eq}">
         <a href="javascript:;" class="nav-link nav-toggle">
             <i class="icon-layers"></i>
             <span class="title">公告管理</span>
-            <span class="arrow"></span>
+             {eq name="root_nav" value="news"}
+            <span class="selected"></span>{/eq}
+            <span class="arrow {eq name="root_nav" value="news"}open{/eq}"></span>
         </a>
         <ul class="sub-menu">
-            <li class="nav-item">
+            <li class="nav-item {eq name="sub_nav" value="news_types"} active open{/eq}">
                 <a href="/admin/news.types" class="nav-link ">
                     <span class="title">动态类型设置
                     </span>
                 </a>
             </li>
-            <li class="nav-item  ">
+            <li class="nav-item {eq name="sub_nav" value="news_index"} active open{/eq}">
                 <a href="/admin/news.index" class="nav-link ">
                     <span class="title">信息发布
                     </span>
@@ -199,14 +211,14 @@
             </li>
         </ul>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="links"} active open{/eq}">
         <a href="/admin/links" class="nav-link nav-toggle">
             <i class="icon-feed"></i>
             <span class="title">友情链接
             </span>
         </a>
     </li>
-    <li class="nav-item  ">
+    <li class="nav-item {eq name="root_nav" value="report"} active open{/eq}">
         <a href="/admin/report" class="nav-link nav-toggle">
             <i class="icon-paper-plane"></i>
             <span class="title">运营报表
