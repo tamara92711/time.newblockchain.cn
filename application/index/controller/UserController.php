@@ -146,7 +146,7 @@ class UserController extends Controller
         else
         {
             $code = rand(1000, 9999);
-            session("id", session_create_id());
+            // session("id", session_create_id());
             session("mobile_verify_code", $code);
 
             //sms content
