@@ -3,7 +3,6 @@
 namespace app\index\controller\service_management;
 
 use app\common\model\DemandModel;
-use app\common\model\DemandStatusModel;
 use app\common\model\DemandTypeModel;
 use app\common\model\ReleaseTimeModel;
 use think\Controller;
@@ -21,10 +20,9 @@ class UndertakeServiceController extends Controller
     public function index()
     {
         $demand_type       = DemandTypeModel::where('pid',0)->field('id,name')->select();
-
         $demand_detail     = DemandTypeModel::where('pid',1)->field('id,name')->select();
-        $demand_status     = DemandStatusModel::all();
-        $release_time      = ReleaseTimeModel::all();
+        $demand_status     = array('2'=>'发布中','3'=>'已承接','4'=>'已完成','5'=>'已取消','6'=>'已失效');
+        $release_time      = array('1'=>'今日发布','2'=>'昨日发布','3'=>'近3天发布','4'=>'3天以上');
 
         $this->assign("demand_type",$demand_type);
         $this->assign("demand_detail",$demand_detail);
@@ -34,7 +32,7 @@ class UndertakeServiceController extends Controller
         $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_apply');
 
-       return $this->fetch();
+        return $this->fetch();
     }
 
     /**
@@ -67,10 +65,11 @@ class UndertakeServiceController extends Controller
      */
     public function read(Request $request,$id)
     {
+        //1: 未发布 don't display
+        $temp_query = DemandModel::getFieldsJobList()
+            ->where('d.state','>',1);
 
-        $temp_query = DemandModel::getFields();
-//        ->where('d.user_id','<>',session('user_id'));
-
+        $today = date("Y-m-d");
         $demand_type = $request->param('demand_type');
         $demand_state = $request->param('demand_status');
         $time_currency = $request->param('time_currency');
@@ -88,10 +87,31 @@ class UndertakeServiceController extends Controller
                 $temp_query =$temp_query->where('dt.id',$demand_type);
         }
         if ($demand_state >= 0)
-            if($demand_state == 0)
-                $temp_query =$temp_query->where('ds.id','>=',$demand_state);
-            else if ($demand_state >=1)
-            $temp_query =$temp_query->where('ds.id',$demand_state);
+        {
+            switch ($demand_state)
+            {
+                case 0:
+                    $temp_query =$temp_query->where('d.state','>',1);//all
+                    break;
+                case 2:
+                    $temp_query =$temp_query->where('d.state',2)->where('is_reviewed',0);//发布中
+                    break;
+                case 3:
+                    $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',0);//已承接
+                    break;
+                case 4:
+                    $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
+                    break;
+                case 5:
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
+                        ->where('d.applied_user_id',0)->where('d.state','<=',2);//已取消 cancled  已失效 wrong so change
+                    break;
+                case 6:
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
+                        ->where('d.applied_user_id',0)->where('d.state','<=',2);// 已失效 expired at user don't bit until validation time
+                    break;
+            }
+        }
 
         if ($time_currency >= 0)
         {
@@ -119,7 +139,6 @@ class UndertakeServiceController extends Controller
 
         if ($release_time >= 0)
         {
-            $today = date("Y-m-d");
             switch ($release_time)
             {
                 case 1:
@@ -132,7 +151,7 @@ class UndertakeServiceController extends Controller
                 case 3:
                     $threeDay = date('Y-m-d',strtotime("-3 days"));
                     $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$threeDay'")
-                    ->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
+                        ->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
                     break;
                 case 4:
                     $threeDay = date('Y-m-d',strtotime("-3 days"));
@@ -141,8 +160,8 @@ class UndertakeServiceController extends Controller
             }
         }
         $today = date('Y-m-d');
-        $temp_query = $temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
-        $data = DemandModel::conditionJoin($temp_query);
+//        $temp_query = $temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
+        $data = DemandModel::jobListConditionJoin($temp_query);
 
         return json_encode($data);
     }
@@ -191,8 +210,8 @@ class UndertakeServiceController extends Controller
     {
         switch ($state_id)
         {
-            //已发布
-            case 1:
+            //发布中 display
+            case 2:
                 if($uid == session('user_id'))
                 {
                     return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
@@ -203,15 +222,13 @@ class UndertakeServiceController extends Controller
                     return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
                     break;
                 }
-//                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
-//                break;
-            case 2:
+            case 3:
                 return redirect('/index/project/project_processing/project_accepted',["id" => $demand_id,"mode" => 0]);
                 break;
-            case 3:
+            case 4:
                 return redirect('/index/project/project_processing/project_completed',["id" => $demand_id, "mode" => 0]);
                 break;
-            case 4:
+            case 5:
                 return redirect('/index/project/project_processing/accepter_cancled',["id" => $demand_id,"mode" => 0]);
                 break;
             case 6:

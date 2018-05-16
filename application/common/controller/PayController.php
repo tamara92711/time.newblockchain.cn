@@ -18,7 +18,7 @@ class PayController extends Controller
     {
         $pay_type = $request->post('pay_type');
         $amount = $request->post('amount');
-        $payment_conf = PayModel::where(['pay_type_id'=>($pay_type+1),'type'=>'0'])->find();
+        $payment_conf = PayModel::where(['pay_type_id'=>$pay_type,'type'=>'0'])->find();
         $payclass = str_replace('/', '\\', $payment_conf['pay_name']);
         
         $obj = new \ReflectionClass("app\\".$payclass);

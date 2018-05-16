@@ -35,8 +35,8 @@
                             <div class="right">
                             <?php foreach($payment_methods as $key=>$payment_method){?>
                                 <div class="payment_types">
-                                    <input id="payment_method_{$key}" class="radio-inline__input" type="radio" name="payment_method" value="{$key}">
-                                    <label class="radio-inline__label" for="payment_method_{$key}">
+                                    <input id="payment_method_{$payment_method['id']}" class="radio-inline__input" type="radio" name="payment_method" value="{$payment_method['id']}">
+                                    <label class="radio-inline__label" for="payment_method_{$payment_method['id']}">
                                         <img src="{$payment_method['image_url']}" style="padding-right: 17px;"/>{$payment_method['type_name']}
                                     </label>
                                     <img class="tick-img" src="/assets/img/corner-tick.png">
