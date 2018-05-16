@@ -91,7 +91,7 @@ class AddressManageController extends Controller
 //            'address' =>$data->detail
 //        ]);
 //        return $this->fetch();
-        return "edit";
+        return "edit.html";
     }
 
     /**

@@ -39,7 +39,9 @@ class VerifyController extends Controller
     public function save(Request $request)
     {
         $link = new RealNameVerifyModel();
-        $link->real_name = $request->param('name');
+
+        $link->user_id = session('user_id');
+        $link->user_name = $request->param('name');
         $link->id_card_number = $request->param('iden_number');
 
         if (!empty($request->file('positive_id')))
@@ -60,6 +62,7 @@ class VerifyController extends Controller
             $info = $logo_image->move('./uploads/');
             $link->card_handled_image = $info->getSaveName();
         }
+
         $link->save();
         return redirect('/index/data_management.verify');
     }

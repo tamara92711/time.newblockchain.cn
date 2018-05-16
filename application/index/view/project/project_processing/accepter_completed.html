@@ -19,7 +19,7 @@
                 <p style="font-family:ms-yahei-bold;font-size:18px;color:#ff5656;margin-top:15px;margin-bottom:14px">{$data[0]['title']}</p>
                 <span class="label label-danger" style="font-family:ms-yahei-bold;font-size:16px;background-color:#ff5656;padding: 4px 21px;border-radius:4px">已完成</span>
                 <div style="padding-top: 24px;padding-left: 119px;padding-bottom:23px;font-size: 12px;width: 897px;text-align:left">
-                    <div style="float:left;width:164px;">发布人：{$data[0]['real_name']}</div>
+                    <div style="float:left;width:164px;">发布人：{$data[0]['publiser_name']}</div>
                     <div style="float:left;width:189px">需求类型：{$data[0]['demand_type']}</div>
                     <div style="float:left;width:177px">支付时间币：{$data[0]['pay_amount']}</div>
                     <div style="float:left">发布时间：{$data[0]['published_time']}</div>
@@ -35,7 +35,7 @@
                     <div style="padding:17px 20px;border-bottom: 1px dotted #e9e9e9;">
                         <img src="/assets/img/undertake1-yellow.png" style="margin-right:6px;"/>
                         <span style="color:#f8a046">承接人</span>
-                        <div style="margin-top: 6px;margin-left: 30px;">{$data[0]['name']}</div>
+                        <div style="margin-top: 6px;margin-left: 30px;">{$data[0]['applied_name']}</div>
                     </div>
                     <div>
                         <div style="float:left;padding:16px 20px;border-right: 1px dotted #e9e9e9;border-bottom: 1px dotted #e9e9e9;width:450px">
@@ -46,7 +46,12 @@
                         <div style="float:left;padding:16px 20px;border-bottom: 1px dotted #e9e9e9;width:448px">
                             <img src="/assets/img/tick-yellow.png"  style="margin-right:6px;"/>
                             <span style="color:#f8a046">完成时间</span>
-                            <div style="margin-top: 6px;margin-left: 30px;">{$data[0]['complete_time']}</div>
+                            <?php if ($mode == 0) {?>
+                                <div style="margin-top: 6px;margin-left: 30px;"><?php echo date('Y-m-d H:i:s');?></div>
+                            <?php }?>
+                            <?php else if ($mode == 1) {?>
+                                <div style="margin-top: 6px;margin-left: 30px;">{$data[0]['complete_time']}</div>
+                            <?php }?>
                         </div>
                         <div class="clearfix"></div>
                     </div>
@@ -54,29 +59,26 @@
                         <div style="float:left;padding:16px 20px;border-right: 1px dotted #e9e9e9;width:450px">
                             <img src="/assets/img/feedback-heart-yellow.png" style="margin-right:6px;" />
                             <span style="color:#f8a046">发布人评价</span>
-                            <?php
-                                 if ($data[0]['publisher_review_rate'] == 0)
-                                     echo "<div  style='margin-top: 6px;margin-left: 30px;color:#ff5656;'>待评价</div>";
-                        else {?>
-                        <div style="margin-top: 6px;margin-left: 30px;">
-                            <p style="margin:0px">{:model('demand')->getEvaluationText($data[0]['publisher_review_rate'])}</p>
-                            <p style="margin:0px;line-height:25px">{$data[0]['publisher_comment_text']}</p>
+                            <?php if($mode == 0 ) { ?>
+                                <p style="color: red;margin-top:10px;margin-left: 27px;">待评价</p>
+                            <?php }?>
+                            <?php if ($mode == 1 ) { ?>
+                                <p style="margin-top:10px;margin-left: 23px;">{$review_data[1]['review']}</p>
+                                <p style="margin-top:-13px;line-height:25px;margin-left: 29px;">{$review_data[0]['description']}</p>
+                            <?php }?>
                         </div>
-                        <?php } ?>
-                    </div>
                     <div style="float:left;padding:16px 20px;">
                         <img src="/assets/img/flower-light-yellow.png" style="margin-right:6px;" />
                         <span style="color:#f8a046">承接人评价</span>
-                        <?php
-                                 if ($data[0]['accepter_review_rate'] == 0)
-                                     echo "<div  style='margin-top: 6px;margin-left: 30px;color:#ff5656;'>待评价</div>";
-                    else {?>
-                    <div  style="margin-top: 6px;margin-left: 30px;">
-                        <p style="margin:0px">{:model('demand')->getEvaluationText($data[0]['accepter_review_rate'])}</p>
-                        <p style="margin:0px;line-height:25px">{$data[0]['accepter_comment_text']}</p>
+                        <?php if($mode == 0 ) { ?>
+                            <p style="color: red;margin-top:10px;margin-left: 27px;">待评价</p>
+                         <?php }?>
+                        <?php if($mode == 1 ) { ?>
+                            <p style="color: red;margin-top:10px;margin-left: 27px;">待评价</p>
+                        <?php }?>
+
+
                     </div>
-                    <?php } ?>
-                </div>
                 <div class="clearfix"></div>
             </div>
         </div>
@@ -87,30 +89,35 @@
             </div>
             <div class="qk-portlet1-body" style="padding-top:21px">
                 <div style="float:left;width:50%;">
-                    <img src="{$data[0]['publisher_comment_image']}" style="width:180px;height:220px;margin-bottom:-5px" />
+                    <img src="{$applied_avarta}" style="width:180px;height:220px;margin-bottom:-5px" />
                     <div>
                         <p style="margin-bottom:-25px">志愿者</p>
                         <p  style="margin-bottom:17px">（承接人）</p>
                     </div>
                 </div>
                 <div style="float:left;width:50%">
-                    <img src="{$data[0]['accepter_comment_image']}" style="width:180px;height:220px;margin-bottom:-5px" />
+                    <img src="{$publisher_avarta}" style="width:180px;height:220px;margin-bottom:-5px" />
                     <div>
                         <p style="margin-bottom:-25px">服务对象</p>
                         <p style="margin-bottom:17px">（发布人）</p>
                     </div>
                 </div>
                 <div class="clearfix"></div>
+                <?php if ($mode == 1) { ?>
+                    <input type="hidden" name="review_mark" id="review_mark" value="{$review_data[0]['review']}">
+                <?php }?>
             </div>
         </div>
-        <form method="post" action="/index/service_management.show_published/save" id="insertReviewForm" enctype="multipart/form-data">
+        <form method="post" action="/index/service_management.show_published/gaveReviewPA" id="insertReviewForm" name="insertReviewForm" enctype="multipart/form-data">
             <div class="qk-portlet1" style="width:898px;margin-bottom:30px">
                 <div class="qk-portlet1-title">
                     项目合照
                 </div>
+
                 <input type="hidden" name="mode" id="mode" value="1">
-                <input type="hidden" name="demand_id" id="demand_id" value="{$data[0]['id']}">
-                <input type="hidden" name="user_id" id="user_id" value="{$data[0]['user_id']}">
+                <input type="hidden" name="demand_id" id="demand_id" value="{$data[0]['demand_id']}">
+                <input type="hidden" name="user_id" id="user_id" value="{$data[0]['publisher_id']}">
+
                 <div class="qk-portlet1-body" style="padding-top:21px">
 
                     <div style="float:left;width:50%;padding: 0px 50px">
@@ -119,25 +126,30 @@
                             <p style="font-size:12px;color:#808080;margin-top:16px;">请上传项目合照</p>
                         </div>
                         <div>
-                            <p style="margin-bottom: 31px;margin-top: 14px;">由承接人上传</p>
+                            <p style="margin-bottom: 31px;margin-top: 14px;">由发布人上传</p>
                         </div>
                     </div>
 
                     <div style="float:left;width:50%;padding: 0px 50px">
-                        <div id="image-preview-front" class="" style="width:350px;height:220px;border:1px dashed #ffbaba;background-color:#f9f9f9;padding-top:78px">
-                            <input type="file" name="accepter-image" id="accepter-image">
-                            <img src="/assets/img/plus-circle-red.png" style="align-content: center;" />
-                            <p style="font-size:12px;color:#808080;margin-top:16px;">请上传项目合照</p>
-                        </div>
+                        <?php if ($mode == 0) {?>
+                            <div id="image-preview-front" class="" style="width:350px;height:220px;border:1px dashed #ffbaba;background-color:#f9f9f9;padding-top:78px">
+                                <input type="file" name="accepter-image" id="accepter-image">
+                                <img src="/assets/img/plus-circle-red.png" style="align-content: center;" />
+                                <p style="font-size:12px;color:#808080;margin-top:16px;">请上传项目合照</p>
+                            </div>
+                        <?php } ?>
+                        <?php else if ($mode == 1) { ?>
+                            <img src="{$review_data[2]['image']}" style="width:350px;height:220px"/>
+                        <?php } ?>
                         <div>
-                            <p style="margin-bottom: 31px;margin-top: 14px;margin-top:16px;">由发布人上传</p>
+                            <p style="margin-bottom: 31px;margin-top: 14px;margin-top:16px;">由承接人上传</p>
                         </div>
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
 
-            <div class="qk-portlet1" style="width:898px;margin-bottom:35px">
+                <div class="qk-portlet1" style="width:898px;margin-bottom:35px">
                 <div class="qk-portlet1-title">
                     服务评价
                 </div>
@@ -156,12 +168,25 @@
                         <label class="radio-inline__label" for="cha">
                             差评
                         </label>
+                    <span style="color:red;display: none;" id="warning"></span>
                     </p>
-                    <textarea placeholder="请输入评价内容......" style="background-color: #f9f9f9;width: 859px;height: 150px;border: 1px dashed #ffbaba;padding:14px 20px;"></textarea>
+
+                    <?php if ($mode == 0) {?>
+                        <textarea placeholder="请输入评价内容......" style="background-color: #f9f9f9;width: 859px;height: 150px;border: 1px dashed #ffbaba;padding:14px 20px;" id = "review_txt" name = "review_txt"></textarea>
+                    <?php } ?>
+
+                    <?php if ($mode == 1) {?>
+                        <textarea placeholder="请输入评价内容......" style="background-color: #f9f9f9;width: 859px;height: 150px;border: 1px dashed #ffbaba;padding:14px 20px;" readonly="readonly" id = "review_comment">{$review_data[0]['description']}</textarea>
+                    <?php } ?>
                 </div>
             </div>
 
-            <button class="btn" type="submit" style="background-color:#ff5656;color:white;font-size:14px;font-family:ms-yahei-bold;padding:9px 55px;margin-bottom:87px">完成</button>
+            <?php if ($mode == 0) {?>
+                <button class="btn" type="submit"  style="background-color:#ff5656;color:white;font-size:14px;font-family:ms-yahei-bold;padding:9px 55px;margin-bottom:87px" >完成</button>
+            <?php } ?>
+            <?php else if ($mode == 1) {?>
+                <button class="btn return"  style="background-color:#ff5656;color:white;font-size:14px;font-family:ms-yahei-bold;padding:9px 55px;margin-bottom:87px">返回</button>
+            <?php } ?>
         </form>
 
     </div>
@@ -172,16 +197,39 @@
 {/block}
 {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/uploadpreview.min.js"></script>
+<script type="text/javascript" src="/assets/js/common/common.js"></script>
 <script>
     $(document).ready(function () {
 
         $.uploadPreview({
             input_field: "#accepter-image",
-            preview_box: "#image-preview-back",
+            preview_box: "#image-preview-front",
             label_selected: "Change File"
         });
-
+        var review_mark = $("#review_mark").val();
+        $("input[name=review][value ="+review_mark+"]").prop("checked",true)
     });
+
+    $("#insertReviewForm").submit(function () {
+        var review_txt = $("#review_txt").val();
+        if(review_txt=="")
+        {
+            $("#warning").text('请输入评价内容').show();
+            $("#review_txt").focus();
+            return false;
+        }
+        var file = $('input[type=file]').val();
+        if ( ! file) {
+            $("#warning").text('由发布者上传是必需的.').show();
+            event.preventDefault();
+            return;
+        }
+
+        if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file)) {
+            $("#warning").text('无效的图像文件类型.').show();
+            event.preventDefault();
+        }
+    })
 
 </script>
 {/block}

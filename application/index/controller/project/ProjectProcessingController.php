@@ -2,6 +2,7 @@
 
 namespace app\index\controller\project;
 
+use app\admin\controller\member\RealNameVerifyController;
 use app\common\model\ApplyModel;
 use app\common\model\DemandModel;
 use app\common\model\ProfessionalCertificateModel;
@@ -89,7 +90,7 @@ class ProjectProcessingController extends Controller
 
     public function project_published($id, $mode)
     {
-        $temp = DemandModel::getProjectField($id);
+        $temp = DemandModel::getProjectInformation($id);
         $data = DemandModel::getProjectJoin($temp);
         //check possible to bid
         $isbid = ApplyModel::where('user_id',session('user_id'))->where('demand_id',$id)->count();
@@ -109,7 +110,7 @@ class ProjectProcessingController extends Controller
     public function project_accepted($id,$mode)
     {
         $temp = DemandModel::getProjectField($id);
-        $data = DemandModel::getProjectJoin($temp);
+        $data = DemandModel::getProjectCompletedJoin($temp);
 
         $this->assign('data',$data);
         $this->assign('mode',$mode);
@@ -133,7 +134,7 @@ class ProjectProcessingController extends Controller
 
     public function project_cancled($id,$mode)
     {
-        $temp = DemandModel::getProjectField($id);
+        $temp = DemandModel::getProjectInformation($id);
         $data = DemandModel::getProjectJoin($temp);
 
         $this->assign('data',$data);
@@ -147,29 +148,65 @@ class ProjectProcessingController extends Controller
     /*
     * for show accepted and publish  processing for myself
     */
-    public function accepter_completed($id)
+    public function accepter_completed($id,$mode)
     {
 
         $temp = DemandModel::getProjectField($id);
         $data = DemandModel::getProjectCompletedJoin($temp);
 
+        $user_id = $data[0]['publisher_id'];
+        $applied_avarta = RealNameVerifyModel::getAvarta($data[0]['applied_user_id']);
+        $publisher_avarta = RealNameVerifyModel::getAvarta($data[0]['publisher_id']);
+
+        $this->assign('applied_avarta',$applied_avarta);
+        $this->assign('publisher_avarta',$publisher_avarta);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
-        $this->assign('side_nav', 'project_apply');
+        $this->assign('side_nav', 'project_applied');
+
+        if ($mode == 0)
+            $this->assign('mode',$mode);
+        else if ($mode == 1)
+        {
+            $review_data = DemandModel::getReviewInformation($id,$user_id);
+            $this->assign('review_data',$review_data);
+            $this->assign('mode',$mode);
+
+        }
+        $this->assign($data);
         return $this->fetch();
     }
     /*
      * upload image
      */
-    public function publish_completed($id)
+    public function publish_completed($id,$mode)
     {
 
         $temp = DemandModel::getProjectField($id);
         $data = DemandModel::getProjectCompletedJoin($temp);
 
+        $freelancer_id = $data[0]['applied_user_id'];
+        $publisher_id  = $data[0]['publisher_id'];
+
+        $applied_avarta = RealNameVerifyModel::getAvarta($data[0]['applied_user_id']);
+        $publisher_avarta = RealNameVerifyModel::getAvarta($data[0]['publisher_id']);
+
+        $this->assign('applied_avarta',$applied_avarta);
+        $this->assign('publisher_avarta',$publisher_avarta);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
         $this->assign('side_nav', 'project_published');
+
+        if ($mode == 0)
+            $this->assign('mode',$mode);
+        //freelance give review to publisher ,,,so goto complete step
+        else if ($mode == 1)
+        {
+            $review_data = DemandModel::getReviewInformation($id,$publisher_id);
+            $this->assign('review_data',$review_data);
+            $this->assign('mode',$mode);
+
+        }
         return $this->fetch();
     }
 
@@ -179,6 +216,15 @@ class ProjectProcessingController extends Controller
         $temp = DemandModel::getProjectField($id);
         $data = DemandModel::getProjectCompletedJoin($temp);
 
+        $freelancer_id = $data[0]['applied_user_id'];
+        $publisher_id  = $data[0]['publisher_id'];
+
+        $freelancer_review_data = DemandModel::getReviewInformation($id,$publisher_id);
+        $publisher_review_data = DemandModel::getReviewInformation($id,$freelancer_id);
+
+        $this->assign('freelancer_review_data',$freelancer_review_data);
+        $this->assign('publisher_review_data',$publisher_review_data);
+        $this->assign('data',$data);
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
         $this->assign('side_nav', 'project_published');

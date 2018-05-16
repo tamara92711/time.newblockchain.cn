@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'time.newblockchain.cn',
+    'hostname'        => 'localhost',
     // 数据库名
-    'database'        => 'time.newblockchain.cn',
+    'database'        => 'qukuailian',
     // 用户名
-    'username'        => 'times',
+    'username'        => 'root',
     // 密码
-    'password'        => 'times2018',
+    'password'        => '',
     // 端口
     'hostport'        => '',
     // 连接dsn
