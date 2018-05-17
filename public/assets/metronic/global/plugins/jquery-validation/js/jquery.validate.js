@@ -1299,7 +1299,6 @@ $.extend( $.validator, {
 			}
 			return value === target.val();
 		},
-
 		// http://jqueryvalidation.org/remote-method/
 		remote: function( value, element, param ) {
 			if ( this.optional( element ) ) {
