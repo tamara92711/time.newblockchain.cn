@@ -38,8 +38,8 @@
                             <input id="ds-1" class="radio-inline__input" type="radio" name="demand_status" value="0" />
                             <label class="radio-inline__label" for="ds-1">全部</label>
                             {foreach $demand_status as $key=>$val}
-                            <input id="demand_status_{$val.id}" class="radio-inline__input" type="radio" name="demand_status" value="{$val.id}" />
-                            <label class="radio-inline__label" for="demand_status_{$val.id}">{$val.name}</label>
+                            <input id="demand_status_{$key}" class="radio-inline__input" type="radio" name="demand_status" value="{$key}" />
+                            <label class="radio-inline__label" for="demand_status_{$key}">{$val}</label>
                             {/foreach}
                         </div>
                     </div>
@@ -70,8 +70,8 @@
                                 全部
                             </label>
                             {foreach $release_time as $key=>$val}
-                            <input id="release_time_{$val.id}" class="radio-inline__input" type="radio" name="release_time" value="{$val.id}" />
-                            <label class="radio-inline__label" for="release_time_{$val.id}">{$val.name}</label>
+                            <input id="release_time_{$key}" class="radio-inline__input" type="radio" name="release_time" value="{$key}" />
+                            <label class="radio-inline__label" for="release_time_{$key}">{$val}</label>
                             {/foreach}
                         </div>
                     </div>
@@ -174,15 +174,16 @@
         if (typeof(time_currency_to)==="undefined") time_currency_to = -1;
 
         var dataString = 'demand_type='+demand_type+'&demand_status='+demand_status+'&time_currency='+time_currency+'&release_time='+release_time+'&time_currency_from='+time_currency_from+'&time_currency_to='+time_currency_to;
-        console.log(dataString);
+        // console.log(dataString);
         $.ajax({
             url  : '/index/service_management/undertake_service/1',
             data : dataString,
             method:'GET',
             success:function (result)
             {
+
                 response = JSON.parse(result);
-                console.log(response);
+                // console.log(response);
                 var options = {
                     dataSource: response,
                     callback: function (response, pagination) {
@@ -194,9 +195,9 @@
                             dataHtml += '<div class="qk-post-content">';
                             dataHtml += '<div class="qk-post-title">';
                             dataHtml += '<img src="/assets/img/title.png" class="qk-post-title-img" />';
-                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.ds_id+'/uid/'+item.user_id+'">'+item.title+'</a></span>'
+                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/uid/'+item.user_id+'">'+item.title+'</a></span>'
 
-                            dataHtml += '<span class="qk-post-title-status">'+item.state_name+'</span>';
+                            dataHtml += '<span class="qk-post-title-status">'+getDemandStatusFindJobList(item.state,item.is_reviewed)+'</span>';
                             dataHtml += '</div>';
                             dataHtml += '<div class="qk-post-body">';
                             dataHtml += '<div style="border-bottom: 1px solid #e4e4e4;">';

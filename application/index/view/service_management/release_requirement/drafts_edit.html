@@ -75,7 +75,7 @@
                                         <label>需求标题：</label>
                                     </div>
                                     <div class="right first-input-custom">
-                                        <input type="text" class="form-control input-custom" name="title" id="title"/>
+                                        <input type="text" class="form-control input-custom" name="title" id="title" value="{$draft_project[0]['title']}"/>
                                     </div>
                                 </div>
 
@@ -84,7 +84,7 @@
                                         <label>具体需求：</label>
                                     </div>
                                     <div class="right">
-                                        <textarea class="form-control" rows="3" name="detail" id="detail"></textarea>
+                                        <textarea class="form-control" rows="3" name="detail" id="detail">{$draft_project[0]['project_detail']}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -92,7 +92,7 @@
                                         <label>承接要求：</label>
                                     </div>
                                     <div class="right">
-                                        <textarea class="form-control" rows="3" name="apply_requirement" id="apply_requirement"></textarea>
+                                        <textarea class="form-control" rows="3" name="apply_requirement" id="apply_requirement">{$draft_project[0]['apply_requirement']}</textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -102,12 +102,12 @@
                                     <div class="right">
                                         <div class="input-icon right input-mid">
                                             <i class="fa fa-calendar-custom"></i>
-                                            <input type="text" class="form-control input-custom" data-toggle="service_time_from" id="service_time_from" name="service_time_from" placeholder="请选择日期"/>
+                                            <input type="text" class="form-control input-custom" data-toggle="service_time_from" id="service_time_from" name="service_time_from" placeholder="请选择日期" value="{$draft_project[0]['service_time_from']}"/>
                                         </div>
                                         <span class="left left-lable-custom">至</span>
                                         <div class="input-icon right input-mid">
                                             <i class="fa fa-calendar-custom"></i>
-                                            <input type="text" class="form-control input-custom" data-toggle="service_time_to" id="service_time_to"  name="service_time_to" placeholder="请选择日期"/>
+                                            <input type="text" class="form-control input-custom" data-toggle="service_time_to" id="service_time_to"  name="service_time_to" placeholder="请选择日期" value="{$draft_project[0]['service_time_to']}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                                         <label>所需时间：</label>
                                     </div>
                                     <div class="right">
-                                        <input type="text" class="form-control input-custom" name="time_required" id="time_required"/>
+                                        <input type="text" class="form-control input-custom" name="time_required" id="time_required" value="{$draft_project[0]['time_total']}"/>
                                     </div>
                                     <span class="required-letter"> * 例：周六下午3-5点，预计2小时</span>
                                 </div>
@@ -127,7 +127,7 @@
                                     <div class="right">
                                         <div class="input-icon right input-big">
                                             <i class="fa fa-calendar-custom "></i>
-                                            <input type="text" class="form-control" data-toggle="valid_time" name="valid_time" id="valid_time" placeholder="请选择日期"/>
+                                            <input type="text" class="form-control" data-toggle="valid_time" name="valid_time" id="valid_time" placeholder="请选择日期" value="{$draft_project[0]['valid_times']}"/>
                                         </div>
                                     </div>
                                 </div>
@@ -142,7 +142,7 @@
                                         <label>支付时间币：</label>
                                     </div>
                                     <div class="right first-input-custom-1" style="margin-left: 8px;">
-                                        <input type="text" class="form-control input-custom" name="pay_amount" id="pay_amount" />
+                                        <input type="text" class="form-control input-custom" name="pay_amount" id="pay_amount" value="{$draft_project[0]['pay_amount']}"/>
                                     </div>
                                 </div>
                                 <div class="form-group" style="padding-top: 17px;">
@@ -159,7 +159,7 @@
                                         <select class="form-control" style="width: 160px; height:35px;float: left; margin-bottom: 18px;" name="district" id="district">
 
                                         </select>
-                                        <textarea class="form-control" rows="3" name="detail_address" id="detail_address" style="height: 90px;" placeholder="请输入详细地址..."></textarea>
+                                        <textarea class="form-control" rows="3" name="detail_address" id="detail_address" style="height: 90px;" placeholder="请输入详细地址...">{$draft_project[0]['address_detail']}</textarea>
                                         <a  class="btn button-select-existing-address" data-target="#receiver" data-toggle="modal" style="color: white;">选择已有地址</a>
                                     </div>
                                 </div>
@@ -168,7 +168,7 @@
                                         <label>联系人：</label>
                                     </div>
                                     <div class="right" style="margin-left: 8px;">
-                                        <input type="text" class="form-control" name="contact" id="contact"/>
+                                        <input type="text" class="form-control" name="contact" id="contact" value="{$draft_project[0]['contact_name']}"/>
                                     </div>
                                 </div>
                                 <div class="form-group" style="border-bottom: none;">
@@ -176,7 +176,7 @@
                                         <label>联系电话: </label>
                                     </div>
                                     <div class="right" style="margin-left: 8px;">
-                                        <input type="text" class="form-control" name="contact_phone" id="contact_phone"/>
+                                        <input type="text" class="form-control" name="contact_phone" id="contact_phone" value="{$draft_project[0]['contact_phone']}"/>
                                     </div>
                                 </div>
 
@@ -279,10 +279,11 @@
                                     </div>
 
                                     <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;"/></div>
-                                    <!--http://localhost:82/index/index/verify.html/-->
+
                                 </div>
                             </div>
                         </div>
+                        <input type="hidden" value="{$draft_project[0]['id']}" name="demand_id" id="demand_id" aria-invalid="false"/>
                         <div class="form-group" style="border-bottom: none;">
                             <div style="float: left;height: 1px;">
 
@@ -331,14 +332,12 @@
                             <div class="clearfix"></div>
                         </div>
                         {/foreach}
-                        <input type="hidden" value="0" name="demand_id" id="demand_id" />
                     </div>
                     <button class="btn" onclick="insertAddress();" style="width:200px;height:40px;background-color:#ff5656;font-size:18px;color:white;margin-top:28px;margin-left:215px;">确认选择</button>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 {/block} {block name="custom-css"}
 
@@ -350,155 +349,161 @@
 <script src="/assets/js/form-validation/select2.full.min.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/jquery.validate.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
-<script src="/assets/js/form-validation/form-wizard.js" type="text/javascript"></script>
+<script src="/assets/js/form-validation/form-wizard-draft.js" type="text/javascript"></script>
 <script src="/assets/js/common/common.js" type="text/javascript"></script>
 <script src="/assets/js/jquery-scrollto.js" type="text/javascript"></script>
 <!--datepicker js start-->
 <script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
 <!--datepicker js end-->
 <script>
-    var current_tab = 1;
-    $(document).ready(function ()
-    {
-        //first task bar initial
-        $("#step-1").removeClass();
-        $("#step-1").addClass("progtrckr-done");
-        showTree();
-        calendars();
-        $("#region_1").change();
-        //Get each demandtype's text
-        getDemandTypeText();
-        //first element checked in address list
-        // $('input[name="candidate"]:first').attr('checked',true);
-        //first element checked in demand type list
-        $('input[name=demand_type]:first').attr('checked',true);
-        //treeview first child display
-        $(".set .acc-plus").first().addClass("active").siblings(".content").slideDown(100);
-    });
+
+
+var current_tab = 1;
+$(document).ready(function ()
+{
+    //first task bar initial
+    $("#step-1").removeClass();
+    $("#step-1").addClass("progtrckr-done");
+    showTree();
+    calendars();
+    $("#region_1").change();
     //Get each demandtype's text
-    var demand_type_val,demand_type_id;
-    var getDemandTypeText = function ()
+    getDemandTypeText();
+    //first element checked in address list
+    // $('input[name="candidate"]:first').attr('checked',true);
+    init();
+
+
+});
+
+function init() {
+    //select checkbox according to demand_type
+    $("#radio_{$draft_project[0]['demand_id']}").prop("checked",true);
+    $("#region_1").val({$draft_project[0]['region_1']});
+    $("#district").val({$draft_project[0]['region_2']});
+    $(".set .acc-plus").eq({$draft_project[0]['pid']-1})
+        .addClass("active").siblings(".content").slideDown(100);
+}
+//Get each demandtype's text
+var demand_type_val,demand_type_id;
+var getDemandTypeText = function ()
+{
+
+    $("[id*=radio_]").change(function ()
     {
-
-        $("[id*=radio_]").change(function ()
-        {
-            demand_type_id  = $('input[name="demand_type"]:checked').val();
-            demand_type_val = $('input[name = "demand_type"]:checked').next('label').text();
-            $('div.progress-bar-container').ScrollTo();
-        });
+        demand_type_id  = $('input[name="demand_type"]:checked').val();
+        demand_type_val = $('input[name = "demand_type"]:checked').next('label').text();
+        $('div.progress-bar-container').ScrollTo();
+    });
 
 
-        $('div.accordion-container').on('click', '*', function () {
-            $("div.progress-bar-container").ScrollTo();
-        });
+    $('div.accordion-container').on('click', '*', function () {
+        $("div.progress-bar-container").ScrollTo();
+    });
 
-        return demand_type_val;
-    }
-
-
-    function showTree() {
-        $(".content ul").removeClass();
-        $(".set > a").on("click", function () {
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                $(this)
-                    .siblings(".content")
-                    .slideUp(200);
-                $(".set > a i")
-                    .removeClass("fa-minus")
-                    .addClass("fa-plus");
-            } else {
-                $(".set > a i")
-                    .removeClass("fa-minus")
-                    .addClass("fa-plus");
-                $(this)
-                    .find("i")
-                    .removeClass("fa-plus")
-                    .addClass("fa-minus");
-                $(".set > a").removeClass("active");
-                $(this).addClass("active");
-                $(this).addClass("active");
-                $(".content").slideUp(200);
-                $(this)
-                    .siblings(".content")
-                    .slideDown(200);
-            }
-        });
-    }
-
-    function calendars()
-    {
-        //datepicker
-        $('[data-toggle="valid_time"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-            format:'yyyy-mm-dd'
-        });
-
-        $('[data-toggle="valid_time_confirm"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-            format:'yyyy-mm-dd'
-        });
-
-        $('[data-toggle="service_time_from"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-            format:'yyyy-mm-dd'
-        });
-
-        $('[data-toggle="service_time_to"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-            format:'yyyy-mm-dd'
-        });
-
-        $('[data-toggle="published_time"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-        });
-
-        $('#valid_time').datepicker().datepicker('setDate',new Date());
-        $('#service_time_from').datepicker().datepicker('setDate',new Date());
-        $('#service_time_to').datepicker().datepicker('setDate',new Date());
-        $('#published_time').datepicker().datepicker('setDate',new Date());
-    }
+    return demand_type_val;
+}
 
 
-    $("#region_1").change(region1Change);
-    /*
-        User show one item of address detail
-     */
-    function insertAddress()
-    {
-        var checked_id = $("input[name='candidate']:checked").val();
-        var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
-        var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
-        var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+function showTree() {
+    $(".content ul").removeClass();
+    $(".set > a").on("click", function () {
+        if ($(this).hasClass("active")) {
+            $(this).removeClass("active");
+            $(this)
+                .siblings(".content")
+                .slideUp(200);
+            $(".set > a i")
+                .removeClass("fa-minus")
+                .addClass("fa-plus");
+        } else {
+            $(".set > a i")
+                .removeClass("fa-minus")
+                .addClass("fa-plus");
+            $(this)
+                .find("i")
+                .removeClass("fa-plus")
+                .addClass("fa-minus");
+            $(".set > a").removeClass("active");
+            $(this).addClass("active");
+            $(this).addClass("active");
+            $(".content").slideUp(200);
+            $(this)
+                .siblings(".content")
+                .slideDown(200);
+        }
+    });
+}
 
-        $("#receiver").modal('hide');
-        $("#region_1").val(contact_region1_id);
-        $("#detail_address").val(contact_onlyDetail_id);
-        // $("#region_1").change()
-        $("#district").val(contact_region2_id);
-    }
+function calendars()
+{
+    //datepicker
+    $('[data-toggle="valid_time"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+        format:'yyyy-mm-dd'
+    });
 
-    // function reset()
-    // {
-    //     var $inputs = $('#release_requirement_form :input');
-    //     var values = {};
-    //     $inputs.each(function() {
-    //         values[this.name] = $(this).val('');
-    //     });
-    //     $("input#title").focus();
-    // }
-    //
-    // function resetForm(id_form){
-    //     $("#" + id_form).find('input[type="text"]').val('');
-    //     $("#" + id_form).find('input[type="password"]').val('');
-    //     $("#" + id_form).find('input[type="checkbox"]').removeAttr("checked");
-    //     $("#" + id_form).find('select option').removeAttr("selected");
-    //     $("#" + id_form).find('textarea').val('');
-    // }
+    $('[data-toggle="valid_time_confirm"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+        format:'yyyy-mm-dd'
+    });
+
+    $('[data-toggle="service_time_from"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+        format:'yyyy-mm-dd'
+    });
+
+    $('[data-toggle="service_time_to"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+        format:'yyyy-mm-dd'
+    });
+
+    $('[data-toggle="published_time"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+
+}
+
+
+$("#region_1").change(region1Change);
+/*
+    User show one item of address detail
+ */
+function insertAddress()
+{
+    var checked_id = $("input[name='candidate']:checked").val();
+    var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
+    var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
+    var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+
+    $("#receiver").modal('hide');
+    $("#region_1").val(contact_region1_id);
+    $("#district").val(contact_region2_id);
+    $("#detail_address").val(contact_onlyDetail_id);
+    $("#region_1").change()
+}
+
+// function reset()
+// {
+//     var $inputs = $('#release_requirement_form :input');
+//     var values = {};
+//     $inputs.each(function() {
+//         values[this.name] = $(this).val('');
+//     });
+//     $("input#title").focus();
+// }
+//
+// function resetForm(id_form){
+//     $("#" + id_form).find('input[type="text"]').val('');
+//     $("#" + id_form).find('input[type="password"]').val('');
+//     $("#" + id_form).find('input[type="checkbox"]').removeAttr("checked");
+//     $("#" + id_form).find('select option').removeAttr("selected");
+//     $("#" + id_form).find('textarea').val('');
+// }
 </script>
 {/block}

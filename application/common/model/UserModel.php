@@ -24,4 +24,6 @@ class UserModel extends Model
         return $user_data;
     }
 
+
+
 }

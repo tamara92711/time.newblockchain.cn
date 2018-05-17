@@ -22,6 +22,7 @@ class PersonalInformationController extends Controller
         $this->assign('side_nav', 'personal_info');
         $user_data = UserModel::getAlluserInformation();
         $this->assign('user_data',$user_data);
+        $this->assign('user_id',session('user_id'));
         return $this->fetch();
     }
 
@@ -43,17 +44,7 @@ class PersonalInformationController extends Controller
      */
     public function save(Request $request)
     {
-        $link=new UserModel();
-        $link->name = $request->param("username");
-        $link->real_name = $request->param("realname");
-        $link->sex = $request->param("gender");
-        $link->password = md5($request->param("newpass"));
-        $link->job_type = $request->param("occupation");
-        $link->education_type = $request->param("education");
-        $link->mobile = $request->param("cellphone");
-        $link->fixed = $request->param("fixed");
-        $link->email = $request->param("email");
-        $link->save();
+
 
     }
 
@@ -88,7 +79,28 @@ class PersonalInformationController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+//        return "update".$id;
+        $oldPass = $request->param("beforepass");
+        $checkPass = UserModel::where('id',session('user_id'))->where('password',$oldPass)->count();
+        if ($checkPass == 0)
+        {
+            return "failure";
+        }
+        else
+        {
+            $link=UserModel::get(session('user_id'));
+            $link->real_name = $request->param("realname");
+            $link->sex = $request->param("gender");
+            $link->password = md5($request->param("newpass"));
+            $link->job_type = $request->param("occupation");
+            $link->education_type = $request->param("education");
+            $link->mobile = $request->param("cellphone");
+            $link->fixed = $request->param("fixed");
+            $link->email = $request->param("email");
+            $link->save();
+            return "ok";
+        }
+
     }
 
     /**
