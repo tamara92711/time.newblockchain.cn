@@ -9,11 +9,13 @@
             <div class="qk-portlet-content form">
                 <form id="register_form" role="form" action="/register" method="POST" style="margin-top:15px">
                     <input type="hidden" name="id" id="user_id" />
+                    <span id="submit_error"></span>
                     <div class="form-group">
                         <label class="control-label">用 户 名：</label>
                         <div class="input-icon right">
                             <i class="fa"></i>
                             <input id="name" name="name" type="text" class="form-control" style="margin-left: -3px" required maxlength="20" />
+                            <span class="err_text" id="name_error"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -21,6 +23,7 @@
                         <div class="input-icon right">
                             <i class="fa"></i>
                             <input id="mobile" name="mobile" type="text" class="form-control" required maxlength="11" minlength="11" />
+                            <span class="err_text" id="mobile_error"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -33,6 +36,7 @@
                                     <button onclick="create_phone_verify_code()" class="btn" type="button" id="get-veri-code-button">获取验证码</button>
                                 </span>
                             </div>
+                            <span class="err_text" id="mvc_err"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -40,6 +44,7 @@
                         <div class="input-icon right">
                             <i class="fa"></i>
                             <input name="password" id="password" type="password" class="form-control" required minlength="4" />
+                            <span class="err_text" id="pwd_error"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -47,6 +52,7 @@
                         <div class="input-icon right">
                             <i class="fa"></i>
                             <input id="password_confirm" type="password" class="form-control" required minlength="4" />
+                            <span class="err_text" id="pwd_confirm_error"></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -62,15 +68,18 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group enter-veri-code" style="margin-bottom:14px">
                         <label class="control-label">验 证 码：</label>
                         <div class="input-icon right" style="margin-left: 3px">
                             <input id="captcha_code" name="captcha_code" type="text" class="form-control" style="width:180px;display:inline;" required
                                 minlength="4" maxlength="4" />
                             <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src" alt="captcha" style="float:right;" />
+                            <div class="clearfix"></div>
+                            <span class="err_text" id="captcha_error"></span>
                         </div>
-
                     </div>
+
                     <div class="user-agreement-check" style="margin-bottom:13px">
                         <div class="checkbox checkbox-primary" style="padding-left:0px;">
                             <input id="checkbox2" name="checkbox2" type="checkbox" required>
@@ -79,10 +88,13 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="clearfix"></div>
+
                     <div>
                         <p id="error" style="margin-left:140px;color:#ff5656"></p>
                     </div>
+
                     <div>
                         <button onclick="submit_register()" class="btn btn-register" style="margin-bottom:20px">立即注册</button>
                     </div>
@@ -116,12 +128,14 @@
         $(".btn-register").prop("disabled", true);
         $("#region").val(1);
         $("#region").change();
-        $("#name").keyup(function () {
+        $("#name").on('keyup blur', function () {
             var name = $(this).val();
             if (name.length == 0)
             {
                 validation.name = false;
-                validation.name_error = "请输入用户名";
+                // validation.name_error = "请输入用户名";
+                $("#name_error").text("请输入用户名");
+                all_valid();
             } else {
                 $.ajax({
                     url: "/index/user/name_exists",
@@ -130,10 +144,12 @@
                     success: function (response) {
                         if (response) {
                             validation.name = false;
-                            validation.name_error = "用户名已经存在！";
+                            // validation.name_error = "用户名已经存在！";
+                            $("#name_error").text("用户名已经存在！");
                         } else {
                             validation.name = true;
-                            validation.name_error = "";
+                            // validation.name_error = "";
+                            $("#name_error").text("");
                         }
                         all_valid();
                     }
@@ -141,22 +157,21 @@
             }
         });
 
-        $("#name").blur(function() {
-            var name = $("#name").val();
-            if (name.length == 0) {
-                validation.name = false;
-                validation.name_error = "请输入用户名";
-            }
-            all_valid();
-        });
-
-        $("#mobile").keyup(function () {
+        $("#mobile").on('keyup blur', function () {
             var mobile = $(this).val();
             console.log(mobile + ": " + mobile.length);
             var isnum = /^\d+$/.test(mobile);
-            if (!isnum || mobile.length != 11){
-                validation.mobile_error = "手机号码格式不正确！\n";
+            console.log(mobile.length);
+            if (mobile.length == 0)
+            {
                 validation.mobile = false;
+                $("#mobile_error").text("请输入手机号码！");
+                all_valid();
+            }else if (!isnum || mobile.length != 11){
+                // validation.mobile_error = "手机号码格式不正确！";
+                $("#mobile_error").text("手机号码格式不正确！");
+                validation.mobile = false;
+                all_valid();
             } else {
                 validation.mobile_error = "";
                 $.ajax({
@@ -167,11 +182,13 @@
                         if (response)
                         {
                             validation.mobile = false;
-                            validation.mobile_error = "手机号码已经存在！\n";
+                            // validation.mobile_error = "手机号码已经存在！";
+                            $("#mobile_error").text("手机号码已经存在！");
                         }
                         else {
                             validation.mobile = true;
-                            validation.mobile_error = "";
+                            // validation.mobile_error = "";
+                            $("#mobile_error").text("");
                         }
                         all_valid();
                     }
@@ -179,73 +196,80 @@
             }
         });
 
-        $("#mobile").blur(function() {
+        $("#password").on('keyup blur', function () {
+            var password = $(this).val();
+            var password_confirm = $("#password_confirm").val();
+            console.log(password.length);
+            if (password.length < 4) {
+                validation.password = false;
+                $("#pwd_error").text("密码需要4个字以上。");
+                // validation.password_error = "密码需要4个字以上。";
+            } else if (password.length > 3 && password != password_confirm) {
+                validation.password = false;
+                // validation.password_error = "密码不同。";
+                $("#pwd_error").text("");
+                $("#pwd_confirm_error").text("密码不同。");
+            } else if (password.length > 3 && password == password_confirm) {
+                validation.password = true;
+                // validation.password_error = "";
+                $("#pwd_error").text("");
+                $("#pwd_confirm_error").text("");
+            }
             all_valid();
         });
 
-        $("#password").keyup(function () {
-            var password = $(this).val();
-            var password_confirm = $("#password_confirm").val();
-            if (password.length < 4) {
-                validation.password = false;
-                validation.password_error = "密码需要4个字以上。\n";
-            } else if (password_confirm.length > 3 && password != password_confirm) {
-                validation.password = false;
-                validation.password_error = "密码不同。\n";
-            } else if (password_confirm.length > 3 && password == password_confirm) {
-                validation.password = true;
-                validation.password_error = "";
-                all_valid();
-            }
-        });
-
-        $("#password_confirm").keyup(function () {
+        $("#password_confirm").on('keyup blur', function () {
             var password_confirm = $(this).val();
             var password = $("#password").val();
-            if (password_confirm.length < 4 || password_confirm != password) {
+            console.log(password_confirm.length);
+            if (password_confirm.length < 4) {
                 validation.password = false;
-                validation.password_error = "密码需要4个字以上。\n";
-            } else if (password.length > 0 && password != password_confirm) {
+                // validation.password_error = "密码需要4个字以上";
+                $("#pwd_confirm_error").text("密码需要4个字以上。");
+            } else if (password_confirm.length > 3 && password != password_confirm) {
+                console.log(password_confirm.length);
                 validation.password = false;
-                validation.password_error = "密码不同。\n";
-            } else if (password.length > 3 && password == password_confirm) {
+                // validation.password_error = "密码不同。";
+                $("#pwd_confirm_error").text("密码不同。");
+            } else if (password_confirm.length > 3 && password == password_confirm) {
                 validation.password = true;
-                validation.password_error = "";
-                all_valid();
+                // validation.password_error = "";
+                $("#pwd_confirm_error").text("");
+                $("#pwd_error").text("");
             }
+            all_valid();
         });
 
-        $("#mobile_verify_code").keyup(function() {
+        $("#mobile_verify_code").on('keyup blur', function() {
             var code = $(this).val();
             var isnum = /^\d+$/.test(code);
             console.log('code:' + code + ' ' + code.length);
             if (code.length == 4 && isnum)
             {
                 validation.mvc = true;
-                validation.mvc_error = "";
+                // validation.mvc_error = "";
+                $("#mvc_error").text("");
                 all_valid();
             } else {
                 validation.mvc = false;
-                validation.mvc_error = "手机验证码不正确！";
+                // validation.mvc_error = "手机验证码不正确！";
+                $("#mvc_error").text("手机验证码不正确！");
             }
         });
-        $("#mobile_verify_code").blur(function() {
-            all_valid();
-        });
 
-        $("#captcha_code").keyup(function () {
+        $("#captcha_code").on('keyup blur', function () {
             var code = $(this).val();
+            console.log(code.length);
             if (code.length == 4) {
                 validation.captcha = true;
-                validation.captcha_error = "";
+                // validation.captcha_error = "";
+                $("#captcha_error").text("");
                 all_valid();
             } else {
                 validation.captcha = false;
-                validation.captcha_error = "验证码不正确！";
+                // validation.captcha_error = "验证码不正确！";
+                $("#captcha_error").text("验证码不正确！");
             }
-        });
-        $("#captcha_code").blur(function () {
-            all_valid();
         });
     });
 
@@ -259,10 +283,12 @@
             method: "post",
             data: { phone_number: mobile },
             success: function (response) {
-                result = JSON.parse(response);  
+                result = JSON.parse(response); 
+                console.log(result.result); 
                 if (result.error) {
                     console.log(result.text);
-                    $("#mobile").focus();
+                    $("#mvc_error").text(result.text);
+                    // $("#mobile").focus();
                 } else {
                     console.log(result.code);
                     $("#mobile").prop("readonly", true);
@@ -322,7 +348,7 @@
                 $(".btn-register").prop("disabled", false);
             } else {
                 $(".btn-register").prop("disabled", true);
-                $("#error").html(error);
+                // $("#error").html(error);
             }
     }
 
