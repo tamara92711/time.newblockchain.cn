@@ -38,10 +38,12 @@ class UserController extends Controller
     public function register_form() 
     {
         $regions_level_1 = RegionModel::where('level', 1)->column('name', 'id');
+        $ip = request()->ip();
 
         $this->assign('region_level_1', $regions_level_1);
         $this->assign('header_nav', '');
         $this->assign("nav_type", 1);
+        $this->assign("ip", $ip);
         return $this->fetch();
     }
 
@@ -108,7 +110,7 @@ class UserController extends Controller
         // $captcha_pass = $this->verify($captcha_code);
         $captcha = $this->captcha;
         if (!$captcha->check($captcha_code)) {
-           return redirect('/register_form');
+           return redirect('/register_form')->with($input);
         }
 
         if ($input['mobile_verify_code'] == session('mobile_verify_code'))
@@ -134,6 +136,18 @@ class UserController extends Controller
     
     public function create_phone_verify_code(Request $request)
     {
+        $send_status = [
+            "0" => "短信发送成功",
+            "-1" => "参数不全",
+            "-2" => "服务器空间不支持,请确认支持curl或者fsocket，联系您的空间商解决或者更换空间！",
+            "30" => "密码错误",
+            "40" => "账号不存在",
+            "41" => "余额不足",
+            "42" => "帐户已过期",
+            "43" => "IP地址限制",
+            "50" => "内容含有敏感词"
+        ];
+
         $phone_number = $request->post('phone_number');
         $response = [];
         $response['error'] = false;
@@ -160,12 +174,18 @@ class UserController extends Controller
             //send sms
             $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
             $result =file_get_contents($sendurl) ;
-
-            $response['text'] = config('sms.send_status')[$result];
+            
             if ($result != 0)
             {
                 $response['error'] = true;
             }
+            if (in_array($result, array_keys($send_status)))
+            {
+                $response['text'] = $send_status[$result];
+            } else {
+                $response['text'] = "Unknown Error";
+            }
+            $response['result'] = $result;
             $response['code'] = $code;
         }
         return json_encode($response);

@@ -72,13 +72,14 @@ body {
   width: 74px;
   height: 100%;
   padding-top: 20px;
-  padding-left: 20px;
+  padding-left: 15px;
 }
 
 #quanguo select {
   padding: 0px;
   font-size: 14px;
   border: none;
+  width:65px;
 }
 
 #search-box {
@@ -213,14 +214,14 @@ body {
 
 #zuixin .row {
   width: 1100px;
-  height: 311px;
+  height: 330px;
   margin-left: 0px;
   margin-right: 0px;
 }
 
 #zuixin-xuqiu {
   width: 770px;
-  height: 303px;
+  /* height: 303px; */
   overflow: hidden;
 }
 
@@ -235,6 +236,8 @@ body {
   width: 320px;
   text-align: left;
   padding-top: 8px;
+  white-space: nowrap;
+  overflow:hidden;
 }
 
 #zuixin-dongtai tr:nth-child(1) > td {
@@ -316,6 +319,8 @@ body {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .qk-portlet-content .row {
@@ -446,10 +451,6 @@ body {
   padding-top: 8px;
 }
 
-.blank {
-  height: 596px;
-}
-
 .register-user {
   margin: 25px auto;
   width: 450px;
@@ -468,10 +469,11 @@ body {
 
 .enter-veri-code > div > img {
   display: inline-block;
-  width: 89px;
-  height: 32px;
-  background-color: #ffcccc;
-  margin-top: -6px;
+    width: 99px;
+    height: 32px;
+    background-color: #ffcccc;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
 }
 
 .register-user .form > form > .form-group > div {
@@ -484,6 +486,7 @@ body {
   display: inline;
   word-spacing: 4px;
   margin-right: 20px;
+  vertical-align: top;
 }
 
 .register-user .form-group,
@@ -1269,4 +1272,8 @@ input.invalid, textarea.invalid{
 
 input.valid, textarea.valid{
   border: 2px solid green;
+}
+
+span.err_text {
+  color: #ff5656;
 }
