@@ -12,7 +12,7 @@
                     <span class="qk-portlet-title-text">最新需求</span>
                 </div>
                 <div class="qk-portlet-content">
-                    <table>
+                    <table style="table-layout:fixed;width:100%">
                         <thead>
                             <th width="5%">服务地点</th>
                             <th width="3%">服务类型</th>
@@ -42,8 +42,8 @@
                     <img class="qk-portlet-title-icon" src="/assets/img/dongtai.png" />
                     <span class="qk-portlet-title-text">最新动态</span>
                 </div>
-                <div class="qk-portlet-content" style="height: 254px;">
-                    <table>
+                <div class="qk-portlet-content">
+                    <table style="width:100%;table-layout:fixed">
                             {foreach $news as $key=>$value}
                             <tr>
                                 <td>【{$value.type}】{$value.title}</td>
