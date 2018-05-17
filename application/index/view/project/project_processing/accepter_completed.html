@@ -168,7 +168,7 @@
                         <label class="radio-inline__label" for="cha">
                             差评
                         </label>
-                    <span style="color:red;display: none;" id="warning"></span>
+                    <span style="color:red;display: none;" id="waring"></span>
                     </p>
 
                     <?php if ($mode == 0) {?>
@@ -214,19 +214,19 @@
         var review_txt = $("#review_txt").val();
         if(review_txt=="")
         {
-            $("#warning").text('请输入评价内容').show();
+            $("#waring").text('请输入评价内容').show();
             $("#review_txt").focus();
             return false;
         }
         var file = $('input[type=file]').val();
         if ( ! file) {
-            $("#warning").text('由发布者上传是必需的.').show();
+            $("#waring").text('由发布者上传是必需的.').show();
             event.preventDefault();
             return;
         }
 
         if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file)) {
-            $("#warning").text('无效的图像文件类型.').show();
+            $("#waring").text('无效的图像文件类型.').show();
             event.preventDefault();
         }
     })

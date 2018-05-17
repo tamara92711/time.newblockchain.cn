@@ -17,30 +17,32 @@
                             <div class="right">
                                 <input type="text" class="form-control" name="name" id="name" />
                             </div>
-                            <!--<label class="error" for="name" id="name_error">这是必填栏。</label>-->
+                            <span style="color:red;margin-left: 20px;display: none;" id="name_error"></span>
+                            <span class="error">This field is required</span>
                         </div>
                         <div class="form-group" style="width:652px">
                             <div class="left">
                                 <label>身份证号码：</label>
                             </div>
                             <div class="right">
-                                <input type="text" class="form-control" name="iden_number" id="iden_number" />
+                                <input type="number" class="form-control" name="iden_number" id="iden_number" />
                             </div>
-                            <!--<label class="error" for="iden_number" id="iden_number_error">这是必填栏。</label>-->
+                            <span style="color:red;margin-left: 20px;" id="iden_error">只插入号码。</span>
                         </div>
                         <div class="form-group" style="height: 148px;width:652px">
                             <div class="left">
                                 <label>身份证正面：</label>
                             </div>
                             <div id="image-preview-positive" class="right add-picture">
-                                <input type="file" name="positive_id" id="positive_id" />
+                                <input type="file" name="positive_id" id="positive_id" accept=".jpg,.png,.bmp"/>
                             </div>
+                            <span style="color:red;margin-left: 35px;display: none" id="positive_image_error"></span>
+                            <div style="color:red;margin-right: 15px;float: right;display: none" id="avarta_image_error"></div>
                         </div>
                     </div>
-                    <div class="add-avatar">
+                    <div class="add-avatar" id="avarta-image" style="cursor: pointer">
                     </div>
                 </div>
-
                 <div class="form-group" style="height: 148px">
                     <div class="left">
                         <label>身份证反面：</label>
@@ -48,9 +50,8 @@
                     <div id="image-preview-negative" class="right add-picture">
                         <input type="file" name="negative_id" id="negative_id" />
                     </div>
+                    <span style="color:red;margin-left: 35px;display: none" id="negative_image_error"></span>
                 </div>
-
-
 
                 <div class="form-group" style="height: 147px;border-bottom:none">
                     <div class="left">
@@ -59,6 +60,7 @@
                     <div id="image-preview-handheld" class="right add-picture">
                         <input type="file" name="handheld_id" id="handheld_id" />
                     </div>
+                    <span style="color:red;margin-left: 35px;display: none" id="handheld_image_error"></span>
                 </div>
 
                 <div class="form-group" style="border-bottom:none">
@@ -74,7 +76,9 @@
 {/block} {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/uploadpreview.min.js"></script>
 <script>
-    $(document).ready(function () {       
+    $(document).ready(function ()
+    {
+
         var video, $output;
         var scale = 0.25;
         var is_captured = false;
@@ -114,7 +118,7 @@
             canvas.getContext('2d')
                 .drawImage(video, 0, 0, canvas.width, canvas.height);
             var html = '<img id="captured-image" />';
-            html += '<input type="hidden" id="avatar_image" name="avatar_image">';
+            html += '<input type="text" id="avatar_image" name="avatar_image">';
             $(".add-avatar").html(html)
             $("#captured-image").attr('src', canvas.toDataURL());
             $("#avatar_image").val(canvas.toDataURL());
@@ -139,37 +143,62 @@
             preview_box: "#image-preview-handheld",
             label_selected: "Change File"
         });
-
-        $("#verifyForm").submit(function () {
-            if ($("#name").val() == "") {
-                alert("你应该添加“姓名”！");
-                return false;
-            }
-
-            if ($("#iden_number").val() == "") {
-                alert("你应该添加“身份证号码”！");
-                return false;
-            }
-
-            if ($("#positive_id").val() == "") {
-                alert("你应该添“加身份证正面”！");
-                return false;
-            }
-
-            if ($("#negative_id").val() == "") {
-                alert("你应该添加“身份证反面”！");
-                return false;
-            }
-
-            if ($("#handheld_id").val() == "") {
-                alert("你应该添加“手持身份证”！");
-                return false;
-            }
-
-            if ($("#captured-image").length == 0) {
-                alert("你应该拍照“头像”！")
-                return false;
-            }
-        });
     });
-</script> {/block}
+    $("#verifyForm").submit(function ()
+    {
+        // console.log("test");
+        var name = $("#name").val();
+        if(name=="")
+        {
+            $("#name_error").text('这是必填栏。').show();
+            $("#name").focus();
+            return false;
+        }
+
+
+
+        var iden_number = $("#iden_number").val();
+        if(iden_number=="")
+        {
+            $("#iden_error").text('这是必填栏。').show();
+            $("#iden_number").focus();
+            return false;
+        }
+
+
+        var positive = $("#positive_id").val();
+        if ( ! positive) {
+            $("#positive_image_error").text('请上传身份证正面.').show();
+            event.preventDefault();
+            return;
+        }
+
+        var negative = $("#negative_id").val();
+        if ( ! negative) {
+            $("#negative_image_error").text('请上传身份证反面.').show();
+            event.preventDefault();
+            return;
+        }
+
+        var handheld = $("#handheld_id").val();
+        if ( ! handheld) {
+            $("#handheld_image_error").text('请上传手持身份证.').show();
+            event.preventDefault();
+            return;
+        }
+
+        var avarta_image = $("#avatar_image").val();
+        if ( ! avarta_image) {
+            $("#avarta_image_error").text('请拍下我自己的照片.').show();
+            event.preventDefault();
+            return;
+        }
+
+        if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file)) {
+            $("#image_error").text('请选择正确的图像.').show();
+            event.preventDefault();
+        }
+    })
+
+</script>
+{/block}

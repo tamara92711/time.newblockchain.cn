@@ -100,6 +100,7 @@ Route::post('charge_coin','@common/pay/charge');
 Route::get('transactionhistory','/index/time_money/transactionhistory')->middleware('AuthMiddleware');
 Route::get('charge','/index/time_money/buy')->middleware('AuthMiddleware');
 Route::get('transfer','/index/time_money/transfer')->middleware('AuthMiddleware');
+
     
 Route::resource('index/data_management/address_manage','@index/data_management/address_manage');
 
@@ -112,6 +113,10 @@ Route::get('certificates', '/index/data_management.professional_certificate');//
 Route::resource('index/data_management/personal_infomation','@index/data_management/personal_infomation');
 
 Route::get('personal_information', '/index/data_management.personal_information');//->middleware('AuthMiddleware');
+
+Route::post('phoneChangeVerifyCode','@index/data_management.personal_information/phoneChangeVerifyCode');
+
+Route::post('personal_update','@index/data_management.personal_information/personalUpdate');
 
 Route::resource('index/data_management/verify','@index/data_management/verify');
 

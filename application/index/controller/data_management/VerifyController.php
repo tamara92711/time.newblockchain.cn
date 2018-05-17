@@ -72,6 +72,8 @@ class VerifyController extends Controller
             list($type, $data) = explode(';', $data);
             list(, $data)      = explode(',', $data);
             $data = base64_decode($data);
+            if(!file_exists('./uploads/avarta'))
+                mkdir('./uploads/avarta',0777,true);
             $avatar_path = './uploads/avarta/' . time() . '.png';
             
             file_put_contents($avatar_path, $data);

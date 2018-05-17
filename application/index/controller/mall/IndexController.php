@@ -52,7 +52,45 @@ class IndexController extends Controller
     }
     public function search($product_name=null)
     {
+        $product_type = \request()->product_type;
+        $time_money = \request()->time_money;
+        $key = \request()->key;
+        if (is_null($product_type)) $product_type = 0;
+        if (is_null($time_money))   $time_money = 1;
+        if (is_null($key))          $key = 1;
+
         $result = ProductModel::where("is_deleted", 0);
+        switch ($time_money)
+        {
+            case 1:
+                $result->where('price','>',0);
+                break;
+            case 2:
+                $result->where('price','between','0,50');
+                break;
+            case 3:
+                $result->where('price','between','51,100');
+                break;
+            case 4:
+                $result->where('price','between','100,200');
+                break;
+            case 5:
+                $result->where('price','>','200');
+                break;
+        }
+        if($product_type == 0)
+            $result->where('type','>',$product_type);
+        else
+            $result->where('type',$product_type);
+        if (!empty($key))
+        {
+            if ($key == 1 )
+                $result->wherelike('name','%%');
+            else
+                $result ->whereLike('name',$key.'%');
+        }
+
+
         if ($product_name != null)
             $result = $result->where('name',$product_name);
         $result = $result->select()->toArray();

@@ -17,6 +17,7 @@
                     <div class="right">
                         <input type="text" class="form-control" name="certificate_no" id="certificate_no"/>
                     </div>
+                    <span style="color:red;margin-left: 20px;display: none;" id="error1"></span>
                 </div>
                 <div class="form-group">
                     <div class="left">
@@ -25,6 +26,7 @@
                     <div class="right">
                         <input type="text" class="form-control" name="certificate_name" id="certificate_name"/>
                     </div>
+                    <span style="color:red;margin-left: 20px;display: none;" id="error2"></span>
                 </div>
                 <div class="form-group">
                     <div class="left">
@@ -50,14 +52,15 @@
                             </label>
                         </div>
                     </div>
+                    <span style="color:red;margin-left: 35px;display: " id="error3"></span>
                 </div>
                 <div class="form-group" style="border-bottom: none;">
                     <div class="left">
                         <label>证书上传：</label>
                     </div>
-                    <div class="right">
+                    <div class="right" style="cursor: pointer;">
                         <div id="image-preview-front" class="right add-picture" style="margin-right: 27px;">
-                            <input type="file" name="front-image" id="front-image" />
+                            <input type="file" name="front-image" id="front-image"/>
                             <p>专业等级证书正面</p>
                             <p>(点击上传)</p>
                         </div>
@@ -95,14 +98,34 @@
 
     });
 
-    // $('#image-preview-front').click(function () {
-    //     $("#image-preview-front p").html("");
-    //
-    // })
-    //
-    // $('#image-preview-back').click(function () {
-    //     $("#image-preview-back p").html("");
-    // })
+   $("#gradeForm").submit(function () {
+       var certificate_no = $("#certificate_no").val();
+       if(certificate_no=="")
+       {
+           $("#error1").text('这是必填栏。').show();
+           $("#certificate_no").focus();
+           return false;
+       }
+       var certificate_name = $("#certificate_name").val();
+       if(certificate_name=="")
+       {
+           $("#error2").text('这是必填栏。').show();
+           $("#certificate_name").focus();
+           return false;
+       }
+       var file = $('input[type=file]').val();
+       if ( ! file) {
+           $("#error3").text('请选择图片.').show();
+           event.preventDefault();
+           return;
+       }
+
+       if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file)) {
+           $("#error3").text('请选择正确的图像.').show();
+           event.preventDefault();
+       }
+       })
+
 
 
 
