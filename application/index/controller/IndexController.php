@@ -139,7 +139,6 @@ class IndexController extends Controller
     public function message()  //40消息 message
     {
         $this->assign("header_nav", "message");
-        $this->assign("nav_type", 1);
         $this->assign("side_nav", "");
         $this->assign("nav_type", 0);
         return $this->fetch();

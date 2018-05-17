@@ -21,7 +21,7 @@ class AddressManageController extends Controller
         $regions_level_1 = RegionModel::where('level', 1)->column('name', 'id');
 
         $this->assign('region_level_1', $regions_level_1);
-        $this->assign('header_nav', 'home');
+        $this->assign('header_nav', 'project_publish');
         $this->assign("nav_type", 1);
         $this->assign('side_nav', 'address_manage');
         return $this->fetch();
