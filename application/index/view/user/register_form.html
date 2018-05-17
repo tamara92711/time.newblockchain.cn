@@ -6,8 +6,8 @@
                 <img class="qk-portlet-title-icon" src="/assets/img/xuqiu.png" />
                 <span class="qk-portlet-title-text">新用户注册</span>
             </div>
-            <div class="qk-portlet-content form" style="height:508px">
-                <form id="register_form" role="form" action="/register" method="POST">
+            <div class="qk-portlet-content form">
+                <form id="register_form" role="form" action="/register" method="POST" style="margin-top:15px">
                     <input type="hidden" name="id" id="user_id" />
                     <div class="form-group">
                         <label class="control-label">用 户 名：</label>
@@ -67,13 +67,13 @@
                         <div class="input-icon right" style="margin-left: 3px">
                             <input id="captcha_code" name="captcha_code" type="text" class="form-control" style="width:180px;display:inline;" required
                                 minlength="4" maxlength="4" />
-                            <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src+'?'" alt="captcha" style="float:right;" />
+                            <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src" alt="captcha" style="float:right;" />
                         </div>
 
                     </div>
                     <div class="user-agreement-check" style="margin-bottom:13px">
                         <div class="checkbox checkbox-primary" style="padding-left:0px;">
-                            <input id="checkbox2" name="checkbox2" type="checkbox" checked="">
+                            <input id="checkbox2" name="checkbox2" type="checkbox" required>
                             <label for="checkbox2" style="font-size:12px;padding-left: 9px;padding-top: 1px;">
                                 我已看过并接受《用户协议》
                             </label>
@@ -81,7 +81,10 @@
                     </div>
                     <div class="clearfix"></div>
                     <div>
-                        <button onclick="submit_register()" class="btn btn-register">立即注册</button>
+                        <p id="error" style="margin-left:140px;color:#ff5656"></p>
+                    </div>
+                    <div>
+                        <button onclick="submit_register()" class="btn btn-register" style="margin-bottom:20px">立即注册</button>
                     </div>
                 </form>
             </div>
@@ -99,44 +102,38 @@
     validation.mobile = false;
     validation.password = false;
     validation.password_confirm = false;
+    validation.agree = false;
+    validation.mvc = false;
+    validation.captcha = false;
+    validation.name_error = "请输入用户名！";
+    validation.mobile_error = "请输入手机号码！";
+    validation.password_error = "Password doesn't match!";
+    validation.mvc_error = "手机验证码不正确！";
+    validation.captcha_error = "验证码不正确！";
+
+    $("#mobile_verify_code").prop("readonly", true);
     $(document).ready(function () {
         $(".btn-register").prop("disabled", true);
         $("#region").val(1);
         $("#region").change();
-        $("#name").focusout(function () {
+        $("#name").keyup(function () {
             var name = $(this).val();
-            $.ajax({
-                url: "/index/user/name_exists",
-                data: { name: name },
-                method: "GET",
-                success: function (response) {
-                    if (response) 
-                    {
-                        validation.name = false;
-                        $(this).focus();
-                    } else {
-                        validation.name = true;
-                    }
-                    all_valid();
-                }
-            })
-        });
-
-        $("#mobile").focusout(function () {
-            var mobile = $(this).val();
-            var isnum = /^\d+$/.test(mobile);
-            if (!isnum || mobile.length != 11){
-                validation.mobile = false;
-                $(this).focus();
+            if (name.length == 0)
+            {
+                validation.name = false;
+                validation.name_error = "请输入用户名";
             } else {
                 $.ajax({
-                    url: "/index/user/mobile_exists",
-                    data: { mobile: mobile },
+                    url: "/index/user/name_exists",
+                    data: { name: name },
                     method: "GET",
                     success: function (response) {
-                        if (response) validation.mobile = false;
-                        else {
-                            validation.mobile = true;
+                        if (response) {
+                            validation.name = false;
+                            validation.name_error = "用户名已经存在！";
+                        } else {
+                            validation.name = true;
+                            validation.name_error = "";
                         }
                         all_valid();
                     }
@@ -144,37 +141,110 @@
             }
         });
 
-        $("#password").keypress(function () {
-            var password = $(this).val();
-            var password_confirm = $("#password_confirm").val();
-            if (password.length < 4) {
-                validation.password = false;
-            } else if (password_confirm.length > 0 && password != password_confirm) {/*if password confirm exists but not equal to password*/
-                validation.password = false;
-            } else if (password_confirm.length > 3 && password == password_confirm) {/*if password confirm length is valid and equal to password*/
-                validation.password = true;
+        $("#name").blur(function() {
+            var name = $("#name").val();
+            if (name.length == 0) {
+                validation.name = false;
+                validation.name_error = "请输入用户名";
             }
             all_valid();
         });
 
-        $("#password").blur(function() {
+        $("#mobile").keyup(function () {
+            var mobile = $(this).val();
+            console.log(mobile + ": " + mobile.length);
+            var isnum = /^\d+$/.test(mobile);
+            if (!isnum || mobile.length != 11){
+                validation.mobile_error = "手机号码格式不正确！\n";
+                validation.mobile = false;
+            } else {
+                validation.mobile_error = "";
+                $.ajax({
+                    url: "/index/user/mobile_exists",
+                    data: { mobile: mobile },
+                    method: "GET",
+                    success: function (response) {
+                        if (response)
+                        {
+                            validation.mobile = false;
+                            validation.mobile_error = "手机号码已经存在！\n";
+                        }
+                        else {
+                            validation.mobile = true;
+                            validation.mobile_error = "";
+                        }
+                        all_valid();
+                    }
+                });
+            }
+        });
+
+        $("#mobile").blur(function() {
+            all_valid();
+        });
+
+        $("#password").keyup(function () {
+            var password = $(this).val();
             var password_confirm = $("#password_confirm").val();
+            if (password.length < 4) {
+                validation.password = false;
+                validation.password_error = "密码需要4个字以上。\n";
+            } else if (password_confirm.length > 3 && password != password_confirm) {
+                validation.password = false;
+                validation.password_error = "密码不同。\n";
+            } else if (password_confirm.length > 3 && password == password_confirm) {
+                validation.password = true;
+                validation.password_error = "";
+                all_valid();
+            }
         });
 
-        $("#password_confirm").blur(function () {
-            var password = $("#password").val();
-        });
-
-        $("#password_confirm").keypress(function () {
+        $("#password_confirm").keyup(function () {
             var password_confirm = $(this).val();
             var password = $("#password").val();
             if (password_confirm.length < 4 || password_confirm != password) {
                 validation.password = false;
-            } else if (password.length > 0 && password != password_confirm) {/*if password exists but not equal to confirm*/
+                validation.password_error = "密码需要4个字以上。\n";
+            } else if (password.length > 0 && password != password_confirm) {
                 validation.password = false;
-            } else if (password.length > 3 && password == password_confirm) {/*if password length is valid and equal to confirm*/
+                validation.password_error = "密码不同。\n";
+            } else if (password.length > 3 && password == password_confirm) {
                 validation.password = true;
+                validation.password_error = "";
+                all_valid();
             }
+        });
+
+        $("#mobile_verify_code").keyup(function() {
+            var code = $(this).val();
+            var isnum = /^\d+$/.test(code);
+            console.log('code:' + code + ' ' + code.length);
+            if (code.length == 4 && isnum)
+            {
+                validation.mvc = true;
+                validation.mvc_error = "";
+                all_valid();
+            } else {
+                validation.mvc = false;
+                validation.mvc_error = "手机验证码不正确！";
+            }
+        });
+        $("#mobile_verify_code").blur(function() {
+            all_valid();
+        });
+
+        $("#captcha_code").keyup(function () {
+            var code = $(this).val();
+            if (code.length == 4) {
+                validation.captcha = true;
+                validation.captcha_error = "";
+                all_valid();
+            } else {
+                validation.captcha = false;
+                validation.captcha_error = "验证码不正确！";
+            }
+        });
+        $("#captcha_code").blur(function () {
             all_valid();
         });
     });
@@ -191,10 +261,12 @@
             success: function (response) {
                 result = JSON.parse(response);  
                 if (result.error) {
+                    console.log(result.text);
                     $("#mobile").focus();
                 } else {
                     console.log(result.code);
                     $("#mobile").prop("readonly", true);
+                    $("#mobile_verify_code").prop("readonly", false);
                 }
             }
         });
@@ -233,53 +305,29 @@
     }
 
     function all_valid() {
+        var error = "";
+        console.log("" + validation.name + validation.mobile + validation.password + validation.agree);
+        if (!validation.name) error = error + validation.name_error + '<br>';
+        if (!validation.mobile) error = error + validation.mobile_error + '<br>';
+        if (!validation.password) error = error + validation.password_error + '<br>';
+        if (!validation.mvc) error = error + validation.mvc_error + '<br>';
+        if (!validation.captcha) error = error + validation.captcha_error + '<br>';
+
         if (validation.name &&
             validation.mobile &&
-            validation.password) {
+            validation.password &&
+            validation.agree &&
+            validation.mvc &&
+            validation.captcha) {
                 $(".btn-register").prop("disabled", false);
             } else {
-                $(".btn-register").prop("disabled", false);
+                $(".btn-register").prop("disabled", true);
+                $("#error").html(error);
             }
     }
 
-    var $form = $("form"), $successMsg = $(".alert");
-    $.validator.addMethod("letters", function (value, element) {
-        return this.optional(element) || value == value.match(/^[a-zA-Z0-9]*$/);
-    });
-    $form.validate({
-        rules: {
-            name: {
-                required: true,
-                letters: true
-            },
-            mobile: {
-                required: true,
-                digits: true,
-                minlength: 11,
-                maxlength: 11
-            },
-            mobile_verify_code: {
-                required: true,
-                digits: true,
-                minlength: 4,
-                maxlength: 4
-            },
-            password_confirm: {
-                required: true,
-                minlength: 4,
-                equalTo: "#password"
-            },
-            password: {
-                required: true,
-                minlength: 4
-            },
-        },
-        messages: {
-            // name: "Please specify your name (only letters and spaces are allowed)",
-            // email: "Please specify a valid email address"
-        },
-        // submitHandler: function () {
-        //     $successMsg.show();
-        // }
-    });
+    $("#checkbox2").change(function() {
+        validation.agree = this.checked;
+        all_valid();
+    })
 </script> {/block}

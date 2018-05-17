@@ -38,10 +38,12 @@ class UserController extends Controller
     public function register_form() 
     {
         $regions_level_1 = RegionModel::where('level', 1)->column('name', 'id');
+        $ip = request()->ip();
 
         $this->assign('region_level_1', $regions_level_1);
         $this->assign('header_nav', '');
         $this->assign("nav_type", 1);
+        $this->assign("ip", $ip);
         return $this->fetch();
     }
 
@@ -108,7 +110,7 @@ class UserController extends Controller
         // $captcha_pass = $this->verify($captcha_code);
         $captcha = $this->captcha;
         if (!$captcha->check($captcha_code)) {
-           return redirect('/register_form');
+           return redirect('/register_form')->with($input);
         }
 
         if ($input['mobile_verify_code'] == session('mobile_verify_code'))

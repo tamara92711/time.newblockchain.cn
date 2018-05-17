@@ -32,7 +32,7 @@ class IndexController extends Controller
             $latest_demands[$key]['published_time'] = date('Y-m-d', strtotime($value['published_time']));
         }
 
-        $news = NewsModel::where('is_deleted', 0)->order('create_time', 'desc')->limit(5)->select()->toArray();
+        $news = NewsModel::where('is_deleted', 0)->order('create_time', 'desc')->limit(6)->select()->toArray();
         foreach($news as $key=>$value)
         {
             $news[$key]['type'] = NewsTypeModel::get($value['type'])->name;
@@ -66,7 +66,6 @@ class IndexController extends Controller
     public function memberCenter() //05会员中心
     {
         $this->assign("header_nav", "personal_home");
-        $this->assign("nav_type", 1);
         $this->assign("side_nav", "");
         $this->assign("nav_type", 0);
         return $this->fetch();
