@@ -32,9 +32,10 @@
     margin-left: 23px;
     padding-top: 21px;
     width: 898px;
-    padding-bottom: 43px;
+    padding-bottom: 20px;
     margin-bottom: 0px;
     border-bottom: 1px dotted #d4d4d4;
+    overflow: hidden;
 }
 
 .add-picture {
@@ -59,9 +60,10 @@
     float: left;
     border-bottom: 1px dotted #d2d2d2;
     width: 242px;
-    height: 278px;
+    height: 292px;
     padding-top: 15px;
     padding-left: 22px;
+    background: url("/assets/img/plus.png") no-repeat center;
 }
 
 .error{

@@ -77,11 +77,11 @@ class PersonalInformationController extends Controller
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function personalUpdate(Request $request)
     {
 //        return "update".$id;
         $oldPass = $request->param("beforepass");
-        $checkPass = UserModel::where('id',session('user_id'))->where('password',$oldPass)->count();
+        $checkPass = UserModel::where('id',session('user_id'))->where('password',md5($oldPass))->count();
         if ($checkPass == 0)
         {
             return "failure";
@@ -112,5 +112,48 @@ class PersonalInformationController extends Controller
     public function delete($id)
     {
         //
+    }
+
+    public function phoneChangeVerifyCode(Request $request)
+    {
+        $phone_number = $request->post('phone_number');
+        $mode         = $request->post('mode');
+        $response = [];
+        $response['error'] = false;
+        if ($mode ==1 )
+        {
+            if (UserModel::where('mobile',$phone_number)->select()->count() > 0)
+            {
+                $response['error'] = true;
+                $response['text'] = "手机号码已经存在";
+                return json_encode(["response" => $response]);
+            }
+        }
+        if ($mode == 1 || $mode == 0)
+        {
+            $code = rand(1000, 9999);
+            // session("id", session_create_id());
+            session("mobile_verify_code", $code);
+
+            //sms content
+            $content = "您的区块链公益时间廊注册验证码是\n" . $code;
+
+            // sms config
+            $smsapi = 'http://api.smsbao.com/';
+            $user = 'gdbc';
+            $pass = md5('gdqkl2018'); //短信平台密码
+
+            //send sms
+            $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
+            $result =file_get_contents($sendurl) ;
+
+            $response['text'] = config('sms.send_status')[$result];
+            if ($result != 0)
+            {
+                $response['error'] = true;
+            }
+            $response['code'] = $code;
+        }
+        return json_encode($response);
     }
 }
