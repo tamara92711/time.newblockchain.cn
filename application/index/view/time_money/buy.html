@@ -83,14 +83,17 @@
 
         var form = $("<form method='post'></form>");
         form.attr({ "action": '/charge_coin' });
+
         var input1 = $("<input type='hidden'>");
         input1.attr("name", 'pay_type');
         input1.val(pay_method);
         form.append(input1);
+
         var input2 = $("<input type='hidden'>");
         input2.attr("name", 'amount');
         input2.val(amount);
         form.append(input2);
+        
         $(document.body).append(form);
         form.submit();
 
