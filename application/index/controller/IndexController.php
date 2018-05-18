@@ -7,6 +7,7 @@ use app\common\model\DemandTypeModel;
 use app\common\model\NewsModel;
 use app\common\model\NewsTypeModel;
 use app\common\model\CharitableOrganizationModel;
+use app\common\model\UserModel;
 
 class IndexController extends Controller
 {
@@ -50,12 +51,28 @@ class IndexController extends Controller
 
     public function register()//02注册
     {
+        $this->assign("header_nav", "");
+        $this->assign("nav_type", 1);
         return $this->fetch();
     }
 
     public function forgotPassword()//03忘记密码
     {
+        $this->assign("header_nav", "");
+        $this->assign("nav_type", 1);
+        $temp = json_decode(session('temp'));
+        $this->assign("mobile", empty($temp)? '': $temp->mobile);
         return $this->fetch();
+    }
+
+    public function resetPassword()
+    {
+        $phone = request()->post("mobile");
+        $user = UserModel::where('mobile', $phone)->find();
+        if (empty($user)) return $this->redirect('/index/index/forgotpassword')->with('temp', json_encode(input('post.')));
+        $user->password = md5(request()->post('password'));
+        $user->save();
+        return $this->redirect('/login_form');
     }
 
     public function login()//04登录

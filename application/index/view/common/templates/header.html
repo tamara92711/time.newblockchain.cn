@@ -9,17 +9,18 @@
                 <?php if (!Session::has('user_id')) { ?>
                     <font style="font-size: 14px"><a href="/register_form">免费注册</a> | <a href="/login_form">登录</a></font>
                 <?php } else{ ?>
-                    <div id="reg-log" style="float:right;width:216px"><div class="shopping-cart">
-                        <img src="/assets/img/shopping-cart.png" />
-                        <span class="badge badge-danger" style="margin-top: -28px;margin-left: 21px;position: absolute;" id="cart_cnt"></span>
-                    </div>
-                    <div class="alarm">
-                        <img src="/assets/img/alarm.png" />
-                        <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;">1</span>
-                    </div>
-                        <div class="character" style="position:relative">
-                            <img src="/assets/img/character.png" />
-                            <span style="font-size:16px;font-family:ms-yahei-bold;position: absolute;left: 40px;top: 3px;"><a href="/sign_out"><?php echo Session::get('user_name');?></a></span>
+                    <div id="reg-log" style="float:right;width:216px">
+                        <div class="shopping-cart">
+                            <a href="/index/mall_management.my_collection/index"><img src="/assets/img/shopping-cart.png" /></a>
+                            <span class="badge badge-danger" style="margin-top: -28px;margin-left: 21px;position: absolute;" id="cart_cnt"></span>
+                        </div>
+                        <div class="alarm">
+                            <a href=""><img src="/assets/img/alarm.png" /></a>
+                            <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;">1</span>
+                        </div>
+                        <div class="character" style="float:right">
+                            <a href=""><img src="/assets/img/character.png" /></a>
+                            <span style="font-size:16px;font-family:ms-yahei-bold;left: 40px;top: 3px;vertical-align: middle;margin-right:10px"><a href="/sign_out"><?php echo Session::get('user_name');?></a></span>
                         </div>
                     </div>
                 <?php } ?>

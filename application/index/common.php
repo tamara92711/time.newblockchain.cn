@@ -67,3 +67,8 @@ function send_sms($phone, $content)
     $result =file_get_contents($sendurl) ;
     return $result;
 }
+
+function send_phone_verify_code()
+{
+    
+}
