@@ -131,7 +131,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group" style="border-bottom: none;">
+                                    <div style="float: left;height: 1px;">
+                                    </div>
+                                    <div class="rights">
+                                        <div class="form-actions" style="margin-left: 167px; border-bottom: none; ">
+                                            <div class="row">
+                                                <a href="javascript:;" class="btn button-next" id="btn_next1" style="width:140px"> 下一步
+                                                </a>
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="floatfix"></div>
                         </div>
@@ -278,7 +290,7 @@
                                         <input type="text" class="form-control input-custom input-width" name="verify_code" id="verify_code" style="width: 247px;height: 42px;"/>
                                     </div>
 
-                                    <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;"/></div>
+                                    <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;border-radius: 20px;"/></div>
                                     <!--http://localhost:82/index/index/verify.html/-->
                                 </div>
                             </div>
@@ -316,20 +328,22 @@
                 <div class="modal-body" style="padding-top:17px;padding-bottom:30px">
                     <div class="candidate-list">
                         {foreach $addressList as $key => $val}
-                        <div class="candidate-item">
-                            <div class="form-group">
-                                <input type="radio" name="candidate" id="candidate_{$val.id}" value="{$val.id}">
-                                <label for="candidate_{$val.id}"></label>
+                            <div class="candidate-item">
+                                <div class="form-group">
+                                    <input type="radio" name="candidate" id="candidate_{$val.id}" value="{$val.id}">
+                                    <label for="candidate_{$val.id}"></label>
+                                </div>
+                                <div class="candidate-desc">
+                                    <p>{$val.detail}</p>
+                                    <p>{$val.name} {$val.phone}</p>
+                                </div>
+                                <input type="hidden" id="contact_region1_id_{$val.id}" value="{$val.region_id_1}"/>
+                                <input type="hidden" id="contact_region2_id_{$val.id}" value="{$val.region_id_2}"/>
+                                <input type="hidden" id="contact_onlyDetail_{$val.id}" value="{$val.onlyDetail}"/>
+                                <input type="hidden" id="contact{$val.id}" value="{$val.name}"/>
+                                <input type="hidden" id="contact_phone_{$val.id}" value="{$val.phone}"/>
+                                <div class="clearfix"></div>
                             </div>
-                            <div class="candidate-desc">
-                                <p>{$val.detail}</p>
-                                <p>{$val.name} {$val.phone}</p>
-                            </div>
-                            <input type="hidden" id="contact_region1_id_{$val.id}" value="{$val.region_id_1}"/>
-                            <input type="hidden" id="contact_region2_id_{$val.id}" value="{$val.region_id_2}"/>
-                            <input type="hidden" id="contact_onlyDetail_{$val.id}" value="{$val.onlyDetail}"/>
-                            <div class="clearfix"></div>
-                        </div>
                         {/foreach}
                         <input type="hidden" value="0" name="demand_id" id="demand_id" />
                     </div>
@@ -368,8 +382,8 @@
         $("#region_1").change();
         //Get each demandtype's text
         getDemandTypeText();
-        //first element checked in address list
-        // $('input[name="candidate"]:first').attr('checked',true);
+        // first element checked in address list
+        $('input[name="candidate"]:first').attr('checked',true);
         //first element checked in demand type list
         $('input[name=demand_type]:first').attr('checked',true);
         //treeview first child display
@@ -391,6 +405,10 @@
         $('div.accordion-container').on('click', '*', function () {
             $("div.progress-bar-container").ScrollTo();
         });
+
+        // $('div.accordion-container').on('click', '*', function () {
+        //     $("btn button-next").ScrollTop(100);
+        // });
 
         return demand_type_val;
     }
@@ -475,14 +493,29 @@
         var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
         var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
         var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+        var contact = $("#contact"+checked_id).val();
+        var contact_phone = $("#contact_phone_"+checked_id).val();
 
         $("#receiver").modal('hide');
         $("#region_1").val(contact_region1_id);
+        $("#district").val(contact_region2_id);
         $("#detail_address").val(contact_onlyDetail_id);
-        // $("#region_1").change()
+        $("#contact").val(contact);
+        $("#contact_phone").val(contact_phone);
+
+        $("#region_1").change()
         $("#district").val(contact_region2_id);
     }
-
+    //compare function wheater one field >= other field
+    jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) >= new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) >= Number($(params[0]).val()));
+        };
+        return true;
+    },'必须大于 {1}.');
     // function reset()
     // {
     //     var $inputs = $('#release_requirement_form :input');

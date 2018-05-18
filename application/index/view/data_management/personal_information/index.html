@@ -255,7 +255,7 @@
 
 
 
-    $("#new_mobile").focusout(function ()
+    $("#new_mobile").on('keyup blur',function ()
     {
         var mobile = $(this).val();
         var isnum = /^\d+$/.test(mobile);

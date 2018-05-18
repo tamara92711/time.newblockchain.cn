@@ -39,7 +39,10 @@ class ReleaseRequirementController extends Controller
         $this->assign('side_nav', 'project_publish');
         return $this->fetch();
     }
-    //all demand project of drafts state convert confirm and publish state 1=>2
+
+    /*
+     * all demand project of drafts state convert confirm and publish state 1=>2
+     */
     public function draftsEdit($demand_id,$state_id)
     {
         //tree data display
@@ -58,6 +61,7 @@ class ReleaseRequirementController extends Controller
         $this->assign('region_level_1', $regions_level_1);
         $this->assign('draft_project', $draft_project);
         $this->assign('header_nav', 'project_publish');
+        $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_publish');
         return $this->fetch();
     }
@@ -113,7 +117,9 @@ class ReleaseRequirementController extends Controller
         }
         $link->save();
     }
-
+    /*
+     * drafts content update
+     */
     public function draftUpdate(Request $request,$mode)
     {
         $link=DemandModel::get($request->param('demand_id'));
@@ -222,8 +228,7 @@ class ReleaseRequirementController extends Controller
      */
     public function verify($code='')
     {
-        $code =input( 'post.captcha' );
-        $captcha = new Captcha();
+
         $captcha->length = 4;
         $captcha->imageW = 120;
         $captcha->imageH = 35;

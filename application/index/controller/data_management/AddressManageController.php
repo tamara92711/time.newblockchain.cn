@@ -135,8 +135,7 @@ class AddressManageController extends Controller
 
     public function setDefault($current_id)
     {
-        $user_id = 0;
-        $link = AddressModel::where('user_id' , $user_id)->where('address_value' , 1)->update(['address_value' => 0]);
+        $link = AddressModel::where('user_id' , session('user_id'))->where('address_value' , 1)->update(['address_value' => 0]);
         $link = AddressModel::where('id', $current_id)->update(['address_value' => 1]);
 
     }
