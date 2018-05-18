@@ -57,7 +57,7 @@
                 $.ajax({
                     url: "/admin/member/real_name_verify/" + $("#data_id").val(),
                     method: 'PUT',
-                    data: { is_passed: is_passed },
+                    data: { is_passed: is_passed, real_name: real_name },
                     success: function (data) {
                         $('#verify_form')[0].reset();
                         $('#verifyModal').modal('hide');
@@ -154,7 +154,7 @@
                             <label for="user_name">用户名</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" name="user_name" id="user_name" class="form-control" disabled/>
+                            <input type="text" name="user_name" id="user_name" class="form-control" readonly/>
                         </div>
                     </div>
 
@@ -163,7 +163,7 @@
                             <label for="real_name">真实姓名：</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" name="real_name" id="real_name" class="form-control" disabled/>
+                            <input type="text" name="real_name" id="real_name" class="form-control" readonly/>
                         </div>
                     </div>
 
@@ -172,7 +172,7 @@
                             <label for="id_card_number">身份证号码：</label>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" name="id_card_number" id="id_card_number" class="form-control" disabled/>
+                            <input type="text" name="id_card_number" id="id_card_number" class="form-control" readonly/>
                         </div>
                     </div>
 
