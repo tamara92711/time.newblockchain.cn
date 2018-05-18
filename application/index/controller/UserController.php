@@ -52,6 +52,7 @@ class UserController extends Controller
         $userModel = new UsersModel();
         if(!check_mobile($mobile))
             exit(json_encode(array('status'=>-1,'msg'=>'手机号码格式有误')));
+
         $code =  rand(1000,9999);
         $send = sms_log($mobile,$code,$this->session_id);
         if($send['status'] != 1)

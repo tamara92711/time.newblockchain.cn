@@ -41,6 +41,8 @@
                         </div>
                     </div>
                     <div class="add-avatar" id="avarta-image" style="cursor: pointer">
+                        <p style="padding-left: 60px;padding-top: 100px;">添加会员头像</p>
+                        <p style="padding-left: 60px">(摄像头拍摄)</p>
                     </div>
                 </div>
                 <div class="form-group" style="height: 148px">
@@ -118,7 +120,7 @@
             canvas.getContext('2d')
                 .drawImage(video, 0, 0, canvas.width, canvas.height);
             var html = '<img id="captured-image" />';
-            html += '<input type="text" id="avatar_image" name="avatar_image">';
+            html += '<input type="hidden" id="avatar_image" name="avatar_image">';
             $(".add-avatar").html(html)
             $("#captured-image").attr('src', canvas.toDataURL());
             $("#avatar_image").val(canvas.toDataURL());

@@ -37,7 +37,7 @@
                     </div>
                     <div class="right">
                         <div class="radio radio-danger">
-                            <input type="radio" name="gender" id="male" value="1" checked>
+                            <input type="radio" name="gender" id="male" value="1">
                             <label for="male">
                                 男
                             </label>
@@ -224,6 +224,8 @@
         $("input#username").focus();
         $("#occupation").val({$user_data[0]['job_type']});
         $("#education").val({$user_data[0]['education_type']});
+        $("input[name=gender][value={$user_data[0]['sex']}]").prop("checked",true);
+
         var readonly = $("new_mobile").attr("readonly");
 
 
@@ -234,7 +236,7 @@
         e.preventDefault();
         validation();
         var formData = $(this).serialize();
-        console.log(formData);
+        // console.log(formData);
         $.ajax({
             // url : '/index/data_management.personal_information/personalUpdate',
             url : "/personal_update",
@@ -244,8 +246,8 @@
                 if(result=='ok')
                     alert("succesfully");
                 else if (result == "failure")
-                    alert("your old password is wrong,correctly insert password");
-                    // $("input#beforepass").focus();
+                    $("label#beforepass_error").text('您的旧密码错误，请正确输入密码！');
+                    $("input#beforepass").focus();
             }
         })
     });
@@ -403,16 +405,17 @@
         //     return false;
         // }
     }
+    $("#beforepass,#newpass,#verifypass,#email,#fixed").keypress(function () {
+        $("label#beforepass_error").hide();
+        $("label#newpass_error").hide();
+        $("label#verifypass_error").hide();
+        $("label#email_error").hide();
+        $("label#fixed_error").hide();
 
-    // function reset()
-    // {
-    //     var $inputs = $('#personal_form :input');
-    //     var values = {};
-    //     $inputs.each(function() {
-    //         values[this.name] = $(this).val('');
-    //     });
-    //     $("input#username").focus();
-    // }
+    })
+
+
+
 
 </script>
 {/block}

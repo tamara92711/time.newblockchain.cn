@@ -46,6 +46,7 @@
     width: 180px;
     border-radius: 4px;
     background: url("/assets/img/plus.png") no-repeat center;
+
 }
 
 .add-picture input{
@@ -64,6 +65,7 @@
     padding-top: 15px;
     padding-left: 22px;
     background: url("/assets/img/plus.png") no-repeat center;
+    background-position: center  95px;
 }
 
 .error{
