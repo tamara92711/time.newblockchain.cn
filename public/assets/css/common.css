@@ -237,7 +237,7 @@ body {
   text-align: left;
   padding-top: 8px;
   white-space: nowrap;
-  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 #zuixin-dongtai tr:nth-child(1) > td {
@@ -321,6 +321,7 @@ body {
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .qk-portlet-content .row {
@@ -486,6 +487,7 @@ body {
   display: inline;
   word-spacing: 4px;
   margin-right: 20px;
+  vertical-align: top;
 }
 
 .register-user .form-group,
@@ -1271,4 +1273,8 @@ input.invalid, textarea.invalid{
 
 input.valid, textarea.valid{
   border: 2px solid green;
+}
+
+span.err_text {
+  color: #ff5656;
 }

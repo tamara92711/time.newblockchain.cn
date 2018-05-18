@@ -209,9 +209,10 @@ var FormWizard = function () {
 
                 if (current == 1) {
                     $('#form_wizard_1').find('.button-previous').hide();
+                    $('#form_wizard_1').find('.button-next').hide();
                     $('#form_wizard_1').find('.button-save').hide();
                     //when user click first next button change button's  at second position
-                    $(".form-actions").css("margin-left", "352px");
+                    $(".form-actions").css("margin-left", "167px");
                     $(".button-next").css("background-color", "#ff5656");
 
                     $(".progtrckr li").removeClass().addClass("progtrckr-todo");
@@ -238,7 +239,14 @@ var FormWizard = function () {
                     $(".progtrckr li").removeClass().addClass("progtrckr-todo");
                     $("#step-"+current).removeClass().addClass("progtrckr-done");
                 } else {
+                    $('#form_wizard_1').find('#btn_next1').show();
                     $('#form_wizard_1').find('.button-next').show();
+                    $('#form_wizard_1').find('.button-submit').hide();
+                    $('#form_wizard_1').find('.button-save').hide();
+                }
+                if (current == 1){
+                    $('#form_wizard_1').find('#btn_next1').show();
+                    $('#form_wizard_1').find('#btn_next').hide();
                     $('#form_wizard_1').find('.button-submit').hide();
                     $('#form_wizard_1').find('.button-save').hide();
                 }
@@ -269,6 +277,7 @@ var FormWizard = function () {
             });
 
             $('#form_wizard_1').find('.button-previous').hide();
+            $('#form_wizard_1').find('#btn_next').hide();
             //mode =0 save drafts insert state value 1
             $('#form_wizard_1').find('.button-save').click(function (e) {
                 e.preventDefault();
