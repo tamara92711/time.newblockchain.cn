@@ -6,24 +6,62 @@
                     <font style="font-size: 14px">欢迎来到区块链公益时间廊！</font>
                 </div>
                 <div id="reg-log" style="float:right">
-                <?php if (!Session::has('user_id')) { ?>
-                    <font style="font-size: 14px"><a href="/register_form">免费注册</a> | <a href="/login_form">登录</a></font>
-                <?php } else{ ?>
+                    <?php if (!Session::has('user_id')) { ?>
+                    <font style="font-size: 14px">
+                        <a href="/register_form">免费注册</a> |
+                        <a href="/login_form">登录</a>
+                    </font>
+                    <?php } else{ ?>
                     <div id="reg-log" style="float:right;width:216px">
                         <div class="shopping-cart">
-                            <a href="/index/mall_management.my_collection/index"><img src="/assets/img/shopping-cart.png" /></a>
+                            <a href="/index/mall_management.my_collection/index">
+                                <img src="/assets/img/shopping-cart.png" />
+                            </a>
                             <span class="badge badge-danger" style="margin-top: -28px;margin-left: 21px;position: absolute;" id="cart_cnt"></span>
                         </div>
-                        <div class="alarm">
-                            <a href=""><img src="/assets/img/alarm.png" /></a>
-                            <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;">1</span>
+                        <div class="alarm dropdown dropdown-extended dropdown-notification" id="alarm">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="false">
+                                <img src="/assets/img/alarm.png" />
+                                <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;">1</span>
+                            </a>
+
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">just now</span>
+                                                <span class="details">
+                                                    <span class="label label-sm label-icon label-success">
+                                                        <i class="fa fa-plus"></i>
+                                                    </span> New user registered. </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">just now</span>
+                                                <span class="details">
+                                                    <span class="label label-sm label-icon label-success">
+                                                        <i class="fa fa-plus"></i>
+                                                    </span> New user registered. </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                         <div class="character" style="float:right">
-                            <a href=""><img src="/assets/img/character.png" /></a>
-                            <span style="font-size:16px;font-family:ms-yahei-bold;left: 40px;top: 3px;vertical-align: middle;margin-right:10px"><a href="/sign_out"><?php echo Session::get('user_name');?></a></span>
+                            <a href="">
+                                <img src="/assets/img/character.png" />
+                            </a>
+                            <span style="font-size:16px;font-family:ms-yahei-bold;left: 40px;top: 3px;vertical-align: middle;margin-right:10px">
+                                <a href="/sign_out">
+                                    <?php echo Session::get('user_name');?>
+                                </a>
+                            </span>
                         </div>
                     </div>
-                <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -37,7 +75,7 @@
                     <select class="bs-select form-control">
                         <option>全国</option>
                         {foreach :model('region')->where('level', 1)->select() as $key=>$value }
-                            <option value="{$value->id}">{$value->name}</option>
+                        <option value="{$value->id}">{$value->name}</option>
                         {/foreach}
                     </select>
                 </div>
@@ -58,7 +96,7 @@
 
     <div id="header-nav">
         <div class="topnav container">
-            <a class="{eq name="header_nav" value="home"}active{/eq}" href="/index/index/home">首页</a>
+            <a class="{eq name='header_nav' value='home'}active{/eq}" href="/index/index/home">首页</a>
             {eq name="nav_type" value = "1"}
             <a class="<?php if($header_nav == 'project_publish') echo 'active'; ?>" href="/publish_demand">项目发布</a>
             <a class="<?php if($header_nav == 'project_apply') echo 'active'; ?>" href="/apply_demand">项目承接</a>
@@ -66,35 +104,33 @@
             <a class="<?php if($header_nav == 'personal_home') echo 'active'; ?>" href="/membercenter">个人主页</a>
             <a class="<?php if($header_nav == 'message') echo 'active'; ?>" href="/index/index/message">消息</a>
             {/eq}
-            
-            <a class="{eq name="header_nav" value="news_center"}active{/eq}" href="/index/index.news_center">新闻中心</a>
-            <a class="{eq name="header_nav" value="love_enterprise"}active{/eq}" href="/index/index.love_enterprise">爱心企业</a>
-            <a class="{eq name="header_nav" value="charitable_organizations"}active{/eq}" href="/index/index.charitable_organization">慈善公益项目</a>
-            <a class="{eq name="header_nav" value="volunteers"}active{/eq}" href="/index/index.volunteer_grace">志愿者</a>
-            <a class="{eq name="header_nav" value="mall"}active{/eq}" href="/index/mall.index">公益商城</a>
-            <a class="{eq name="header_nav" value="about_us"}active{/eq}" href="/index/about_us/index">关于我们</a>
+
+            <a class="{eq name='header_nav' value='news_center'}active{/eq}" href="/index/index.news_center">新闻中心</a>
+            <a class="{eq name='header_nav' value='love_enterprise'}active{/eq}" href="/index/index.love_enterprise">爱心企业</a>
+            <a class="{eq name='header_nav' value='charitable_organizations'}active{/eq}" href="/index/index.charitable_organization">慈善公益项目</a>
+            <a class="{eq name='header_nav' value='volunteers'}active{/eq}" href="/index/index.volunteer_grace">志愿者</a>
+            <a class="{eq name='header_nav' value='mall'}active{/eq}" href="/index/mall.index">公益商城</a>
+            <a class="{eq name='header_nav' value='about_us'}active{/eq}" href="/index/about_us/index">关于我们</a>
         </div>
     </div>
 </div>
 <script>
-// setInterval(get_collection_count, 1000);
-function get_collection_count()
-{
-    if(($("#cart_cnt").get()).length != 0) {
-        $.ajax({
-            url: "/ajax_alarm_cart",
-            method: 'get',
-            success: function (res) {
-                console.log('ajax');
-                if (res>0)
-                    $("#cart_cnt").html(res);
-            }
-        });
+    // setInterval(get_collection_count, 1000);
+    function get_collection_count() {
+        if (($("#cart_cnt").get()).length != 0) {
+            $.ajax({
+                url: "/ajax_alarm_cart",
+                method: 'get',
+                success: function (res) {
+                    console.log('ajax');
+                    if (res > 0)
+                        $("#cart_cnt").html(res);
+                }
+            });
+        }
     }
-}
 
-function open_cart()
-{
-    document.location = '/open_cart';
-}
+    function open_cart() {
+        document.location = '/open_cart';
+    }
 </script>
