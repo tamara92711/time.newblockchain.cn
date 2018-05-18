@@ -47,22 +47,18 @@ var FormWizard = function () {
                         required: true
                     },
                     service_time_from: {
-                        required: true
+                        required: true,
+                        lessEqualThan: ["#service_time_to","时间结束"]
                     },
                     service_time_to: {
                         required: true
-                    },
-                    service_time_to: {
-                        greaterThan: ["#service_time_from","时间结束"]
                     },
                     time_required: {
                         required: true
                     },
                     valid_time: {
-                        required: true
-                    },
-                    valid_time: {
-                        greaterThan: ["#service_time_to","时间结束"]
+                        required: true,
+                        lessThan: ["#service_time_from","服务开始时间"]
                     },
                     pay_amount: {
                         number : true,

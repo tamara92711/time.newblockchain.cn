@@ -63,7 +63,7 @@
                         <div class="right">
                             <input type="text" class="form-control" style="width: 232px;margin-top: 2px;" id="captcha" name="captcha">
                         </div>
-                        <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;"/></div>
+                        <div><img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="border: 1px solid #d2d2d2; border-radius: 6px;height: 36px;margin-left: 10px;margin-top: -4px;"/></div>
 
                     </div>
                     <div class="form-actions">
@@ -87,26 +87,11 @@
 
 $(document).ready(function () {
 
+    $("#complaint_title").focus();
 })
 
-$("#captcha").blur(function () {
-    var value = $(this).val();
-    $.ajax({
-        url : '/index/service_management.release_requirement/check/value/'+value,
-        data : value,
-        dataType :'TEXT',
-        success:function (result) {
-            if (result == true){
-                alert("success");
-            }
-            else{
-                alert("fail");
-            }
-        }
-    })
-})
 
-$("#complaint_form").submit(function (e) {
+    $("#complaint_form").submit(function (e) {
     e.preventDefault();
     var formData = $(this).serialize();
 
@@ -114,24 +99,65 @@ $("#complaint_form").submit(function (e) {
         url : '/index/index.complaints/save',
         type : 'POST',
         data : formData,
-        success:function (data) {
-            if(data.indexOf("fail")){
+        success:function (result) {
+            if(result == "success")
+            {
                 alert("success");
+                reset();
+                $("#complaint_title").focus();
             }
-            // reset();
+            else if (result == "fail")
+            {
+                alert("captcha code wrong");
+            }
+
         }
     })
 });
 
-function reset()
-{
-    var $inputs = $('#complaint_form :input');
-    var values = {};
-    $inputs.each(function() {
-        values[this.name] = $(this).val('');
-    });
-
+function validation() {
+    $('.error').hide();
+    var complaint_title = $("input#complaint_title").val();
+    if (complaint_title == "") {
+        $("label#complaint_title_error").show();
+        $("input#complaint_title").focus();
+        return false;
+    }
+    var complaints = $("input#complaints").val();
+    if (complaints == "") {
+        $("label#complaints_error").show();
+        $("input#complaints").focus();
+        return false;
+    }
+    var contact = $("input#contact").val();
+    if (contact == "") {
+        $("label#contact_error").show();
+        $("input#beforepass").focus();
+        return false;
+    }
+    var newpass = $("input#newpass").val();
+    if (newpass == "") {
+        $("label#newpass_error").show();
+        $("input#newpass").focus();
+        return false;
+    }
+    var verifypass = $("input#verifypass").val();
+    if (verifypass == "") {
+        $("label#verifypass_error").show();
+        $("input#verifypass").focus();
+        return false;
+    }
 }
+
+    function reset()
+    {
+        var $inputs = $('#complaint_form :input');
+        var values = {};
+        $inputs.each(function() {
+            values[this.name] = $(this).val('');
+        });
+        $("#type_complaint").val(1);
+    }
 </script>
 {/block}
 

@@ -16,7 +16,7 @@ class ProfessionalCertificateController extends Controller
     public function index()
     {
         $this->assign('side_nav', 'certification');
-        $this->assign('header_nav', 'home');
+        $this->assign('header_nav', 'project_publish');
         $this->assign("nav_type", 1);
         return $this->fetch();
     }

@@ -289,9 +289,9 @@
                                     <div style=" float: left;margin-right: 15px;">
                                         <input type="text" class="form-control input-custom input-width" name="verify_code" id="verify_code" style="width: 247px;height: 42px;"/>
                                     </div>
-
-                                    <div><img src="{:url('service_management.release_requirement/verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;"/></div>
-
+                                    <div>
+                                        <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;border: 1px solid #d2d2d2; border-radius: 6px;height: 41px;"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +387,7 @@
         // $('input[name="candidate"]:first').attr('checked',true);
         init();
 
-
+        $("#published_time").val( new Date().toJSON().slice(0,10));
     });
 
     function init() {
@@ -505,6 +505,36 @@
         $("#contact_phone").val(contact_phone);
     }
 
+    //compare function wheater one field >= other field
+    jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) >= new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) >= Number($(params[0]).val()));
+        };
+        return true;
+    },'必须大于 {1}.');
+
+    jQuery.validator.addMethod("lessEqualThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) <= new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) <= Number($(params[0]).val()));
+        };
+        return true;
+    },'必须小于或等于 {1}.');
+
+    jQuery.validator.addMethod("lessThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) < new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) < Number($(params[0]).val()));
+        };
+        return true;
+    },'必须小于 {1}.');
     // function reset()
     // {
     //     var $inputs = $('#release_requirement_form :input');

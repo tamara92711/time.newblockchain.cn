@@ -207,7 +207,8 @@
                                         <label>发布时间：</label>
                                     </div>
                                     <div class="right" style="margin-left: 3px;width: 0px;">
-                                        <input type="text" class="form-control input-custom input-width" data-toggle="published_time" name="published_time" id="published_time" placeholder="请选择日期">
+                                        <!--<input type="text" class="form-control input-custom input-width" data-toggle="published_time" name="published_time" id="published_time" placeholder="请选择日期" readonly="readonly">-->
+                                        <input type="text" class="form-control input-custom input-width"  name="published_time" id="published_time" placeholder="请选择日期" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group " style="padding-top: 7px; ">
@@ -254,7 +255,7 @@
                                         <label>服务时间：</label>
                                     </div>
                                     <div class="right" style="margin-left: 9px;margin-right: -69px;">
-                                        <input type="text" class="form-control input-custom input-width" name="service_hours" id="service_hours">
+                                        <input type="text" class="form-control input-custom input-width" name="service_hours" id="service_hours" readonly="readonly">
                                     </div>
                                     <div class="left ">
                                         <label>所需时间：</label>
@@ -290,7 +291,7 @@
                                         <input type="text" class="form-control input-custom input-width" name="verify_code" id="verify_code" style="width: 247px;height: 42px;"/>
                                     </div>
                                     <div>
-                                        <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;border-radius: 20px;"/>
+                                        <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="border: 1px solid #d2d2d2; border-radius: 6px;height: 41px;"/>
                                     </div>
                                 </div>
                             </div>
@@ -388,6 +389,8 @@
         $('input[name=demand_type]:first').attr('checked',true);
         //treeview first child display
         $(".set .acc-plus").first().addClass("active").siblings(".content").slideDown(100);
+
+        $("#published_time").val( new Date().toJSON().slice(0,10));
     });
     //Get each demandtype's text
     var demand_type_val,demand_type_id;
@@ -471,15 +474,15 @@
             format:'yyyy-mm-dd'
         });
 
-        $('[data-toggle="published_time"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-        });
+        // $('[data-toggle="published_time"]').datepicker({
+        //     autoHide: true,
+        //     zIndex: 2048,
+        // });
 
-        $('#valid_time').datepicker().datepicker('setDate',new Date());
+        $('#valid_time').datepicker().datepicker('setDate',(new Date()));
         $('#service_time_from').datepicker().datepicker('setDate',new Date());
         $('#service_time_to').datepicker().datepicker('setDate',new Date());
-        $('#published_time').datepicker().datepicker('setDate',new Date());
+        // $('#published_time').datepicker().datepicker('setDate',new Date());
     }
 
 
@@ -516,6 +519,26 @@
         };
         return true;
     },'必须大于 {1}.');
+
+    jQuery.validator.addMethod("lessEqualThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) <= new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) <= Number($(params[0]).val()));
+        };
+        return true;
+    },'必须小于或等于 {1}.');
+
+    jQuery.validator.addMethod("lessThan", function(value, element, params) {
+        if ($(params[0]).val() != '') {
+            if (!/Invalid|NaN/.test(new Date(value))) {
+                return new Date(value) < new Date($(params[0]).val());
+            }
+            return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) < Number($(params[0]).val()));
+        };
+        return true;
+    },'必须小于 {1}.');
     // function reset()
     // {
     //     var $inputs = $('#release_requirement_form :input');

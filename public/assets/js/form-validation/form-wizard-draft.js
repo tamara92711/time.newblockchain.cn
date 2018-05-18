@@ -47,16 +47,18 @@ var FormWizard = function () {
                         required: true
                     },
                     service_time_from: {
-                        required: true
+                        required: true,
+                        lessEqualThan: ["#service_time_to","时间结束"]
                     },
                     service_time_to: {
-                        required: true,
+                        required: true
                     },
                     time_required: {
                         required: true
                     },
                     valid_time: {
-                        required: true
+                        required: true,
+                        lessThan: ["#service_time_from","服务开始时间"]
                     },
                     pay_amount: {
                         number : true,
@@ -168,6 +170,7 @@ var FormWizard = function () {
                 // var verify_code         = $("#verify_code").val();
 
                 var demand_type         = getDemandTypeText();
+                if (typeof demand_type ==='undefined') demand_type_val = $('input[name = "demand_type"]:checked').next('label').text();
 
                 $("#demand_type_confirm").val(demand_type_val);
                 $("#payment_time_confirm").val(pay_amount);

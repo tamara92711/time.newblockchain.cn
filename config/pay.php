@@ -7,12 +7,12 @@ return array(
       '/Public/Home/img/balance.png'
     ],
     'ALIPAY_CONFIG' => [
-        'notify_url'        => '',
-        'return_url'        => '',
+        'notify_url'        => 'http://localhost',
+        'return_url'        => 'http://localhost',
         'sign_type'         => strtoupper( 'MD5' ),
         'input_charset'     => strtolower( 'utf-8' ),
-        'cacert'            => Env::get('app_path') . 'app/PlugInUnit/PCAlipay/RSA/cacert.pem',
-        'transport'         => 'http',
+        'cacert'            => Env::get('app_path') . 'PlugInUnit\PCAlipay\MD5\cacert.pem',
+        'transport'         => 'https',
         'payment_type'      => "1",
         'service'           => "create_forex_trade",
         'anti_phishing_key' => "",
