@@ -72,6 +72,8 @@ Route::resource('admin/member/real_name_verify','@admin/member/real_name_verify'
 
 ///////////////////////////////////////////////////////////////////////////
 // Route::group('front');
+Route::get('clear_phone_verify_code_session', '@index/index/clear_phone_verify_code_session');
+Route::get('home', '@index/index/home');
 Route::get('login_form','@index/user/login_form');
 Route::post('login','@index/user/submit_login');
 
@@ -86,8 +88,8 @@ Route::post('update_amount','@index/mall_management/my_collection/update_amount'
 Route::post('delete_from_cart','@index/mall_management/my_collection/delete_from_cart');
 Route::post('apply_payment','@index/mall_management/my_collection/apply_payment');//->middleware('AuthMiddleware');
 
-Route::get('open_cart','/index/mall_management.my_collection/index')->middleware('AuthMiddleware');
-Route::get('order_published','/index/mall_management.my_collection/published_orders_view')->middleware('AuthMiddleware');
+Route::get('open_cart','@index/mall_management.my_collection/index')->middleware('AuthMiddleware');
+Route::get('order_published','@index/mall_management.my_collection/published_orders_view')->middleware('AuthMiddleware');
 Route::post('purchase_view','@index/mall_management.my_collection/purchase_view');//->middleware('AuthMiddleware');
 
 Route::get('ajax_alarm_cart','@index/mall_management.my_collection/get_pending_cart_count');
@@ -98,8 +100,8 @@ Route::post('order_now','@index/mall_management.my_collection/order');
 Route::post('charge_coin','@common/pay/charge');
 
 Route::get('transactionhistory','/index/time_money/transactionhistory')->middleware('AuthMiddleware');
-Route::get('charge','/index/time_money/buy')->middleware('AuthMiddleware');
-Route::get('transfer','/index/time_money/transfer')->middleware('AuthMiddleware');
+Route::get('charge','@index/time_money/buy')->middleware('AuthMiddleware');
+Route::get('transfer','@index/time_money/transfer')->middleware('AuthMiddleware');
 
     
 Route::resource('index/data_management/address_manage','@index/data_management/address_manage');
@@ -108,11 +110,11 @@ Route::get('address_book', '/index/data_management.address_manage');//;//->middl
 
 Route::resource('index/data_management/professional_certificate','@index/data_management/professional_certificate');
 
-Route::get('certificates', '/index/data_management.professional_certificate');//;//->middleware('AuthMiddleware');
+Route::get('certificates', '@index/data_management.professional_certificate/index')->middleware('AuthMiddleware');
 
 Route::resource('index/data_management/personal_infomation','@index/data_management/personal_infomation');
 
-Route::get('personal_information', '/index/data_management.personal_information');//->middleware('AuthMiddleware');
+Route::get('personal_information', '@index/data_management.personal_information/index')->middleware('AuthMiddleware');
 
 Route::post('phoneChangeVerifyCode','@index/data_management.personal_information/phoneChangeVerifyCode');
 
@@ -126,41 +128,49 @@ Route::post('personal_update','@index/data_management.personal_information/perso
 
 Route::resource('index/data_management/verify','@index/data_management/verify');
 
-Route::get('verify', '/index/data_management.verify');//->middleware('AuthMiddleware');
+Route::get('verify', '@index/data_management.verify/index')->middleware('AuthMiddleware');
 
 Route::resource('index/index/love_enterprise','@index/index/love_enterprise');
 
+Route::get('love_enterprise', '@index/index.love_enterprise/index')->middleware('AuthMiddleware');
+
 Route::resource('index/index/charitable_organization','@index/index/charitable_organization');
+
+Route::get('charitable_organization','@index/index.charitable_organization/index')->middleware('AuthMiddleware');
 
 Route::resource('index/index/complaints','@index/index/complaints');
 
-Route::get('complaints', '/index/index.complaints');//->middleware('AuthMiddleware');
+Route::get('complaints', '@index/index.complaints/index')->middleware('AuthMiddleware');
 
 Route::resource('index/index/volunteer_grace','@index/index/volunteer_grace');
 
+Route::get('volunteers', '@index/index.volunteer_grace/index');
+
 Route::resource('index/index/news_center','@index/index/news_center');
+
+Route::get('/news_center', '@index/index.news_center/index')->middleware('AuthMiddleware');
 
 Route::get('/membercenter','index/index/membercenter')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/release_requirement','@index/service_management/release_requirement');
 
-Route::get('/publish_demand', '/index/service_management.release_requirement')->middleware('AuthMiddleware');
+Route::get('/publish_demand', '@index/service_management.release_requirement/index')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/undertake_service','@index/service_management/undertake_service');
 
-Route::get('/apply_demand', '/index/service_management.undertake_service')->middleware('AuthMiddleware');
+Route::get('/apply_demand', '@index/service_management.undertake_service/index')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/show_published','@index/service_management/show_published');//->middleware('AuthMiddleware');
 
-Route::get('/project_published', '/index/service_management.show_published')->middleware('AuthMiddleware');
+Route::get('/project_published', '@index/service_management.show_published/index')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/show_undertaken','@index/service_management/show_undertaken');//->middleware('AuthMiddleware');
 
-Route::get('/project_accepted', '/index/service_management.show_undertaken')->middleware('AuthMiddleware');
+Route::get('/project_accepted', '@index/service_management.show_undertaken/index')->middleware('AuthMiddleware');
 
 Route::resource('index/project/project_published','@index/project/project_published');
 
-Route::resource('index/project/project_accepteded','@index/project/project_accepteded');
+Route::resource('index/project/project_accepted','@index/project/project_accepteded');
 
 Route::resource('index/project/project_cancled','@index/project/project_cancled');
 
@@ -169,4 +179,12 @@ Route::resource('index/project/project_completed','@index/project/project_comple
 Route::resource('index/project/project_expired','@index/project/project_expired');
 
 Route::resource('index/mall/index','@index/mall/index');
+
+Route::get('mall','@index/mall.index/index')->middleware('AuthMiddleware');
+
+Route::get('about_us', '@index/about_us.index/index')->middleware('AuthMiddleware');
+
+Route::get('local_agencies', '@index/about_us.local_agencies/index')->middleware('AuthMiddleware');
+
+Route::get('recruitment_information', '@index/about_us.recruitment_information/index')->middleware('AuthMiddleware');
 

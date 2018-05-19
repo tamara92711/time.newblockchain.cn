@@ -170,4 +170,9 @@ class IndexController extends Controller
     {
         return $this->fetch();
     }
+
+    public function clear_phone_verify_code_session()
+    {
+        session('code', null);
+    }
 }

@@ -45,7 +45,7 @@
 .right input {
     width: 300px;
     margin-top: -6px;
-    height: 36px;
+    height: 100%;
 }
 
 .radio {
