@@ -50,7 +50,7 @@ require_once("Lib/AlipaySubmit.class.php");
 $parameter = array(
 		"service"       => $alipay_config['service'],
 		"partner"       => $alipay_config['partner'],
-		"seller_id"  => $alipay_config['seller_id'],
+		"seller_id"  	=> $alipay_config['seller_id'],
 		"payment_type"	=> $alipay_config['payment_type'],
 		"notify_url"	=> $alipay_config['notify_url'],
 		"return_url"	=> $alipay_config['return_url'],
