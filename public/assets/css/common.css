@@ -1260,6 +1260,7 @@ input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
 .error{
   display: none;
   margin-left: 10px;
+  color: red;
 }
 
 .error_show{

@@ -153,7 +153,7 @@
                 <div class="container login-title" style="border-top: 1px solid #ff5656;width: 330px;margin-top: 2px;margin-bottom:15px;">
                     <p style="font-family: ms-yahei-bold;color: #ff5656;font-size: 18px;margin-top: -15px;margin-bottom:0px;background-color: white;width: 111px;margin-left: 109px;padding-left: 20px;padding-right: 0px;">修改手机</p>
                 </div>
-
+                <label class="error" for="email" id="verifyError" style="margin-left: 0px;">这是必填栏。</label>
                 <div class="form">
                     <form role="form">
                         <div class="form-group">
@@ -171,7 +171,7 @@
                             </div>
                             <div class="right">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" style="width:190px;" id="oldMobileVerifyCode" readonly="readonly">
+                                    <input type="number" class="form-control" style="width:190px;" id="oldMobileVerifyCode" oninput="if(value.length>4)value=value.slice(0,4)">
                                     <span class="input-group-btn">
                                         <button class="btn" type="button" onclick="create_phone_verify_code(1);">获取验证码</button>
                                     </span>
@@ -183,7 +183,7 @@
                                 <label>新手机号：</label>
                             </div>
                             <div class="right">
-                                <input type="number" class="form-control" id="new_mobile" readonly="readonly"  oninput="if(value.length>11)value=value.slice(0,11)"/>
+                                <input type="number" class="form-control" id="new_mobile"  oninput="if(value.length>11)value=value.slice(0,11)" readonly="readonly"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -192,9 +192,9 @@
                             </div>
                             <div class="right">
                                 <div class="input-group">
-                                    <input type="number" class="form-control" style="width:190px;" id="newMobileVerifyCode">
+                                    <input type="number" class="form-control" style="width:190px;" id="newMobileVerifyCode" oninput="if(value.length>4)value=value.slice(0,4)">
                                     <span class="input-group-btn">
-                                        <button class="btn" type="button" onclick="create_phone_verify_code(2);" id="newMobileVerifyCodeButton">获取验证码</button>
+                                        <button class="btn" type="button" onclick="create_phone_verify_code(2);" id="newMobileVerifyCodeButton" >获取验证码</button>
                                     </span>
                                 </div>
                             </div>
@@ -214,6 +214,7 @@
         </div>
     </div>
 </div>
+
 {/block}
 {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/common/common.js"></script>
@@ -244,7 +245,9 @@
             data : formData,
             success:function (result) {
                 if(result=='ok')
-                    alert("succesfully");
+                {
+                    alert("个人信息已成功保存");
+                }
                 else if (result == "failure")
                     $("label#beforepass_error").text('您的旧密码错误，请正确输入密码！');
                     $("input#beforepass").focus();
@@ -256,30 +259,100 @@
     $("#newMobileVerifyCodeButton").attr('disabled', 'disabled' ).addClass( 'ui-state-disabled' );
 
 
-
-    $("#new_mobile").on('keyup blur',function ()
+    $("#oldMobileVerifyCode").on('keyup blur',function ()
     {
-        var mobile = $(this).val();
-        var isnum = /^\d+$/.test(mobile);
-        if (!isnum || mobile.length != 11 )
+        var oldMobileVerifyCode = $(this).val();
+
+        var isnum = /^\d+$/.test(oldMobileVerifyCode);
+        if (!isnum || oldMobileVerifyCode.length != 4 )
         {
-            validation.mobile = false;
             $(this).focus();
         }
-        else if(isnum || mobile.length ==11 )
-        {
-            $("#newMobileVerifyCodeButton").removeAttr("disabled");
+        else if(isnum || oldMobileVerifyCode.length == 4)
+        // {console.log("old="+oldMobileVerifyCode);
+            $.ajax({
+                url : '/confirmOldMobileVerifyCode',
+                method: "post",
+                data: {oldMobileVerifyCode:oldMobileVerifyCode},
+                success:function (result)
+                {
+                    if(result == "wrong")
+                    {
+                        $("#verifyError").text("验证旧手机号码是错误的。").show();
+                    }
+                    else if (result == "ok")
+                    {
+                        $("#verifyError").hide();
+                        $("#new_mobile").removeAttr("readonly");
+                        $("#new_mobile").focus();
+                    }
+                }
+            })
         }
     });
 
-    // $("#new_mobile").on('change', function()
-    // {
-    //     if(isnum || mobile.length ==11 )
-    //     {
-    //         $("#newMobileVerifyCodeButton").removeAttr("disabled");
-    //     }
-    // });
+    $("#newMobileVerifyCode").on('keyup blur',function ()
+    {
+        var newMobileVerifyCode = $(this).val();
 
+        var isnum = /^\d+$/.test(newMobileVerifyCode);
+        if (!isnum || newMobileVerifyCode.length != 4 )
+        {
+            $(this).focus();
+        }
+        else if(isnum || newMobileVerifyCode.length == 4)
+        // {console.log("new="+newMobileVerifyCode);
+            $.ajax({
+                url : '/confirmNewMobileVerifyCode',
+                method: "post",
+                data: {newMobileVerifyCode:newMobileVerifyCode},
+                success:function (result)
+                {
+                    if(result == "wrong")
+                    {
+                        $("#verifyError").text("验证新手机号码是否有误。").show();
+                    }
+                    else if (result == "ok")
+                    {
+                        $("#verifyError").hide();
+                        $("#changePhoneButton").removeAttr("disabled");
+                    }
+                }
+            })
+        }
+    });
+
+    $("#new_mobile").on('keyup blur',function ()
+    {
+        var new_mobile = $(this).val();
+
+        var isnum = /^\d+$/.test(new_mobile);
+        if (!isnum || new_mobile.length != 11 )
+        {
+            $(this).focus();
+        }
+        else if(isnum || new_mobile.length == 11)
+        {
+            $.ajax({
+                url : '/existMobile',
+                method: "post",
+                data: {new_mobile:new_mobile},
+                success:function (result)
+                {
+                    if(result == "exist")
+                    {
+                        $("#verifyError").text("这个手机号码已经被注册。").show();
+
+                    }
+                    else if (result == "not exist")
+                    {
+                        $("#verifyError").hide();
+                        $("#newMobileVerifyCodeButton").removeAttr("disabled");
+                    }
+                }
+            })
+        }
+    });
 
     function create_phone_verify_code(mode)
     {
@@ -287,12 +360,12 @@
         if (mode == 1)
         {
             var old_mobile = $("#old_mobile").val();
-            var dataString = {phone_number: old_mobile,mode:0};
+            var dataString = {phone_number: old_mobile,mode:1};
         }
-        else
+        else if (mode == 2)
         {
             var new_mobile = $("#new_mobile").val();
-            var dataString = {phone_number: new_mobile,mode:1};
+            var dataString = {phone_number: new_mobile,mode:2};
         }
 
         $.ajax({
@@ -306,23 +379,13 @@
                 {
                     $("#new_mobile").focus();
                 }
-                else
-                {
-                    if(mode == 1)
-                    {
-                        $("#oldMobileVerifyCode").val(result.code);
-                        $("#new_mobile").removeAttr("readonly");
-                    }
-                    else
-                    {
-                        $("#newMobileVerifyCode").val(result.code);
-                        if ($("#newMobileVerifyCode").length>0)
-                        {
-                            $("#changePhoneButton").removeAttr("disabled");
-                        }
-                    }
-
-                }
+                // else
+                // {
+                //     if(mode == 1 )
+                //         console.log("old="+result.code);
+                //     else
+                //         console.log("new="+result.code);
+                // }
             }
         });
     }

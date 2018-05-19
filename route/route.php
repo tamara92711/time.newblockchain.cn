@@ -116,6 +116,12 @@ Route::get('personal_information', '/index/data_management.personal_information'
 
 Route::post('phoneChangeVerifyCode','@index/data_management.personal_information/phoneChangeVerifyCode');
 
+Route::post('confirmOldMobileVerifyCode','@index/data_management.personal_information/confirmOldMobileVerifyCode');
+
+Route::post('confirmNewMobileVerifyCode','@index/data_management.personal_information/confirmNewMobileVerifyCode');
+
+Route::post('existMobile','@index/data_management.personal_information/existMobile');
+
 Route::post('personal_update','@index/data_management.personal_information/personalUpdate');
 
 Route::resource('index/data_management/verify','@index/data_management/verify');

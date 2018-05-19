@@ -114,46 +114,74 @@ class PersonalInformationController extends Controller
         //
     }
 
+    public function confirmOldMobileVerifyCode(Request $request)
+    {
+        $verify_code = $request ->param('oldMobileVerifyCode');
+        if ($verify_code == session('mobile_verify_code'))
+            echo "ok";
+        else
+            echo "wrong";
+
+    }
+
+    public function confirmNewMobileVerifyCode(Request $request)
+    {
+        $verify_code = $request ->param('newMobileVerifyCode');
+        if ($verify_code == session('new_mobile_verify_code'))
+            echo "ok";
+        else
+            echo "wrong";
+
+    }
+
+
+    public function existMobile(Request $request)
+    {
+        $new_mobile = $request->post('new_mobile');
+        if (UserModel::where('mobile',$new_mobile)->select()->count() > 0)
+            echo "exist";
+        else
+            echo "not exist";
+    }
+
     public function phoneChangeVerifyCode(Request $request)
     {
-        $phone_number = $request->post('phone_number');
-        $mode         = $request->post('mode');
         $response = [];
         $response['error'] = false;
-        if ($mode ==1 )
+        $code = rand(1000, 9999);
+
+        $mode             = $request->post('mode');
+        if ($mode == 1)
         {
-            if (UserModel::where('mobile',$phone_number)->select()->count() > 0)
-            {
-                $response['error'] = true;
-                $response['text'] = "手机号码已经存在";
-                return json_encode(["response" => $response]);
-            }
-        }
-        if ($mode == 1 || $mode == 0)
-        {
-            $code = rand(1000, 9999);
-            // session("id", session_create_id());
+            $phone_number = $request->post('phone_number');
             session("mobile_verify_code", $code);
-
-            //sms content
-            $content = "您的区块链公益时间廊注册验证码是\n" . $code;
-
-            // sms config
-            $smsapi = 'http://api.smsbao.com/';
-            $user = 'gdbc';
-            $pass = md5('gdqkl2018'); //短信平台密码
-
-            //send sms
-            $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
-            $result =file_get_contents($sendurl) ;
-
-            $response['text'] = config('sms.send_status')[$result];
-            if ($result != 0)
-            {
-                $response['error'] = true;
-            }
-            $response['code'] = $code;
         }
+        if ($mode == 2)
+        {
+            $phone_number = $request->post('phone_number');
+            session("new_mobile_verify_code", $code);
+        }
+            //sms content
+        $content = "您的区块链公益时间廊注册验证码是\n" . $code;
+
+        // sms config
+        $smsapi = 'http://api.smsbao.com/';
+        $user = 'gdbc';
+        $pass = md5('gdqkl2018'); //短信平台密码
+
+        //send sms
+        $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
+        $result =file_get_contents($sendurl) ;
+
+        $response['text'] = config('sms.send_status')[$result];
+        if ($result != 0)
+        {
+            $response['error'] = true;
+        }
+
+        $response['code'] = $code;
+
+
         return json_encode($response);
     }
 }

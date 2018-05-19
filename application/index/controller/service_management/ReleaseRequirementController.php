@@ -107,20 +107,28 @@ class ReleaseRequirementController extends Controller
         $link->contact_name             = $request->param("contact");
         $link->contact_phone            = $request->param("contact_phone");
         $link->published_time           = $request->param("published_time");
+        $captcha_code                   = $request->param("captcha_code");
 
-        $count = RealNameVerifyModel::where('user_id',session('user_id'))->where('is_passed',1)->count();
-        if($count == 0)
-            echo "not_verify";
+        $captcha = $this->captcha;
+        if(!$captcha->check($captcha_code))
+        {
+            echo "captcha_fail";
+        }
         else
         {
-            //mode =0 save drafts insert state value 1
-            if ($mode == 0 )
-                $link->state = 1;
-            //mode =1 confirm and publish insert state value 2
-            else if ($mode == 1)
-                $link->state = 2;
+            $count = RealNameVerifyModel::where('user_id',session('user_id'))->where('is_passed',1)->count();
+            if($count == 0)
+                echo "not_verify";
+            else
+            {
+                if ($mode == 0 )
+                    $link->state = 1;
+                //mode =1 confirm and publish insert state value 2
+                else if ($mode == 1)
+                    $link->state = 2;
+                $link->save();
+            }
         }
-        $link->save();
     }
     /*
      * drafts content update
@@ -144,13 +152,23 @@ class ReleaseRequirementController extends Controller
         $link->contact_name         = $request->param("contact");
         $link->contact_phone        = $request->param("contact_phone");
         $link->published_time       = $request->param("published_time");
+        $captcha_code                   = $request->param("captcha_code");
 
-        if($mode == 1)
-            $link->state = 2;
+        $captcha = $this->captcha;
+        if(!$captcha->check($captcha_code))
+        {
+            echo "captcha_fail";
+        }
         else
-            $link->state = 1;
+        {
+            if($mode == 1)
+                $link->state = 2;
+            else
+                $link->state = 1;
 
-        $link->save();
+            $link->save();
+        }
+
 
     }
     /**

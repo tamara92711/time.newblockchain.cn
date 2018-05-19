@@ -98,9 +98,16 @@ class ProjectProcessingController extends Controller
         {
             $this->assign('mode',0);
         }
-        else{
+        else
+        {
             $this->assign('mode',$mode);
         }
+
+        if (DemandModel::where(['id'=>$id,'user_id'=>session('user_id'),'applied_user_id'=>0])->where('is_reviewed','<>',4)->count() > 0)
+            $this->assign('cancelMode',1);//project cancel button see
+        else
+            $this->assign('cancelMode',0);//don't see project cancel button
+
         $this->assign('data',$data);
         $this->assign('header_nav', 'project_apply');
         $this->assign("nav_type", 1);

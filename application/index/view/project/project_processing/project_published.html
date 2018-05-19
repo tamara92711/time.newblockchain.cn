@@ -65,13 +65,21 @@
     </div>
     <div class="form-actions">
         <div class="row" style="margin-bottom: 69px;">
-            <?php if ($mode == 1)
+            <?php if ($mode == 0 && $cancelMode == 1)
+            {
+                echo "<button type='submit' class='btn undertake' onclick='cancelProject();'>取消</button>";
+                echo "<button  class='btn return' style=''>返回</button>";
+            }
+            else if ($mode == 0 && $cancelMode == 0 )
+            {
+                echo "<button  class='btn return' style='margin-left: 478px; background-color: #ff5656;'>返回</button>";
+            }
+
+            else if ($mode == 1 )
             {
                 echo "<button type='submit' class='btn undertake' onclick='handleBid();'>承接</button>";
                 echo "<button  class='btn return' >返回</button>";
             }
-            else
-                echo "<button  class='btn return' style='margin-left: 478px; background-color: #ff5656;'>返回</button>";
             ?>
 
 
@@ -101,11 +109,11 @@
             {
                 if(result=="not")
                 {
-                    alert("you don't bid because you don't verified ");
+                    alert("你不会出价，因为你没有验证");
                 }
                 else
                 {
-                    alert("bid success");
+                    alert("您的出价已成功完成");
                     history.go(-1);
                 }
             }

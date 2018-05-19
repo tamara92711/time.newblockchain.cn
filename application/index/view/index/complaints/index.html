@@ -30,6 +30,7 @@
                         <div class="right">
                             <input type="text" class="form-control" id="complaint_title" name="complaint_title">
                         </div>
+                        <label class="error" for="complaint_title" id="complaint_title_error">这是必填栏。</label>
                     </div>
                     <div class="form-group" style="padding-bottom: 15px;">
                         <div class="left">
@@ -38,6 +39,7 @@
                         <div class="right">
                             <textarea class="form-control" rows="3" name="complaints" id="complaints" style="height: 100px; width: 600px;"></textarea>
                         </div>
+                        <label class="error" for="complaints" id="complaints_error">这是必填栏。</label>
                         <div class="clearfix"></div>
                     </div>
                     <div class="form-group" style="padding-bottom: 42px;">
@@ -47,6 +49,7 @@
                         <div class="right">
                             <input type="text" class="form-control" id="contact" name="contact">
                         </div>
+                        <label class="error" for="contact" id="contact_error">这是必填栏。</label>
                     </div>
                     <div class="form-group" style="padding-bottom: 45px;">
                         <div class="left">
@@ -55,6 +58,7 @@
                         <div class="right">
                             <input type="text" class="form-control" id="contact_number" name="contact_number">
                         </div>
+                        <label class="error" for="contact_number" id="contact_number_error">这是必填栏。</label>
                     </div>
                     <div class="form-group">
                         <div class="left">
@@ -63,7 +67,10 @@
                         <div class="right">
                             <input type="text" class="form-control" style="width: 232px;margin-top: 2px;" id="captcha" name="captcha">
                         </div>
-                        <div><img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="border: 1px solid #d2d2d2; border-radius: 6px;height: 36px;margin-left: 10px;margin-top: -4px;"/></div>
+                        <div>
+                            <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="border: 1px solid #d2d2d2; border-radius: 6px;height: 36px;margin-left: 10px;margin-top: -4px;"/>
+                            <label class="error" for="captcha" id="captcha_error">这是必填栏。</label>
+                        </div>
 
                     </div>
                     <div class="form-actions">
@@ -92,62 +99,72 @@ $(document).ready(function () {
 
 
     $("#complaint_form").submit(function (e) {
-    e.preventDefault();
-    var formData = $(this).serialize();
+        e.preventDefault();
+        validation();
+        var formData = $(this).serialize();
 
-    $.ajax({
-        url : '/index/index.complaints/save',
-        type : 'POST',
-        data : formData,
-        success:function (result) {
-            if(result == "success")
-            {
-                alert("success");
-                reset();
-                $("#complaint_title").focus();
-            }
-            else if (result == "fail")
-            {
-                alert("captcha code wrong");
-            }
+        $.ajax({
+            url : '/index/index.complaints/save',
+            type : 'POST',
+            data : formData,
+            success:function (result) {
+                if(result == "success")
+                {
+                    alert("success");
+                    reset();
+                    $("#complaint_title").focus();
+                }
+                else if (result == "fail")
+                {
+                    $("label#captcha_error").text("验证码错误").show();
+                    // $("input#captcha").focus();
+                }
 
+            }
+        })
+    });
+
+    function validation() {
+        $('.error').hide();
+        var complaint_title = $("input#complaint_title").val();
+        if (complaint_title == "") {
+            $("label#complaint_title_error").show();
+            $("input#complaint_title").focus();
+            return false;
         }
-    })
-});
+        var complaints = $("input#complaints").val();
+        if (complaints == "") {
+            $("label#complaints_error").show();
+            $("input#complaints").focus();
+            return false;
+        }
+        var contact = $("input#contact").val();
+        if (contact == "") {
+            $("label#contact_error").show();
+            $("input#contact").focus();
+            return false;
+        }
+        var contact_number = $("input#contact_number").val();
+        if (contact_number == "") {
+            $("label#contact_number_error").show();
+            $("input#contact_number").focus();
+            return false;
+        }
+        var captcha = $("input#captcha").val();
+        if (captcha == "") {
+            $("label#captcha_error").show();
+            $("input#captcha").focus();
+            return false;
+        }
+    }
+    $("#complaint_title,#complaints,#contact,#contact_number,#captcha").keypress(function () {
+        $("label#complaint_title_error").hide();
+        $("label#complaints_error").hide();
+        $("label#contact_error").hide();
+        $("label#contact_number_error").hide();
+        $("label#captcha_error").hide();
 
-function validation() {
-    $('.error').hide();
-    var complaint_title = $("input#complaint_title").val();
-    if (complaint_title == "") {
-        $("label#complaint_title_error").show();
-        $("input#complaint_title").focus();
-        return false;
-    }
-    var complaints = $("input#complaints").val();
-    if (complaints == "") {
-        $("label#complaints_error").show();
-        $("input#complaints").focus();
-        return false;
-    }
-    var contact = $("input#contact").val();
-    if (contact == "") {
-        $("label#contact_error").show();
-        $("input#beforepass").focus();
-        return false;
-    }
-    var newpass = $("input#newpass").val();
-    if (newpass == "") {
-        $("label#newpass_error").show();
-        $("input#newpass").focus();
-        return false;
-    }
-    var verifypass = $("input#verifypass").val();
-    if (verifypass == "") {
-        $("label#verifypass_error").show();
-        $("input#verifypass").focus();
-        return false;
-    }
-}
+    })
 
     function reset()
     {
