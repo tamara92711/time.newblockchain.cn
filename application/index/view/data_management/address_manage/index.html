@@ -116,7 +116,7 @@
 {/block}
 {block name="custom-js"}
 <script src="/assets/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
-<script src="/assets/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+<!-- <script src="/assets/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script> -->
 <script>
     var modal_type = 0;
     var current_id = 0;
@@ -131,7 +131,7 @@
             modal_type = type;
             current_id = id;
             if(type == 1){
-                modalProperyHide();
+                modalPropertyHide();
                 $('#modal_title').html('修改地址');
                 $('#confirm').html('确认修改');
                 $("#region").val($('#region_id_1_' + id).text());
@@ -143,7 +143,7 @@
             }else {
                 $('#modal_title').html('新增地址');
                 $('#confirm').html('确认新的');
-                modalProperyHide();
+                modalPropertyHide();
             }
             $('#add_modal').modal();
 
@@ -245,24 +245,24 @@
             showErrorMsg('请选择省市!');
             return false;
         }
-
+ 
         if(region2 ==''){
             showErrorMsg('请选择地区!');
             return false;
         }
 
         if(address ==''){
-            showErrorMsg('请插入地址!');
+            showErrorMsg('请输入地址!');
             return false;
         }
 
         if(contacts ==''){
-            showErrorMsg('请插入联系人!');
+            showErrorMsg('请输入联系人!');
             return false;
         }
 
         if(contact_number ==''){
-            showErrorMsg('请插入联系电话!');
+            showErrorMsg('请输入联系电话!');
             return false;
         }
 
@@ -276,7 +276,7 @@
                 type : 'PUT',
                 data : dataString,
                 success: function(result) {
-                    modalProperyHide();
+                    modalPropertyHide();
                     $('#add_modal').modal('hide');
                     showAllList();
                 }
@@ -289,7 +289,7 @@
                 type : 'POST',
                 data : dataString,
                 success: function(result) {
-                    modalProperyHide();
+                    modalPropertyHide();
                     $('#add_modal').modal('hide');
                     showAllList();
                 }
@@ -321,7 +321,7 @@
         $('.J-errorMsg').html(msg);
     }
 
-    function modalProperyHide()
+    function modalPropertyHide()
     {
         $("#region").val('');
         $("#district").val('');

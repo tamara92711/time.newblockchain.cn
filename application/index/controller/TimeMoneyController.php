@@ -27,10 +27,12 @@ class TimeMoneyController extends Controller
         if (!empty($user2)) $user2_id = $user2->id;
 
         $user1_id = session('user_id');
-        $history = TransactionUserModel::where('user1_id', $user1_id)->order('create_time desc')->select()->toArray();
+        $history = TransactionUserModel::where(['user1_id' => $user1_id, 'transaction_type' => $transaction_type])->order('create_time desc')->select()->toArray();
+        $length = count($history);
         foreach($history as $key => $value)
         {
             $history[$key]['user_name'] = UserModel::get($value['user2_id'])->name;
+            $history[$key]['rank'] = $length - $key;
         }
         return json_encode(["items" => $history]);
     }
@@ -52,7 +54,7 @@ class TimeMoneyController extends Controller
         $this->assign("nav_type", 1);
         $this->assign('side_nav', 'buy');
         $this->assign('pay_image',config('pay.pay_type_img'));
-        $this->assign('payment_methods',PayTypeModel::all('2,3'));//tempcode
+        $this->assign('payment_methods',PayTypeModel::all('1,2,3'));//tempcode
         $this->assign('total_amount', UserModel::get(session('user_id'))->total_amount);
         return $this->fetch();
     }
