@@ -65,21 +65,23 @@ class RealNameVerifyController extends Controller
             $result = $result->toArray();
             foreach ($result as $key => $val)
             {
+                $result[$key]['real_name'] = $val['user_name'];
                 $result[$key]['user_name'] = UserModel::get($val['user_id'])->name;
                 $result[$key]['card_front_image'] = $this->getImageUrl($val['card_front_image']);
                 $result[$key]['card_back_image'] = $this->getImageUrl($val['card_back_image']);
                 $result[$key]['card_handled_image'] = $this->getImageUrl($val['card_handled_image']);
-                $result[$key]['avarta_image'] = $this->getImageUrl($val['avarta_image']);
+                $result[$key]['avarta_image'] = $val['avarta_image'];
             }
             return json_encode(["data" => $result]);
         }
         $data = RealNameVerifyModel::get($id);
         $data = $data->toArray();
+        $data['real_name'] = $data['user_name'];
         $data['user_name'] = UserModel::get($data['user_id'])->name;
         $data['card_front_image'] = $this->getImageUrl($data['card_front_image']);
         $data['card_back_image'] = $this->getImageUrl($data['card_back_image']);
         $data['card_handled_image'] = $this->getImageUrl($data['card_handled_image']);
-        $data['avarta_image'] = $this->getImageUrl($data['avarta_image']);
+        $data['avarta_image'] = $data['avarta_image'];
         return json_encode($data);
     }
 
@@ -104,12 +106,12 @@ class RealNameVerifyController extends Controller
     public function update(Request $request, $id)
     {
         $verify = RealNameVerifyModel::get($id);
-        $verify->real_name = $request->param('real_name');
+        $verify->user_name = $request->param('real_name');
         $verify->is_passed = $request->param('is_passed');
         $verify->save();
 
         $user = UserModel::get($verify->user_id);
-        $user->real_name = $verify->real_name;
+        $user->real_name = $verify->user_name;
         $user->save();
     }
 
