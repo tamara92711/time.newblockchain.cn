@@ -135,7 +135,7 @@
                     </div>
                     <div class="right">
                         <button class="btn" style="margin-right:15px;background-color:#ff5656" id="save">保存</button>
-                        <button class="btn" style="background-color:#ffc750">返回</button>
+                        <button class="btn" style="background-color:#ffc750" onclick="returnHome();">返回</button>
                     </div>
                 </div>
             </form>
@@ -248,9 +248,12 @@
                 {
                     alert("个人信息已成功保存");
                 }
-                else if (result == "failure")
-                    $("label#beforepass_error").text('您的旧密码错误，请正确输入密码！');
-                    $("input#beforepass").focus();
+                // else if (result == "failure")
+                // {
+                //     $("label#beforepass_error").text('您的旧密码错误，请正确输入密码！');
+                //     $("input#beforepass").focus();
+                // }
+
             }
         })
     });
@@ -269,6 +272,7 @@
             $(this).focus();
         }
         else if(isnum || oldMobileVerifyCode.length == 4)
+        {
         // {console.log("old="+oldMobileVerifyCode);
             $.ajax({
                 url : '/confirmOldMobileVerifyCode',
@@ -301,6 +305,7 @@
             $(this).focus();
         }
         else if(isnum || newMobileVerifyCode.length == 4)
+        {
         // {console.log("new="+newMobileVerifyCode);
             $.ajax({
                 url : '/confirmNewMobileVerifyCode',
@@ -397,6 +402,10 @@
 
     }
 
+    function returnHome() {
+        window.location.href="/index/service_management.release_requirement";
+    }
+
     // //email check
     // function isValidEmailAddress(email) {
     //     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -417,30 +426,30 @@
             $("input#realname").focus();
             return false;
         }
-        var beforepass = $("input#beforepass").val();
-        if (beforepass == "") {
-            $("label#beforepass_error").show();
-            $("input#beforepass").focus();
-            return false;
-        }
-        var newpass = $("input#newpass").val();
-        if (newpass == "") {
-            $("label#newpass_error").show();
-            $("input#newpass").focus();
-            return false;
-        }
-        var verifypass = $("input#verifypass").val();
-        if (verifypass == "") {
-            $("label#verifypass_error").show();
-            $("input#verifypass").focus();
-            return false;
-        }
-        if (newpass !== verifypass) {
-            $("label#verifypass_error").text("密码不一样");
-            $("label#verifypass_error").show();
-            $("input#verifypass").focus();
-            return false;
-        }
+        // var beforepass = $("input#beforepass").val();
+        // if (beforepass == "") {
+        //     $("label#beforepass_error").show();
+        //     $("input#beforepass").focus();
+        //     return false;
+        // }
+        // var newpass = $("input#newpass").val();
+        // if (newpass == "") {
+        //     $("label#newpass_error").show();
+        //     $("input#newpass").focus();
+        //     return false;
+        // }
+        // var verifypass = $("input#verifypass").val();
+        // if (verifypass == "") {
+        //     $("label#verifypass_error").show();
+        //     $("input#verifypass").focus();
+        //     return false;
+        // }
+        // if (newpass !== verifypass) {
+        //     $("label#verifypass_error").text("密码不一样");
+        //     $("label#verifypass_error").show();
+        //     $("input#verifypass").focus();
+        //     return false;
+        // }
         var cellphone = $("input#cellphone").val();
         if (cellphone == "") {
             $("label#cellphone_error").show();
