@@ -73,21 +73,26 @@ class UserController extends Controller
         $password = $request->post('password');
         $captcha_code = $request->post('verify_code');
 
+        Session::flash('phone_number', $mobile);
+        Session::flash('password', $password);
+        Session::flash('verify_code', $captcha_code);
+        
         $captcha = $this->captcha;
         if (!$captcha->check($captcha_code)) {
+            Session::flash('error',"验证码不正确");
            return redirect('/login_form');
         }
 
         if (UserModel::where('mobile',$mobile)->count() == 0)
         {
-            Session::flash('error',"This phone is not registered");
+            Session::flash('error',"手机号码不存在");
             return redirect('/login_form');
         }
         else {
             $user_record = UserModel::where('mobile',$mobile)->find();
             if ($user_record->password != md5($password))
             {
-                Session::flash('error',"password is incorrect");
+                Session::flash('error',"密码不正确");
                 return redirect('/login_form');
             }
             else {

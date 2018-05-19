@@ -24,19 +24,19 @@
                     <i>
                         <img src="/assets/img/phone.png" />
                     </i>
-                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="请输入您的手机号码">
+                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="请输入您的手机号码" value="{$Think.session.phone_number ?? ''}">
                 </div>
                 <div class="input-icon">
                     <i>
                         <img src="/assets/img/lock_light.png" />
                     </i>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="请输入您的密码">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="请输入您的密码" value="{$Think.session.password ?? ''}">
                 </div>
                 <div class="input-icon">
                     <i>
                         <img src="/assets/img/verify.png" />
                     </i>
-                    <input type="text" class="form-control" name="verify_code" id="verify_code" placeholder="请输入验证码" style="width:180px;display:inline">
+                    <input type="text" class="form-control" name="verify_code" id="verify_code" placeholder="请输入验证码" style="width:180px;display:inline"  value="{$Think.session.verify_code ?? ''}">
                     <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src+'?'" alt="captcha" style="float: right;border: 1px solid #d2d2d2;border-radius: 4px;width: 117px;height: 40px;" />
                 </div>
                 <div class="clearfix"></div>

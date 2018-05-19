@@ -116,7 +116,7 @@
 {/block}
 {block name="custom-js"}
 <script src="/assets/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
-<!-- <script src="/assets/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script> -->
+<script src="/assets/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
 <script>
     var modal_type = 0;
     var current_id = 0;
@@ -150,6 +150,11 @@
             // $("#confirm").attr('disabled', 'disabled' ).addClass( 'ui-state-disabled' );
 
         }
+
+        $("#contact_number").keypress(function (event) {
+            var code = event.which;
+            if (code < 48 || code > 57) event.preventDefault();
+        });
     });
 
     function regionChange() {
