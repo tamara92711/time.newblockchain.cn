@@ -82,14 +82,14 @@ var FormWizard = function () {
                         maxlength:11,
                         minlength:11
                     },
+                    captcha_code: {
+                        required: true
+                    },
                     contact_phone_confirm: {
                         required: true,
                         number:true,
                         maxlength:11,
                         minlength:11
-                    },
-                    demand_type: {
-                        required: true
                     }
                 },
 
@@ -285,6 +285,13 @@ var FormWizard = function () {
             //mode =0 save drafts insert state value 1
             $('#form_wizard_1').find('.button-save').click(function (e) {
                 e.preventDefault();
+
+                if ($("#captcha_code").val()=="")
+                {
+                    $("#captcha_error").show();
+                    return false;
+                }
+
                 var formData = $("#release_requirement_form").serialize();
                 $.ajax({
                     url : '/index/service_management.release_requirement/save/mode/0',
@@ -292,9 +299,13 @@ var FormWizard = function () {
                     data : formData,
                     success:function (result)
                     {
-                        if (result == "not_verify")
+                        if (result == "captcha_fail")
                         {
-                            alert("you don't verify so you don't submit project.please ask to admin!!!")
+                            $("#captcha_error").text("验证码错误");
+                        }
+                        else if (result == "not_verify")
+                        {
+                            alert("项目无法提交，因为真实姓名尚未验证。 请等待管理员批准。")
                             window.location.href=('/index/service_management.release_requirement');
                         }
 
@@ -306,7 +317,15 @@ var FormWizard = function () {
             //save confirm and publish insert state value 2
             $('#form_wizard_1 .button-submit').click(function (e) {
                 e.preventDefault();
+
+                if ($("#captcha_code").val()=="")
+                {
+                    $("#captcha_error").show();
+                    return false;
+                }
+
                 var formData = $("#release_requirement_form").serialize();
+                console.log(formData);
                 var mode    = 1;
                 $.ajax({
                     url : '/index/service_management.release_requirement/save/mode/1',
@@ -314,12 +333,15 @@ var FormWizard = function () {
                     data : formData,
                     success:function (result)
                     {
-                        if (result == "not_verify")
+                        if (result == "captcha_fail")
                         {
-                            alert("you don't verify so you don't submit project.please ask to admin!!!")
+                            $("#captcha_error").text("验证码错误");
+                        }
+                        else if (result == "not_verify")
+                        {
+                            alert("项目无法提交，因为真实姓名尚未验证。 请等待管理员批准。")
                             window.location.href=('/index/service_management.release_requirement');
                         }
-
                         else
                             window.location.href=('/index/service_management.show_published');
                     }

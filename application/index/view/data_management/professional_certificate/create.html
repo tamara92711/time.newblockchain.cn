@@ -52,7 +52,6 @@
                             </label>
                         </div>
                     </div>
-                    <span style="color:red;margin-left: 35px;display: " id="error3"></span>
                 </div>
                 <div class="form-group" style="border-bottom: none;">
                     <div class="left">
@@ -70,6 +69,9 @@
                             <p>(点击上传)</p>
                         </div>
                     </div>
+                </div>
+                <div class="row" style="margin: 0px;">
+                    <span style="color:red;margin-left: 186px;display: none;" id="error3">test</span>
                 </div>
                 <button class="btn return">提交</button>
             </form>
@@ -98,7 +100,8 @@
 
     });
 
-   $("#gradeForm").submit(function () {
+   $("#gradeForm").submit(function ()
+   {
        var certificate_no = $("#certificate_no").val();
        if(certificate_no=="")
        {
@@ -120,11 +123,17 @@
            return;
        }
 
-       if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file)) {
+       if(!/(\.bmp|\.gif|\.jpg|\.jpeg|\.png)$/i.test(file))
+       {
            $("#error3").text('请选择正确的图像.').show();
            event.preventDefault();
        }
-       })
+   })
+
+    $("#certificate_no,#certificate_name").keypress(function () {
+        $("#error1").hide();
+        $("#error2").hide();
+    })
 
 
 

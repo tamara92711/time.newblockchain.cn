@@ -63,7 +63,7 @@
     width: 242px;
     height: 292px;
     padding-top: 15px;
-    padding-left: 22px;
+    padding-left: 19px;
     background: url("/assets/img/plus.png") no-repeat center;
     background-position: center  95px;
 }
@@ -79,3 +79,5 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
+
+

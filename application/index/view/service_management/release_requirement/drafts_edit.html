@@ -287,10 +287,11 @@
                                         <label>验 证 码：</label>
                                     </div>
                                     <div style=" float: left;margin-right: 15px;">
-                                        <input type="text" class="form-control input-custom input-width" name="verify_code" id="verify_code" style="width: 247px;height: 42px;"/>
+                                        <input type="text" class="form-control input-custom input-width" name="captcha_code" id="captcha_code" style="width: 247px;height: 42px;"/>
                                     </div>
                                     <div>
-                                        <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="float:left;border: 1px solid #d2d2d2; border-radius: 6px;height: 41px;"/>
+                                        <img src="{:url('verify')}" id="verifyImage" onclick = "this.src=this.src+'?'" alt="captcha" style="border: 1px solid #d2d2d2; border-radius: 6px;height: 41px;"/>
+                                        <label class="error" for="captcha_code" id="captcha_error" style="margin-left: 20px;color: #ffbc1b;">这是必填栏。</label>
                                     </div>
                                 </div>
                             </div>

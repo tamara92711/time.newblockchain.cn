@@ -90,6 +90,9 @@ var FormWizard = function () {
                     },
                     demand_type: {
                         required: true
+                    },
+                    captcha_code : {
+                        required: true
                     }
                 },
 
@@ -292,13 +295,23 @@ var FormWizard = function () {
                     data : formData,
                     success:function (result)
                     {
-                        window.location.href=('/index/service_management.show_published');
+                        if (result == "captcha_fail")
+                        {
+                            $("#captcha_error").text("验证码错误");
+                        }
+                        else
+                            window.location.href=('/index/service_management.show_published');
                     }
                 })
             }).hide();
             //save confirm and publish insert state value 2
             $('#form_wizard_1 .button-submit').click(function (e) {
                 e.preventDefault();
+                if ($("#captcha_code").val()=="")
+                {
+                    $("#captcha_error").show();
+                    return false;
+                }
                 var formData = $("#release_requirement_form").serialize();
                 // console.log(formData);
 
@@ -308,7 +321,12 @@ var FormWizard = function () {
                     data : formData,
                     success:function (result)
                     {
-                        window.location.href=('/index/service_management.show_published');
+                        if (result == "captcha_fail")
+                        {
+                            $("#captcha_error").text("验证码错误");
+                        }
+                        else
+                            window.location.href=('/index/service_management.show_published');
                     }
                 })
             }).hide();
