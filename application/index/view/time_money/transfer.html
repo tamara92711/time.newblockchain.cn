@@ -21,7 +21,8 @@
                     <label>转入用户名：</label>
                 </div>
                 <div class="right">
-                    <input type="text" class="form-control" id="user_name">
+                    <input type="text" class="form-control" id="user_name" style="float:left">
+                    <span class="err_text" id="name_error" style="margin-top:7px;margin-left:5px;float:left;"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -29,7 +30,8 @@
                     <label>会员姓名：</label>
                 </div>
                 <div class="right">
-                    <input type="text" class="form-control" id="real_name">
+                    <input type="text" class="form-control" id="real_name" style="float:left">
+                    <span class="err_text" id="real_name_error" style="margin-top:7px;margin-left:5px;float:left;"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -37,7 +39,8 @@
                     <label>会员手机号：</label>
                 </div>
                 <div class="right">
-                    <input type="text" class="form-control" id="mobile">
+                    <input type="text" class="form-control" id="mobile" style="float:left">
+                    <span class="err_text" id="mobile_error" style="margin-top:7px;margin-left:5px;float:left;"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -45,7 +48,8 @@
                     <label>转入数量：</label>
                 </div>
                 <div class="right">
-                    <input type="text" class="form-control" id="amount">
+                    <input type="text" class="form-control" id="amount" style="float:left">
+                    <span class="err_text" id="amount_error" style="margin-top:7px;margin-left:5px;float:left;"></span>
                 </div>
             </div>
             <div class="form-actions">
@@ -128,32 +132,129 @@
         $(".inquire").click(function() {
             displayTransactionHistory();
         });
-        $(".conformation-transfer").click(function () {
+        $(".conformation-transfer").click(function (event) {
+            event.preventDefault();
             var user_name = $("#user_name").val();
             var real_name = $("#real_name").val();
             var mobile = $("#mobile").val();
-            var amount = $("#amount").val();
-            $.ajax({
-                url: "/index/time_money/confirmtransfer/",
-                method: "GET",
-                data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
-                success: function (response) {
-                    response = JSON.parse(response);
-                    if (response.is_error) {
-                        alert(response.error_message);
-                        return;
+            var amount = parseFloat($("#amount").val());
+            
+            var total_amount = parseFloat($("#total_amount").text());
+
+            if (amount > total_amount) {
+                $("#amount_error").text("Pay amount can't be larger than the balance.");
+                return;
+            } else {
+                $("#amount_error").text("");
+            }
+
+            var result = validate();
+
+            if (result) {
+                $.ajax({
+                    url: "/index/time_money/confirmtransfer/",
+                    method: "GET",
+                    data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
+                    success: function (response) {
+                        response = JSON.parse(response);
+                        if (response.is_error) {
+                            alert(response.error_message);
+                            return;
+                        }
+                        $("#total_amount").text(response.total_amount);
+                        displayTransactionHistory();
                     }
-                    $("#total_amount").text(response.total_amount);
-                    displayTransactionHistory();
-                }
-            });
+                });
+            }
         });
-
-
         displayTransactionHistory();
     });
 
     var container = $('#pagination');
+
+    function validate() {
+        $(".conformation-transfer").prop("disabled", true);
+        var user_name = $("#user_name").val();
+        var real_name = $("#real_name").val();
+        var mobile = $("#mobile").val();
+        var amount = $("#amount").val();
+        var user_id = 0;
+        
+        var error = [];
+        error.name_error = false;
+        error.real_error = false;
+
+        if (user_name.trim() == "") {
+            error.name_error = true;
+            $("#name_error").text("请输入用户名");
+        } else {
+            $.ajax({
+                url:"/index/user/name_exists/name/" + user_name,
+                method: "GET",
+                async: false,
+                success: function(response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.name_error = true;
+                        $("#name_error").text("用户名不存在");
+                    } else {
+                        user_id = response;
+                        $("#name_error").text("");
+                    }
+                    
+                }
+            });
+        }
+
+        if (real_name.trim() == "") {
+            error.real_error = true;
+            $("#real_name_error").text("请输入会员姓名");
+        } else {
+            $.ajax({
+                url: "/index/user/realnamecorrect/",
+                data: {user_id: user_id, real_name: real_name},
+                method: "GET",
+                async: false,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.real_error = true;
+                        $("#real_name_error").text("会员姓名不正确");
+                    } else {
+                        $("#real_name_error").text("");
+                    }
+                }
+            });
+        }
+
+        if (mobile.trim() == "") {
+            error.mobile_error = true;
+            $("#mobile_error").text("请输入手机号码");
+        } else {
+            $.ajax({
+                url: "/index/user/mobilecorrect/",
+                method: "GET",
+                data: {user_id: user_id, mobile: mobile},
+                async: false,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.mobile_error = true;
+                        $("#mobile_error").text("手机号码不正确");
+                    } else {
+                        $("#mobile_error").text("");
+                    }
+                }
+            });
+        }
+
+        if (!(error.name_error || error.mobile_error || error.real_error)) {
+            return true;
+        } else {
+            return false;
+        }
+        $(".conformation-transfer").prop("disabled", false);
+    }
 
     function displayTransactionHistory() {
         var time_from = $("#time_from").val();
@@ -184,6 +285,7 @@
                         dataHtml += '<tbody>';
                         var transaction_type = "";
                         var amount = "";
+                        var length = response.length;
                         $.each(response, function (index, item) {
                             switch (item.transaction_type) {
                                 case 1: transaction_type = "充值"; break;
@@ -201,7 +303,7 @@
                                 amount = '<td style="color:#ff5656">' + '-' + item.amount + '</td>';
                             }
                             dataHtml += '<tr>'
-                            dataHtml += '<td>' + item.id + '</td>';
+                            dataHtml += '<td>' + item.rank + '</td>';
                             dataHtml += '<td>' + item.create_time + '</td>';
                             dataHtml += transaction_type;
                             dataHtml += '<td>' + item.user_name + '</td>';

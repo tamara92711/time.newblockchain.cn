@@ -146,7 +146,7 @@ Route::get('/apply_demand', '/index/service_management.undertake_service')->midd
 
 Route::resource('index/service_management/show_published','@index/service_management/show_published');//->middleware('AuthMiddleware');
 
-Route::get('/project_published', '/index/service_management.show_published');//->middleware('AuthMiddleware');
+Route::get('/project_published', '/index/service_management.show_published')->middleware('AuthMiddleware');
 
 Route::resource('index/service_management/show_undertaken','@index/service_management/show_undertaken');//->middleware('AuthMiddleware');
 

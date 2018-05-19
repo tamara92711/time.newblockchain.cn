@@ -25,8 +25,10 @@
                             </div>
                             <div class="right">
                                 <input type="text" class="form-control" id="amount_to_buy" style="width: 332px;">
+                                <span id="amount_error" style="color:#ff5656"></span>
                             </div>
                             <span class="required" style="padding-left: 10px; color:#ff7474;"> *比例为1：1 </span>
+                            <div class="clearfix"></div>
                         </div>
                         <div class="form-group" style="border: 0px;">
                             <div class="left">
@@ -43,6 +45,7 @@
                                 </div>
                             <?php }?>
                                 <div class="clearfix"></div>
+                                <span id="type_error" style="color: #ff5656"></span>
                             </div>
                         </div>
                         <div class="form-actions">
@@ -77,9 +80,27 @@
     {
         var pay_method = $('input[name="payment_method"]:checked').val();
         var amount = $("#amount_to_buy").val();
+        var isnum = /^\d+$/.test(amount);
+        var error = false;
+
+        if (amount == '') {
+            error = true;
+            $("#amount_error").text("请输入数量");
+        } else if (!isnum) {
+            error = true;
+            $("#amount_error").text("数量不正确");
+        } else {
+            $("#amount_error").text("");
+        }
+
+        if (pay_method == undefined || pay_method == "") {
+            error = true;
+            $("#type_error").text("请选择支付方式");
+        } else {
+            $("#type_error").text("");
+        }
         
-        if ( pay_method == "" || amount == "")
-            return;
+        if (error) return;  
 
         var form = $("<form method='post'></form>");
         form.attr({ "action": '/charge_coin' });
