@@ -66,7 +66,7 @@ function getDemandStatusFindJobList(state_id,is_reviewed)
         return '已完成';
     else  if(state_id == 3 && is_reviewed == 4)
         return '已过期';
-    else  if(state_id == 3 && is_reviewed == 5)
+    else  if(state_id == 2 && is_reviewed == 4)
         return '已取消';
 }
 
