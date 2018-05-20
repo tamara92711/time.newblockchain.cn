@@ -23,7 +23,7 @@ class ShowPublishedController extends Controller
     public function index()
     {
         $demand_type = DemandTypeModel::where('pid',0)->field('id,name')->select();
-        $demand_status = array('1'=>'未发布','2'=>'已发布','3'=>'未完成','4'=>'待评价','5'=>'已完成','6'=>'已过期','7'=>'已失效');
+        $demand_status = array('0'=>'全部','1'=>'未发布','2'=>'已发布','3'=>'未完成','4'=>'待评价','5'=>'已完成','6'=>'已过期','7'=>'已失效');
         $this->assign('demand_type',$demand_type);
         $this->assign('demand_status',$demand_status);
         $this->assign('side_nav', 'project_published');

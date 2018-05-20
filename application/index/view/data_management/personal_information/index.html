@@ -220,6 +220,7 @@
 
 {/block} {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/common/common.js"></script>
+{/block}
 <script>
     $(document).ready(function () {
         $('.error').hide();
@@ -244,7 +245,6 @@
 
 
         var formData = $(this).serialize();
-
         $.ajax({
             url: "/personal_update",
             method: 'POST',
@@ -258,10 +258,11 @@
                         content: '个人信息已成功保存!',
                     });
                 }
-                else if (result == "failure") {
+                else if (result == "failure")
+                {
                     $.alert({
-                        title: '确认',
-                        content: '您的旧密码错误，请正确输入密码！',
+                        title :'确认',
+                        content : '您的旧密码错误，请正确输入密码！',
                     });
                     $("input#beforepass").focus();
                 }
@@ -275,7 +276,6 @@
     $("#changePhoneButton").attr('disabled', 'disabled').addClass('ui-state-disabled');
     $("#newMobileVerifyCodeButton").attr('disabled', 'disabled').addClass('ui-state-disabled');
 
-
     $("#oldMobileVerifyCode").on('keyup blur', function () {
         var oldMobileVerifyCode = $(this).val();
 
@@ -283,6 +283,7 @@
         if (!isnum || oldMobileVerifyCode.length != 4) {
             $(this).focus();
         }
+
         else if (isnum || oldMobileVerifyCode.length == 4) {
             // {console.log("old="+oldMobileVerifyCode);
             $.ajax({
@@ -471,8 +472,4 @@
         $("label#fixed_error").hide();
 
     })
-
-
-
-
 </script> {/block}

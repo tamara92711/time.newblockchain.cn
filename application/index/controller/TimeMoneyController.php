@@ -108,6 +108,13 @@ class TimeMoneyController extends Controller
         return $this->fetch();
     }
 
+    public function getRealName_mobile(Request $request)
+    {
+        $user_id = $request->param('user_id');
+        $user_info = UserModel::where('name',$user_id)->field(['real_name','mobile'])->select();
+
+        return json_encode($user_info);
+    }
     public function confirmTransfer()
     {
         $response = [];

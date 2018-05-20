@@ -52,7 +52,6 @@
                 <span class="err_text" id="amount_error" style="margin-top:7px;margin-left:36px;float:left;"></span>
             </div>
         </div>
-
         <div class="form-actions">
             <div class="row">
                 <div class="col-md-offset-5 col-md-6">
@@ -123,9 +122,9 @@
 </div>
 {/block} {block name="custom-css"}
 <link href="/assets/css/index/timemoney/transfer.css" rel="stylesheet" type="text/css" />
-<link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" />
+<link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" /> 
 <link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
-{/block}
+{/block} 
 {block name="custom-js"}
 <script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
 <script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
@@ -133,28 +132,8 @@
 <script>
     $(document).ready(function () {
         $("#user_name1").focus();
+        $(".conformation-transfer").attr('disabled','disabled');
     });
-        $(".inquire").click(function(event) {
-            event.preventDefault();
-            displayTransactionHistory();
-        });
-        $(".conformation-transfer").click(function (event) {
-            event.preventDefault();
-            var user_name = $("#user_name").val();
-            var real_name = $("#real_name").val();
-            var mobile = $("#mobile").val();
-            var amount = parseFloat($("#amount").val());
-            
-            var total_amount = parseFloat($("#total_amount").text());
-
-            if (amount > total_amount) {
-                $("#amount_error").text("Pay amount can't be larger than the balance.");
-                return;
-            } else {
-                $("#amount_error").text("");
-            }
-
-            var result = validate();
 
     $(".inquire").click(function() {
         displayTransactionHistory();
@@ -173,51 +152,40 @@
 
     function getRealName_mobile()
     {
-        var user_id = $("#user_name1").val().trim();
-        if(user_id == "{$Think.session.user_name}")
-        {
-            $.alert({
-                title:'确认',
-                content:'不许选择自己',
-            })
-            $("#user_name1").val('');
-            return;
-        }
+        var user_id = $("#user_name1").val();
 
-        if(user_id.length == 0)
-            $("#name_error").text('请插入用户名').show();
-        else
-        {
-            $.ajax({
-                url : '/index/time_money/getRealName_mobile/',
-                method : 'POST',
-                data : {user_id:user_id},
-                success: function (response) {
-                    result = JSON.parse(response);
-                    if(result.length==0)
-                    {
-                        $("#name_error").text('您输入的用户名不存在，请尝试插入用户名').show();
-                        $("#user_name1").val('');
-                        $("#real_name").val('');
-                        $("#mobile").val('');
-                        $("#amount").val('');
-                        $("#user_name1").focus();
-                    }
-                    else
-                    {
-                        $("#real_name").val(result[0].real_name);
-                        $("#mobile").val(result[0].mobile);
-                        $("#amount").focus();
-                    }
-                },
-                error:function (error) {
-                    console.log(error);
+        $.ajax({
+            url : '/index/time_money/getRealName_mobile/',
+            method : 'POST',
+            data : {user_id:user_id},
+            success: function (response) {
+                result = JSON.parse(response);
+                if(result.length==0)
+                {
+                    $("#name_error").text('您输入的用户名不存在，请尝试插入用户名').show();
+                    $("#user_name1").val('');
+                    $("#real_name").val('');
+                    $("#mobile").val('');
+                    $("#amount").val('');
+                    $("#user_name1").focus();
                 }
-            });
-        }
-
+                else
+                {
+                    $("#real_name").val(result[0].real_name);
+                    $("#mobile").val(result[0].mobile);
+                    $("#amount").focus();
+                }
+            },
+            error:function (error) {
+                console.log(error);
+            }
+        });
     }
 
+    function isFloat(value)
+    {
+        return value!= "" && !isNaN(value) && Math.round(value) != value;
+    }
     $(".conformation-transfer").click(function (event) {
         event.preventDefault();
         var user_name = $("#user_name1").val();
@@ -227,40 +195,34 @@
 
         var total_amount = parseFloat($("#total_amount").text());
 
-        if(isNaN(amount))
-        {
-            $("#amount_error").text("请插入确切的价值");
+
+        if (amount > total_amount) {
+            $("#amount_error").text("Pay amount can't be larger than the balance.");
             return;
-        }
-        else
-        {
-            if (amount > total_amount) {
-                $("#amount_error").text("支付金额不能大于余额.");
-                return;
-            } else {
-                $("#amount_error").text("");
-            }
+        } else {
+            $("#amount_error").text("");
         }
 
-        $.ajax({
-            url: "/index/time_money/confirmtransfer/",
-            method: "GET",
-            data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
-            success: function (response)
-            {
-                console.log(response);
-                response = JSON.parse(response);
-                if (response.is_error) {
-                    alert(response.error_message);
-                    return;
+        var result = validate();
+
+        if (result) {
+            $.ajax({
+                url: "/index/time_money/confirmtransfer/",
+                method: "GET",
+                data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (response.is_error) {
+                        alert(response.error_message);
+                        return;
+                    }
+                    $("#total_amount").text(response.total_amount);
+                    displayTransactionHistory();
                 }
-                $("#total_amount").text(response.total_amount);
-
-            }
-        });
-
+            });
+        }
     });
-
+    displayTransactionHistory();
     $("#time_from").datepicker({
         autoHide: true,
         format: 'yyyy-mm-dd'
@@ -276,6 +238,90 @@
     });
 
     var container = $('#pagination');
+
+    function validate() {
+        $(".conformation-transfer").prop("disabled", true);
+        var user_name = $("#user_name").val();
+        var real_name = $("#real_name").val();
+        var mobile = $("#mobile").val();
+        var amount = $("#amount").val();
+        var user_id = 0;
+
+        var error = [];
+        error.name_error = false;
+        error.real_error = false;
+
+        if (user_name.trim() == "") {
+            error.name_error = true;
+            $("#name_error").text("请输入用户名");
+        } else {
+            $.ajax({
+                url:"/index/user/name_exists/name/" + user_name,
+                method: "GET",
+                async: false,
+                success: function(response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.name_error = true;
+                        $("#name_error").text("用户名不存在");
+                    } else {
+                        user_id = response;
+                        $("#name_error").text("");
+                    }
+
+                }
+            });
+        }
+
+        if (real_name.trim() == "") {
+            error.real_error = true;
+            $("#real_name_error").text("请输入会员姓名");
+        } else {
+            $.ajax({
+                url: "/index/user/realnamecorrect/",
+                data: {user_id: user_id, real_name: real_name},
+                method: "GET",
+                async: false,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.real_error = true;
+                        $("#real_name_error").text("会员姓名不正确");
+                    } else {
+                        $("#real_name_error").text("");
+                    }
+                }
+            });
+        }
+
+        if (mobile.trim() == "") {
+            error.mobile_error = true;
+            $("#mobile_error").text("请输入手机号码");
+        } else {
+            $.ajax({
+                url: "/index/user/mobilecorrect/",
+                method: "GET",
+                data: {user_id: user_id, mobile: mobile},
+                async: false,
+                success: function (response) {
+                    response = JSON.parse(response);
+                    if (!response) {
+                        error.mobile_error = true;
+                        $("#mobile_error").text("手机号码不正确");
+                    } else {
+                        $("#mobile_error").text("");
+                    }
+                }
+            });
+        }
+
+        if (!(error.name_error || error.mobile_error || error.real_error)) {
+            return true;
+        } else {
+            return false;
+        }
+        $(".conformation-transfer").prop("disabled", false);
+    }
 
     function displayTransactionHistory() {
         var time_from = $("#time_from").val();
