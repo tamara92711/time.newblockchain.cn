@@ -86,6 +86,7 @@
 {/block}
 {block name="custom-js"}
 <script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
+<script src="/assets/js/common/common.js" type="text/javascript"></script>
 <script>
     $(document).ready(function (){
         $("#time_from").datepicker({
@@ -96,7 +97,10 @@
             autoHide: true,
             format: 'yyyy-mm-dd'
         });
-        $(".calendar").val("OK");
+        $(".calendar").val(format_date(new Date()));
+        $(".calendar").change(function () {
+            if ($("#time_from").val() >= $("#time_to").val()) $("#time_to").val($("#time_from").val());
+        });
     });
 </script>
 {/block}
