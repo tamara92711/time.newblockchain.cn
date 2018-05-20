@@ -86,7 +86,7 @@ class DemandModel extends Model
                 ->select();
             $review_txt = array(0 => array('review' =>self::getEvaluationText($data[0]['review'])));
             if (!empty($data[0]['project_image']))
-                $image = array(0 =>array('image' =>RealNameVerifyModel::getImageUrl($data[0]['project_image'])));
+                $image = array(0 =>array('image' =>UserModel::getImageUrl($data[0]['project_image'])));
             $tmp = array_merge($review_txt , $image);
             $datas = array_merge($data,$tmp);
             return $datas;

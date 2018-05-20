@@ -24,6 +24,27 @@ class UserModel extends Model
         return $user_data;
     }
 
+    public static function getImageUrl($path)
+    {
+        $url = "";
+        if (!empty($path)) {
+            $path = explode('\\',$path);
+            $url = '/uploads/' . $path[0] . '/' . $path[1];
+        }
+        return $url;
+    }
+
+
+    public static function getAvarta($user_id)
+    {
+        try{
+            $avarta_image = UserModel::where('id',$user_id)->value('avarta_image');
+            return $avarta_image;
+        }catch (Exception $exception){
+            \think\facade\Log::write('getAvarta function error of UserModel',$exception->getMessage());
+        }
+    }
+
 
 
 }

@@ -27,7 +27,22 @@ class TimeMoneyController extends Controller
         if (!empty($user2)) $user2_id = $user2->id;
 
         $user1_id = session('user_id');
-        $history = TransactionUserModel::where(['user1_id' => $user1_id, 'transaction_type' => $transaction_type])->order('create_time desc')->select()->toArray();
+        if(empty($user_name))
+        {
+            $history = TransactionUserModel::where(['user1_id' => $user1_id, 'transaction_type' => $transaction_type])
+                ->where('DATE_FORMAT(create_time, \'%Y-%m-%d\')>='."'$time_from'")
+                ->where('DATE_FORMAT(create_time, \'%Y-%m-%d\')<='."'$time_to'")
+                ->order('create_time desc')->select()->toArray();
+        }
+        else
+        {
+            $history = TransactionUserModel::where(['user1_id' => $user1_id, 'transaction_type' => $transaction_type])
+                ->where('DATE_FORMAT(create_time, \'%Y-%m-%d\')>='."'$time_from'")
+                ->where('DATE_FORMAT(create_time, \'%Y-%m-%d\')<='."'$time_to'")
+                ->where('user2_id',$user2_id)
+                ->order('create_time desc')->select()->toArray();
+        }
+
         $length = count($history);
         foreach($history as $key => $value)
         {
