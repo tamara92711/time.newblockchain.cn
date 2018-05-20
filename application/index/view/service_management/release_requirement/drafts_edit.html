@@ -207,7 +207,7 @@
                                         <label>发布时间：</label>
                                     </div>
                                     <div class="right" style="margin-left: 3px;width: 0px;">
-                                        <input type="text" class="form-control input-custom input-width" data-toggle="published_time" name="published_time" id="published_time" placeholder="请选择日期">
+                                        <input type="text" class="form-control input-custom input-width"  name="published_time" id="published_time" placeholder="请选择日期" readonly="readonly">
                                     </div>
                                 </div>
                                 <div class="form-group " style="padding-top: 7px; ">
@@ -381,13 +381,13 @@
         $("#step-1").addClass("progtrckr-done");
         showTree();
         calendars();
-        $("#region_1").change();
         //Get each demandtype's text
         getDemandTypeText();
         //first element checked in address list
         // $('input[name="candidate"]:first').attr('checked',true);
         init();
-
+        //after first region_1 change so region2 changed!!
+        $("#region_1").change();
         $("#published_time").val( new Date().toJSON().slice(0,10));
     });
 
@@ -395,7 +395,7 @@
         //select checkbox according to demand_type
         $("#radio_{$draft_project[0]['demand_id']}").prop("checked",true);
         $("#region_1").val({$draft_project[0]['region_1']});
-        $("#district").val({$draft_project[0]['region_2']});
+
         $(".set .acc-plus").eq({$draft_project[0]['pid']-1})
             .addClass("active").siblings(".content").slideDown(100);
     }
@@ -477,10 +477,10 @@
             format:'yyyy-mm-dd'
         });
 
-        $('[data-toggle="published_time"]').datepicker({
-            autoHide: true,
-            zIndex: 2048,
-        });
+        // $('[data-toggle="published_time"]').datepicker({
+        //     autoHide: true,
+        //     zIndex: 2048,
+        // });
 
     }
 
@@ -536,6 +536,28 @@
         };
         return true;
     },'必须小于 {1}.');
+
+    function region1Change()
+    {
+        var region1=$("#region_1").val();
+        var container = $('#district');
+        $.ajax({
+            url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
+            success : function (result) {
+                var jsonData = JSON.parse(result);
+                var response = jsonData.data;
+                var dataHtml = '';
+                // dataHtml+='<option value="" selected disabled hidden>全部</option>';
+                // <option selected="" value="全部" >全部</option>
+                $.each(response, function (index, item) {
+                    dataHtml +='<option value="'+index+'">'+item+'</option>';
+                });
+                container.html(dataHtml);
+                //set as  region2_id  user selected in drafts state
+                $("#district").val({$draft_project[0]['region_2']});
+            }
+        })
+    }
     // function reset()
     // {
     //     var $inputs = $('#release_requirement_form :input');

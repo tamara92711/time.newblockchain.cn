@@ -246,6 +246,19 @@ class DemandModel extends Model
         return $complete_query;
     }
 
+    public static function getUnderkenListJoinForMemberCenter($query)
+    {
+        $complete_query = $query
+            ->alias('d')
+            ->join('qkl_demand_type dt','d.demand_type=dt.id')
+            ->join('qkl_user u','d.user_id=u.id')
+            ->order('d.create_time','desc')
+            ->limit(5)
+            ->select();
+
+        return $complete_query;
+    }
+
     public static function getUndertakenListWhereClause($query,$demand_type,$time_from,$time_to)
     {
          $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'" or
@@ -310,6 +323,42 @@ class DemandModel extends Model
                 $data[$key]['name'] = Db::table('qkl_user')->where('id',$isApplyUser)->column('name');
             }
         }
+    }
+
+
+    public static function getPublishState($state,$is_reviewed)
+    {
+        if($state == 1 && $is_reviewed == 0)
+            return '未发布';
+        else  if($state == 2 && $is_reviewed == 0)
+            return '已发布';
+        else  if($state == 3 && $is_reviewed == 0)
+            return '未完成';
+        else  if($state == 3 && $is_reviewed == 1)
+            return '待评价';
+        else  if($state == 3 && $is_reviewed == 3)
+            return '已完成';
+        else  if($state == 2 && $is_reviewed == 4)
+            return '已失效';
+        else  if($state == 3 && $is_reviewed == 5)
+            return '未完成';
+    }
+
+    public static function getFreelancerState($state,$is_reviewed)
+    {
+        if($state == 2 && $is_reviewed == 0)
+            return '待承接';
+        else  if($state == 3 && $is_reviewed == 0)
+            return '已承接';
+        else  if($state == 3 && $is_reviewed == 1)
+            return '待评价';
+        else  if($state == 3 && $is_reviewed == 3)
+            return '已完成';
+        else  if($state == 2 && $is_reviewed == 4)
+            return '已过期';
+        else  if($state == 3 && $is_reviewed == 5)
+            return '已失效';
+
     }
 
 }

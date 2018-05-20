@@ -28,4 +28,6 @@ class RealNameVerifyModel extends Model
             \think\facade\Log::write('getAvarta function error of realNameVerifyController',$exception->getMessage());
         }
     }
+
+
 }
