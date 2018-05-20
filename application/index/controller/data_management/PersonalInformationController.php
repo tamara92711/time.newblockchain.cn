@@ -84,28 +84,25 @@ class PersonalInformationController extends Controller
         $oldPass = $request->param("beforepass");
         $newpass = $request->param("newpass");
         $verifypass = $request->param("verifypass");
-        if(strlen($oldPass)>=1 && strlen($newpass)>=1 && strlen($verifypass)>=1)
+        $user = UserModel::get(session('user_id'));
+
+        if(strlen($oldPass)>=1 && strlen($newpass)>=1 && strlen($verifypass)>=1 && $user->password != md5($oldPass))
         {
-            $checkPass = UserModel::where('id',session('user_id'))->where('password',md5($oldPass))->count();
-            if ($checkPass == 0)
-            {
-                return "failure";
-            }
+            return "failure";
+        } else {
+            $user->password = md5($request->param("newpass"));
         }
-        else
-        {
-            $link=UserModel::get(session('user_id'));
-            $link->real_name = $request->param("realname");
-            $link->sex = $request->param("gender");
-            $link->password = md5($request->param("newpass"));
-            $link->job_type = $request->param("occupation");
-            $link->education_type = $request->param("education");
-            $link->mobile = $request->param("cellphone");
-            $link->fixed = $request->param("fixed");
-            $link->email = $request->param("email");
-            $link->save();
-            return "ok";
-        }
+
+        $user->real_name = $request->param("realname");
+        $user->sex = $request->param("gender");
+        
+        $user->job_type = $request->param("occupation");
+        $user->education_type = $request->param("education");
+        $user->mobile = $request->param("cellphone");
+        $user->fixed = $request->param("fixed");
+        $user->email = $request->param("email");
+        $user->save();
+        return "ok";
 
     }
 
@@ -152,6 +149,18 @@ class PersonalInformationController extends Controller
 
     public function phoneChangeVerifyCode(Request $request)
     {
+        $send_status = [
+            "0" => "短信发送成功",
+            "-1" => "参数不全",
+            "-2" => "服务器空间不支持,请确认支持curl或者fsocket，联系您的空间商解决或者更换空间！",
+            "30" => "密码错误",
+            "40" => "账号不存在",
+            "41" => "余额不足",
+            "42" => "帐户已过期",
+            "43" => "IP地址限制",
+            "50" => "内容含有敏感词"
+        ];
+
         $response = [];
         $response['error'] = false;
         $code = rand(1000, 9999);
@@ -179,7 +188,12 @@ class PersonalInformationController extends Controller
         $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=".$phone_number."&c=".urlencode($content);
         $result =file_get_contents($sendurl) ;
 
-        $response['text'] = config('sms.send_status')[$result];
+        if (!in_array($result, array_keys($send_status))) {
+            $response['text'] = "Unknown Error Occured while sending SMS!";
+        } else {
+            $response['text'] = $send_status[$result];
+        }
+        
         if ($result != 0)
         {
             $response['error'] = true;

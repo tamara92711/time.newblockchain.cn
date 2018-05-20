@@ -134,6 +134,27 @@
     $(document).ready(function () {
         $("#user_name1").focus();
     });
+        $(".inquire").click(function(event) {
+            event.preventDefault();
+            displayTransactionHistory();
+        });
+        $(".conformation-transfer").click(function (event) {
+            event.preventDefault();
+            var user_name = $("#user_name").val();
+            var real_name = $("#real_name").val();
+            var mobile = $("#mobile").val();
+            var amount = parseFloat($("#amount").val());
+            
+            var total_amount = parseFloat($("#total_amount").text());
+
+            if (amount > total_amount) {
+                $("#amount_error").text("Pay amount can't be larger than the balance.");
+                return;
+            } else {
+                $("#amount_error").text("");
+            }
+
+            var result = validate();
 
     $(".inquire").click(function() {
         displayTransactionHistory();
