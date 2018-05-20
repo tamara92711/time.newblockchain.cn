@@ -61,12 +61,11 @@ class RealNameVerifyController extends Controller
     {
         if ($id == 0)
         {
-            $result = RealNameVerifyModel::all();
+            $result = UserModel::all();
             $result = $result->toArray();
             foreach ($result as $key => $val)
             {
-                $result[$key]['real_name'] = $val['user_name'];
-                $result[$key]['user_name'] = UserModel::get($val['user_id'])->name;
+                $result[$key]['user_name'] = $val['name'];
                 $result[$key]['card_front_image'] = $this->getImageUrl($val['card_front_image']);
                 $result[$key]['card_back_image'] = $this->getImageUrl($val['card_back_image']);
                 $result[$key]['card_handled_image'] = $this->getImageUrl($val['card_handled_image']);
@@ -74,10 +73,9 @@ class RealNameVerifyController extends Controller
             }
             return json_encode(["data" => $result]);
         }
-        $data = RealNameVerifyModel::get($id);
+        $data = UserModel::get($id);
         $data = $data->toArray();
-        $data['real_name'] = $data['user_name'];
-        $data['user_name'] = UserModel::get($data['user_id'])->name;
+        $data['user_name'] = $data['name'];
         $data['card_front_image'] = $this->getImageUrl($data['card_front_image']);
         $data['card_back_image'] = $this->getImageUrl($data['card_back_image']);
         $data['card_handled_image'] = $this->getImageUrl($data['card_handled_image']);
@@ -105,13 +103,9 @@ class RealNameVerifyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $verify = RealNameVerifyModel::get($id);
-        $verify->user_name = $request->param('real_name');
-        $verify->is_passed = $request->param('is_passed');
-        $verify->save();
-
-        $user = UserModel::get($verify->user_id);
-        $user->real_name = $verify->user_name;
+        $user = UserModel::get($id);
+        $user->real_name = $request->param('real_name');
+        $user->real_name_verified = $request->param('is_passed');
         $user->save();
     }
 
@@ -123,7 +117,6 @@ class RealNameVerifyController extends Controller
      */
     public function delete($id)
     {
-        $user = RealNameVerifyModel::get($id);
-        $user->delete();
+        
     }
 }

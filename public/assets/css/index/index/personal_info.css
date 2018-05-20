@@ -85,7 +85,13 @@ form div:nth-child(12) {
     width: 280px;
 }
 
-.modal-body .input-group-btn .btn {
+/* .modal-body .input-group-btn .btn  */
+/* input.get-veri-code-btn */
+.modal-body .form .form-group .right input#oldMobileVerifyCodeButton,
+.modal-body .form .form-group .right input#newMobileVerifyCodeButton
+/* #oldMobileVerifyCodeButton,
+#newMobileVerifyCodeButton */
+ {
     width: 90px;
     height: 32px;
     margin-top: -6px;
