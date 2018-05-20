@@ -243,8 +243,8 @@ class UserController extends Controller
         $user_id = request()->param('user_id');
         $real_name = request()->param('real_name');
 
-        $real_user = RealNameVerifyModel::where(['user_id' => $user_id, 'user_name' => $real_name])->find();
-        if (empty($real_user)) {
+        $user = UserModel::where(['id' => $user_id, 'real_name' => $real_name])->find();
+        if (empty($user)) {
             return false;
         }
         return true;
