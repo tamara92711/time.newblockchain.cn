@@ -287,6 +287,11 @@ var FormWizard = function () {
             //mode =0 save drafts insert state value 1
             $('#form_wizard_1').find('.button-save').click(function (e) {
                 e.preventDefault();
+                if ($("#captcha_code").val()=="")
+                {
+                    $("#captcha_error").show();
+                    return false;
+                }
                 var formData = $("#release_requirement_form").serialize();
                 // console.log(formData);
                 $.ajax({

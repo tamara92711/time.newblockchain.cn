@@ -131,19 +131,38 @@
         var checkId = $("#selected_user").val();
         var demandId = $("#demand_id").val();
 
-        $.ajax({
-            url: '/index/service_management/show_published/acceptBid',
-            method: 'POST',
-            data: {checkId: checkId,demandId:demandId},
-            success: function (result) {
-                if (result=="ok")
-                {
-                    $('#demand_status').val(2);//set 已发布=>已承接
-                    history.go(-1);
-                    search();
+        $.confirm({
+            title: '你真的选择了吗？',
+            content: '一旦选定，它不能被取消。！',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                tryAgain: {
+                    text: '是',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        $.ajax({
+                            url: '/index/service_management/show_published/acceptBid',
+                            method: 'POST',
+                            data: {checkId: checkId, demandId: demandId},
+                            success: function (result) {
+                                if (result == "ok") {
+                                    $('#demand_status').val(2);//set 已发布=>已承接
+                                    history.go(-1);
+                                    search();
+                                }
+                            }
+                        })
+                    }
+                },
+                否: function () {
+
+
                 }
             }
-        })
+        });
+
+
     }
 </script>
 {/block}

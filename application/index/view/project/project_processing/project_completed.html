@@ -9,7 +9,7 @@
     <button type="submit" class="btn published">已发布</button>
 </div>
 <div class="row">
-    <label class="texts">发布人：<span>{$data[0]['real_name']}</span></label>
+    <label class="texts">发布人：<span>{$data[0]['publiser_name']}</span></label>
     <label class="texts" style="margin-left: 80px;margin-top: 20px;">需求类型:<span style="margin-left:7px;">{$data[0]['demand_type']}</span></label>
     <label class="texts" style="margin-left: 82px;margin-top: 20px;">支付时间币<span style="margin-left:11px;">{$data[0]['pay_amount']}</span></label>
     <label class="texts" style="margin-left: 84px;margin-top: 20px;">发布时间<span style="margin-left:11px;">{$data[0]['published_time']}</span></label>
@@ -96,8 +96,8 @@
                 <span class="title-text" style="color:#f9ae69;">发布人评价</span>
                 <div class="row">
                     <span style="margin-left: 29px;margin-top: 2px;">
-                        <p></p>
-                        <p></p>
+                         <p style="margin:0px">{$freelancer_review_data[1]['review']}</p>
+                         <p style="margin:0px;line-height:25px">{$freelancer_review_data[0]['description']}</p>
                     </span>
                 </div>
             </div>
@@ -108,8 +108,8 @@
                 <span class="title-text" style="color:#f9ae69;">承接人评价</span>
                 <div class="row">
                     <span style="margin-left: 45px;margin-top: 4px;">
-                        <p></p>
-                        <p></p>
+                        <p style="margin:0px">{$publisher_review_data[1]['review']}</p>
+                        <p style="margin:0px;line-height:25px">{$publisher_review_data[0]['description']}</p>
                     </span>
                 </div>
             </div>

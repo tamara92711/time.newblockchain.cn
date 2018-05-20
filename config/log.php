@@ -16,9 +16,9 @@ return [
     // 日志记录方式，内置 file socket 支持扩展
     'type'        => 'File',
     // 日志保存目录
-    'path'        => '../custom_logs/',
+    'path'        => '',
     // 日志记录级别
-    'level'       => ['error','sql'],
+    'level'       => [],
     // 单文件日志写入
     'single'      => false,
     // 独立日志级别

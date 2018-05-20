@@ -132,8 +132,15 @@ class ProjectProcessingController extends Controller
     {
         $temp = DemandModel::getProjectField($id);
         $data = DemandModel::getProjectCompletedJoin($temp);
-//        $rating_text = DemandModel::getEvaluationText($data[0]['publisher_review_rate']);
-//        $this->assign('rating_text',$rating_text);
+
+        $freelancer_id = $data[0]['applied_user_id'];
+        $publisher_id  = $data[0]['publisher_id'];
+
+        $freelancer_review_data = DemandModel::getReviewInformation($id,$publisher_id);
+        $publisher_review_data = DemandModel::getReviewInformation($id,$freelancer_id);
+
+        $this->assign('freelancer_review_data',$freelancer_review_data);
+        $this->assign('publisher_review_data',$publisher_review_data);
         $this->assign('data',$data);
         $this->assign('mode',$mode);
         $this->assign('header_nav', 'project_apply');
@@ -240,7 +247,7 @@ class ProjectProcessingController extends Controller
         $this->assign('freelancer_review_data',$freelancer_review_data);
         $this->assign('publisher_review_data',$publisher_review_data);
         $this->assign('data',$data);
-        $this->assign('data',$data);
+
         $this->assign('header_nav', 'project_apply');
         $this->assign("nav_type", 1);
         $this->assign('side_nav', 'project_published');
@@ -294,6 +301,15 @@ class ProjectProcessingController extends Controller
         $this->assign('user_id',$user_id);
         $this->assign('avarta',$avarta);
         return $this->fetch();
+    }
+
+    //cancel project function
+    public function cancelProject(Request $request)
+    {
+        $demand_id = $request->param('demand_id');
+        DemandModel::where(['id'=>$demand_id])->update(['is_reviewed'=>4]);
+        return "success";
+
     }
 
 

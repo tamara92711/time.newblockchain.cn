@@ -174,7 +174,7 @@
         if (typeof(time_currency_to)==="undefined") time_currency_to = -1;
 
         var dataString = 'demand_type='+demand_type+'&demand_status='+demand_status+'&time_currency='+time_currency+'&release_time='+release_time+'&time_currency_from='+time_currency_from+'&time_currency_to='+time_currency_to;
-        // console.log(dataString);
+        console.log(dataString);
         $.ajax({
             url  : '/index/service_management/undertake_service/1',
             data : dataString,
@@ -195,8 +195,7 @@
                             dataHtml += '<div class="qk-post-content">';
                             dataHtml += '<div class="qk-post-title">';
                             dataHtml += '<img src="/assets/img/title.png" class="qk-post-title-img" />';
-                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/uid/'+item.user_id+'">'+item.title+'</a></span>'
-
+                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/uid/'+item.user_id+'/is_reviewed/'+item.is_reviewed+'">'+item.title+'</a></span>'
                             dataHtml += '<span class="qk-post-title-status">'+getDemandStatusFindJobList(item.state,item.is_reviewed)+'</span>';
                             dataHtml += '</div>';
                             dataHtml += '<div class="qk-post-body">';

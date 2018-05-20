@@ -235,27 +235,41 @@
     $("#personal_form").submit(function (e)
     {
         e.preventDefault();
-        validation();
-        var formData = $(this).serialize();
-        // console.log(formData);
-        $.ajax({
-            // url : '/index/data_management.personal_information/personalUpdate',
-            url : "/personal_update",
-            method : 'POST',
-            data : formData,
-            success:function (result) {
-                if(result=='ok')
-                {
-                    alert("个人信息已成功保存");
-                }
-                // else if (result == "failure")
-                // {
-                //     $("label#beforepass_error").text('您的旧密码错误，请正确输入密码！');
-                //     $("input#beforepass").focus();
-                // }
+        if (($("#beforepass").val().length >= 1)&& ($("#newpass").val().length >= 1) && ($("#verifypass").val().length >= 1))
+            validation(2);
+        else
+            validation(1);
 
-            }
-        })
+
+            var formData = $(this).serialize();
+
+            $.ajax({
+                url : "/personal_update",
+                method : 'POST',
+                data : formData,
+                timeout:9000,
+                success:function (result) {
+
+                    if(result=='ok')
+                    {
+                        $.alert({
+                            title: '确认',
+                            content: '个人信息已成功保存!',
+                        });
+                    }
+                    else if (result == "failure")
+                    {
+                        $.alert({
+                            title :'确认',
+                            content : '您的旧密码错误，请正确输入密码！',
+                        });
+                        $("input#beforepass").focus();
+                    }
+
+                }
+            });
+
+
     });
     //when modal diaolg show at first confirm and verifycode button disable
     $("#changePhoneButton").attr('disabled', 'disabled' ).addClass( 'ui-state-disabled' );
@@ -412,7 +426,7 @@
     //     return regex.test(email);
     // }
 
-    function validation() {
+    function tempValidation_1(mode) {
         $('.error').hide();
         var username = $("input#username").val();
         if (username == "") {
@@ -426,30 +440,6 @@
             $("input#realname").focus();
             return false;
         }
-        // var beforepass = $("input#beforepass").val();
-        // if (beforepass == "") {
-        //     $("label#beforepass_error").show();
-        //     $("input#beforepass").focus();
-        //     return false;
-        // }
-        // var newpass = $("input#newpass").val();
-        // if (newpass == "") {
-        //     $("label#newpass_error").show();
-        //     $("input#newpass").focus();
-        //     return false;
-        // }
-        // var verifypass = $("input#verifypass").val();
-        // if (verifypass == "") {
-        //     $("label#verifypass_error").show();
-        //     $("input#verifypass").focus();
-        //     return false;
-        // }
-        // if (newpass !== verifypass) {
-        //     $("label#verifypass_error").text("密码不一样");
-        //     $("label#verifypass_error").show();
-        //     $("input#verifypass").focus();
-        //     return false;
-        // }
         var cellphone = $("input#cellphone").val();
         if (cellphone == "") {
             $("label#cellphone_error").show();
@@ -476,6 +466,48 @@
         //     $("input#email").focus();
         //     return false;
         // }
+    }
+
+
+    function tempValidation_2()
+    {
+        var beforepass = $("input#beforepass").val();
+        if (beforepass == "") {
+            $("label#beforepass_error").show();
+            $("input#beforepass").focus();
+            return false;
+        }
+        var newpass = $("input#newpass").val();
+        if (newpass == "") {
+            $("label#newpass_error").show();
+            $("input#newpass").focus();
+            return false;
+        }
+        var verifypass = $("input#verifypass").val();
+        if (verifypass == "") {
+            $("label#verifypass_error").show();
+            $("input#verifypass").focus();
+            return false;
+        }
+        if (newpass !== verifypass) {
+            $("label#verifypass_error").text("密码不一样");
+            $("label#verifypass_error").show();
+            $("input#verifypass").focus();
+            return false;
+        }
+        console.log("mode2");
+    }
+
+    function validation(mode) {
+        if(mode == 1)
+        {
+            tempValidation_1();
+        }
+        else if (mode == 2)
+        {
+            tempValidation_1();
+            tempValidation_2()
+        }
     }
     $("#beforepass,#newpass,#verifypass,#email,#fixed").keypress(function () {
         $("label#beforepass_error").hide();
