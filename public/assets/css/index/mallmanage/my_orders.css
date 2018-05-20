@@ -52,6 +52,7 @@
     width: 100px;
     height: 32px;
     margin-top: 4px;
+    font-size: 14px;
 }
 
 #search-orders .search-button {
@@ -62,6 +63,11 @@
 #time_to {
     margin-right: 19px;
 }
+
+.calendar {
+    font-size: 14px;
+}
+
 .gap {
     width: 73px;
 }

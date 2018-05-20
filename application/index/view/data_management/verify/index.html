@@ -86,7 +86,7 @@
         var is_captured = false;
         
         $("#iden_number").keypress(function (event) {
-            if (event.which < 48 && event.which > 57) event.preventDefault();
+            if (event.which < 48 || event.which > 57) event.preventDefault();
         });
 
         $("#name").keypress(function (event) {
@@ -154,10 +154,6 @@
             label_selected: "Change File"
         });
     });
-
-    $("#iden_number").keypress(function () {
-        this.value = this.value.replace(/[^0-9\.]/g,'');
-    })
 
     $("#verifyForm").submit(function ()
     {

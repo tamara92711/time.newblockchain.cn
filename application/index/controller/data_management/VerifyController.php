@@ -74,10 +74,10 @@ class VerifyController extends Controller
             $data = base64_decode($data);
             if(!file_exists('./uploads/avarta'))
                 mkdir('./uploads/avarta',0777,true);
-            $avatar_path = './uploads/avarta/' . time() . '.png';
+            $avatar_file = '' . time() . '.png';
             
-            file_put_contents($avatar_path, $data);
-            $link->avarta_image = $avatar_path;
+            file_put_contents('./uploads/avarta/' . $avatar_file, $data);
+            $link->avarta_image = '/uploads/avarta/' . $avatar_file;
             // $image = $request->file('handheld_id');
             // $info = $image->move('./uploads/');
             // $link->avarta_image = $info->getSaveName();
