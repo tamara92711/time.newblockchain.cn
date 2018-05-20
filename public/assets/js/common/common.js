@@ -87,5 +87,30 @@ function getDemandStatusFreelancer(state_id,is_reviewed)
 
 }
 
+function time(o, wait) {
+    if (wait == 0) {
+        o.attr("disabled", false);
+        o.val("获取验证码");
+    } else {
+        o.attr("disabled", true);
+        o.val("重新发送(" + wait + ")");
+        setTimeout(function () {
+            time(o, wait - 1)
+        },
+            1000)
+    }
+}
+
+function clear_phone_verify_code_session() {
+    $.ajax({
+        url: "clear_phone_verify_code_session",
+        method: "GET",
+        success: function(response) {
+            
+        }
+    })
+}
+
+
 
 

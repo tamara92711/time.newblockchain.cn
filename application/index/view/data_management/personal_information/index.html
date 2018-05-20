@@ -223,8 +223,8 @@
     {
         $('.error').hide();
         $("input#username").focus();
-        $("#occupation").val({$user_data[0]['job_type']});
-        $("#education").val({$user_data[0]['education_type']});
+        $("#occupation").val($user_data[0]['job_type']);
+        $("#education").val($user_data[0]['education_type']);
         $("input[name=gender][value={$user_data[0]['sex']}]").prop("checked",true);
 
         var readonly = $("new_mobile").attr("readonly");
@@ -276,8 +276,7 @@
     $("#newMobileVerifyCodeButton").attr('disabled', 'disabled' ).addClass( 'ui-state-disabled' );
 
 
-    $("#oldMobileVerifyCode").on('keyup blur',function ()
-    {
+    $("#oldMobileVerifyCode").on('keyup blur',function (){
         var oldMobileVerifyCode = $(this).val();
 
         var isnum = /^\d+$/.test(oldMobileVerifyCode);
@@ -306,11 +305,9 @@
                     }
                 }
             })
-        }
     });
 
-    $("#newMobileVerifyCode").on('keyup blur',function ()
-    {
+    $("#newMobileVerifyCode").on('keyup blur',function (){
         var newMobileVerifyCode = $(this).val();
 
         var isnum = /^\d+$/.test(newMobileVerifyCode);
@@ -338,7 +335,6 @@
                     }
                 }
             })
-        }
     });
 
     $("#new_mobile").on('keyup blur',function ()

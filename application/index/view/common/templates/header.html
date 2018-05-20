@@ -96,7 +96,7 @@
 
     <div id="header-nav">
         <div class="topnav container">
-            <a class="{eq name='header_nav' value='home'}active{/eq}" href="/index/index/home">首页</a>
+            <a class="{eq name='header_nav' value='home'}active{/eq}" href="/home">首页</a>
             {eq name="nav_type" value = "1"}
             <a class="<?php if($header_nav == 'project_publish') echo 'active'; ?>" href="/publish_demand">项目发布</a>
             <a class="<?php if($header_nav == 'project_apply') echo 'active'; ?>" href="/apply_demand">项目承接</a>
@@ -104,13 +104,12 @@
             <a class="<?php if($header_nav == 'personal_home') echo 'active'; ?>" href="/membercenter">个人主页</a>
             <a class="<?php if($header_nav == 'message') echo 'active'; ?>" href="/index/index/message">消息</a>
             {/eq}
-
-            <a class="{eq name='header_nav' value='news_center'}active{/eq}" href="/index/index.news_center">新闻中心</a>
-            <a class="{eq name='header_nav' value='love_enterprise'}active{/eq}" href="/index/index.love_enterprise">爱心企业</a>
-            <a class="{eq name='header_nav' value='charitable_organizations'}active{/eq}" href="/index/index.charitable_organization">慈善公益项目</a>
-            <a class="{eq name='header_nav' value='volunteers'}active{/eq}" href="/index/index.volunteer_grace">志愿者</a>
-            <a class="{eq name='header_nav' value='mall'}active{/eq}" href="/index/mall.index">公益商城</a>
-            <a class="{eq name='header_nav' value='about_us'}active{/eq}" href="/index/about_us/index">关于我们</a>
+            <a class="{eq name='header_nav' value='news_center'}active{/eq}" href="/news_center">新闻中心</a>
+            <a class="{eq name='header_nav' value='love_enterprise'}active{/eq}" href="/love_enterprise">爱心企业</a>
+            <a class="{eq name='header_nav' value='charitable_organizations'}active{/eq}" href="/charitable_organization">慈善公益项目</a>
+            <a class="{eq name='header_nav' value='volunteers'}active{/eq}" href="/volunteers">志愿者</a>
+            <a class="{eq name='header_nav' value='mall'}active{/eq}" href="/mall">公益商城</a>
+            <a class="{eq name='header_nav' value='about_us'}active{/eq}" href="/about_us">关于我们</a>
         </div>
     </div>
 </div>

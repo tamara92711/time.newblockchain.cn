@@ -9,6 +9,7 @@ use think\captcha\Captcha;
 
 use app\common\model\UserModel;
 use app\common\model\RegionModel;
+use app\common\model\RealNameVerifyModel;
 
 class UserController extends Controller
 {
@@ -72,21 +73,26 @@ class UserController extends Controller
         $password = $request->post('password');
         $captcha_code = $request->post('verify_code');
 
+        Session::flash('phone_number', $mobile);
+        Session::flash('password', $password);
+        Session::flash('verify_code', $captcha_code);
+        
         $captcha = $this->captcha;
         if (!$captcha->check($captcha_code)) {
+            Session::flash('error',"验证码不正确");
            return redirect('/login_form');
         }
 
         if (UserModel::where('mobile',$mobile)->count() == 0)
         {
-            Session::flash('error',"This phone is not registered");
+            Session::flash('error',"手机号码不存在");
             return redirect('/login_form');
         }
         else {
             $user_record = UserModel::where('mobile',$mobile)->find();
             if ($user_record->password != md5($password))
             {
-                Session::flash('error',"password is incorrect");
+                Session::flash('error',"密码不正确");
                 return redirect('/login_form');
             }
             else {
@@ -230,71 +236,46 @@ class UserController extends Controller
         return $captcha->entry();
     }
 
-    /**
-     * 保存新建的资源
-     *
-     * @param  \think\Request  $request
-     * @return \think\Response
-     */
-    public function save(Request $request)
+    public function realNameCorrect()
     {
-        //
+        $user_id = request()->param('user_id');
+        $real_name = request()->param('real_name');
+
+        $real_user = RealNameVerifyModel::where(['user_id' => $user_id, 'user_name' => $real_name])->find();
+        if (empty($real_user)) {
+            return false;
+        }
+        return true;
     }
 
-    /**
-     * 显示指定的资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function read($id)
+    public function mobileCorrect()
     {
-        //
-    }
-
-    /**
-     * 显示编辑资源表单页.
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 保存更新的资源
-     *
-     * @param  \think\Request  $request
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * 删除指定资源
-     *
-     * @param  int  $id
-     * @return \think\Response
-     */
-    public function delete($id)
-    {
-        //
+        $mobile = request()->param('mobile');
+        $user_id = request()->param('user_id');
+        $user = UserModel::get($user_id);
+        if ($user->mobile == $mobile) return true;
+        return false;
     }
 
     public function name_exists($name)
     {
-        $exists = UserModel::where('name', $name)->count();
-        return ($exists)? true: false;
+        $user = UserModel::where('name', $name)->find();
+        if (empty($user)) return 0;
+        return $user->id;
     }
 
     public function mobile_exists($mobile)
     {
         $exists = UserModel::where('mobile', $mobile)->count();
         return ($exists)? true: false;
+    }
+
+    public function forgot_password()//03忘记密码
+    {
+        $this->assign("header_nav", "");
+        $this->assign("nav_type", 1);
+        $temp = json_decode(session('temp'));
+        $this->assign("mobile", empty($temp)? '': $temp->mobile);
+        return $this->fetch();
     }
 }
