@@ -388,6 +388,10 @@ body {
   margin-bottom: 21px;
 }
 
+.footer-cell > div > p a{
+  color: white;
+}
+
 .footer-content .container .row div:nth-child(3) > div:nth-child(2) > img {
   margin-top: 15px;
 }
