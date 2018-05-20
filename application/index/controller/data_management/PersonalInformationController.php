@@ -21,8 +21,9 @@ class PersonalInformationController extends Controller
         $this->assign("nav_type", 1);
         $this->assign('side_nav', 'personal_info');
         $user_data = UserModel::getAlluserInformation();
+
         $this->assign('user_data',$user_data);
-        $this->assign('user_id',session('user_id'));
+//        $this->assign('user_id',session('user_id'));
         return $this->fetch();
     }
 

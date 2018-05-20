@@ -328,7 +328,7 @@ var FormWizard = function () {
                 }
 
                 var formData = $("#release_requirement_form").serialize();
-                console.log(formData);
+                // console.log(formData);
                 var mode    = 1;
                 $.ajax({
                     url : '/index/service_management.release_requirement/save/mode/1',
@@ -338,13 +338,16 @@ var FormWizard = function () {
                     {
                         if (result == "captcha_fail")
                         {
-                            $("#captcha_error").text("验证码错误");
+                            $.alert({
+                                title: '注意!。',
+                                content: '验证码错误!。',
+                            });
                         }
                         else if (result == "not_verify")
                         {
                             $.alert({
-                                title: '注意!。',
-                                content: '项目无法提交，因为真实姓名尚未验证。 请等待管理员批准!。',
+                            title: '注意!。',
+                            content: '项目无法提交，因为真实姓名尚未验证。 请等待管理员批准!。',
                         });
                             window.location.href=('/index/service_management.release_requirement');
                         }

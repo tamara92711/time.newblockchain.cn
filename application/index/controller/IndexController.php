@@ -91,11 +91,17 @@ class IndexController extends Controller
 
     public function memberCenter() //05会员中心
     {
+        //show project list i posted
+        $publish_query = DemandModel::getPublishedListField();
+        $publish_query = $publish_query->where('d.user_id',session('user_id'));
+        $published_data  = DemandModel::getPublishedListJoinForMemberCenter($publish_query);
+        //show project list i accepted
+        $underker_query = DemandModel::getUnderkenList();
+        $underker_query = $underker_query ->where('d.applied_user_id',session('user_id'));
+        $underker_data = DemandModel::getUnderkenListJoinForMemberCenter($underker_query);
 
-        $query = DemandModel::getPublishedListField();
-        $published_data  = DemandModel::getPublishedListJoinForMemberCenter($query);
-
-        $this->assign("published_data", "$published_data");
+        $this->assign("published_data", $published_data);
+        $this->assign("underker_data", $underker_data);
         $this->assign("header_nav", "personal_home");
         $this->assign("side_nav", "");
         $this->assign("nav_type", 0);
