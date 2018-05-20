@@ -23,7 +23,7 @@ class ShowPublishedController extends Controller
     public function index()
     {
         $demand_type = DemandTypeModel::where('pid',0)->field('id,name')->select();
-        $demand_status = array('1'=>'未发布','2'=>'已发布','3'=>'已承接','4'=>'未完成','5'=>'待评价','6'=>'已完成','7'=>'已过期','8'=>'已失效');
+        $demand_status = array('1'=>'未发布','2'=>'已发布','3'=>'未完成','4'=>'待评价','5'=>'已完成','6'=>'已过期','7'=>'已失效');
         $this->assign('demand_type',$demand_type);
         $this->assign('demand_status',$demand_status);
         $this->assign('side_nav', 'project_published');
@@ -82,36 +82,37 @@ class ShowPublishedController extends Controller
         //已承接->已完成 3 freelancer->employeer to riview so update review field as 2
         $link->save();
         //employeer -> freelance to review
-        if($mode == 0)
-        {
-            //state 3 : 已承接 is review 1 so freelance gave review employeer to  set 1 as default
-            //check if freelancer give review to employeer
-            $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',1)->count();
-            //if freelancer give review to employer project compelted so update is_review field as 3
-            if ($count > 0)
-                DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
-            //if freelancer don't give review to employer project compelted so update is_review field as 1
-            else if ($count == 0)
-                DemandModel::where('id',$demand_id)->where('state','=',3)->update(['is_reviewed'=>2,'complete_time'=>date('Y-m-d H:i:s')]);
 
-            //if success go to success page
+        //state 3 : 已承接 is review 1 so freelance gave review employeer to  set 1 as default
+        //check if freelancer give review to employeer
+        $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',1)->count();
+        //if freelancer give review to employer project compelted so update is_review field as 3
+        if ($count > 0)
+            DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
+        //if freelancer don't give review to employer project compelted so update is_review field as 1
+        else if ($count == 0)
+            DemandModel::where('id',$demand_id)->where('state','=',3)->update(['is_reviewed'=>1,'complete_time'=>date('Y-m-d H:i:s')]);
+
+        //if success go to success page
+        if($mode == 0)
             return redirect('/index/service_management.show_published');
-        }
+        else if ($mode == 1)
+            return redirect('/index/service_management.show_undertaken');
         //freelancer -> employeer to review
-        else if ($mode ==1 )
-        {
+//        else if ($mode ==1 )
+//        {
             //state 3 : 已承接  so employeer gave review to freelancer set 2 as default
             //check if employeer give review to freelancer
-            $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',2)->count();
+//            $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',1)->count();
             //if employer give review to freelancer project compelted so update is_review field as 3
-            if ($count > 0)
-                DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
+//            if ($count > 0)
+//                DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
             //if employer don't give review to freelancer project compelted so update is_review field as 1
-            else if ($count == 0)
-                DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>1,'complete_time'=>date('Y-m-d H:i:s')]);
+//            else if ($count == 0)
+//                DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>1,'complete_time'=>date('Y-m-d H:i:s')]);
 
-            return redirect('/index/service_management.show_undertaken');
-        }
+//            return redirect('/index/service_management.show_undertaken');
+//        }
 
 
     }
@@ -140,31 +141,29 @@ class ShowPublishedController extends Controller
                 switch ($demand_state)
                 {
                     case 1:
-                        $temp_query->where('d.state',$demand_state)->where('is_reviewed',0);//未发布
+                        $temp_query->where(['d.state'=>$demand_state,'is_reviewed' =>0]);//未发布
                         break;
                     case 2:
-                        $temp_query->where('d.state',$demand_state)->where('is_reviewed',0);//已发布
+                        $temp_query->where(['d.state'=>$demand_state,'is_reviewed' =>0]);//已发布
                         break;
                     case 3:
-                        $temp_query->where('d.state',$demand_state)->where('is_reviewed=0' or 'is_reviewed=1');//已承接
+                        $temp_query->where(['d.state'=>3,'is_reviewed' =>0]);//未完成
+//                        $temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
+//                            ->where('state',3);
                         break;
                     case 4:
-                        $temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
-                            ->where('state',3);//未完成
+                        $temp_query->where(['d.state'=>3,'is_reviewed'=>1]);//待评价
                         break;
                     case 5:
-                        $temp_query->where('d.state',3)->where('is_reviewed',2);//待评价
+                        $temp_query->where(['d.state'=>3,'is_reviewed'=>3]);//已完成
                         break;
                     case 6:
-                        $temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
+                        $temp_query =$temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
+                            ->where('d.is_reviewed',0)->where('d.state',3);//已过期 expired task is running
                         break;
                     case 7:
-                        $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
-                            ->where('d.applied_user_id',0)->where('d.state','<=',2);// 已失效 expired at user don't bit until validation time
+                        $temp_query =$temp_query->where('d.is_reviewed',4);// 已失效 canceled project
                         break;
-                    case 8:
-                        $temp_query =$temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
-                            ->where('d.is_reviewed','<',3)->where('d.state',3);//已过期 expired task is running
                         break;
                 }
                 $tmpData    = DemandModel::getPublishedListJoin($temp_query);
@@ -260,12 +259,13 @@ class ShowPublishedController extends Controller
         //waiting evaluated from freelancer so give evaluated goto completed step
         if ($state_id == 3 && $is_reviewed == 1)
             return redirect('/index/project/project_processing/publish_completed',["id" => $demand_id,"mode" => 1]);
-        //publisher give review to freelancer
-        if ($state_id == 3 && $is_reviewed == 2)
-            return redirect('/index/project/project_processing/publish_completed',["id" => $demand_id,"mode" => 0]);
         //completed state
         if ($state_id == 3 && $is_reviewed == 3)
             return redirect('/index/project/project_processing/project_publish_complete',["id" => $demand_id]);
+        if($state_id == 2 && $is_reviewed == 4)
+        {
+            return redirect('/index/project/project_processing/project_cancled',["id" => $demand_id, "mode" => 0]);
+        }
 
 //
 //            //已发布

@@ -10,6 +10,7 @@ use app\common\model\NewsTypeModel;
 use app\common\model\CharitableOrganizationModel;
 use app\common\model\UserModel;
 
+
 class IndexController extends Controller
 {
     var $captcha;
@@ -90,6 +91,11 @@ class IndexController extends Controller
 
     public function memberCenter() //05会员中心
     {
+
+        $query = DemandModel::getPublishedListField();
+        $published_data  = DemandModel::getPublishedListJoinForMemberCenter($query);
+
+        $this->assign("published_data", "$published_data");
         $this->assign("header_nav", "personal_home");
         $this->assign("side_nav", "");
         $this->assign("nav_type", 0);

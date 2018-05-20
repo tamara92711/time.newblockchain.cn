@@ -87,14 +87,13 @@ class ShowUndertakenController extends Controller
                         ->where('d.is_reviewed','<',3)->where('d.state',3);//已过期 expired task is running
                     break;
                 case 5:
-                    $temp_query->where('d.state',3)->where('is_reviewed',1);//待评价
+                    $temp_query->where(['d.state'=>3,'is_reviewed'=>1]);//待评价
                     break;
                 case 6:
-                    $temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
+                    $temp_query->where(['d.state'=>3,'is_reviewed'=>3]);//已完成
                     break;
                 case 7:
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
-                        ->where('d.applied_user_id',0)->where('d.state','<=',2);// 已失效 expired at user don't bit until validation time
+                    $temp_query =$temp_query->where('d.is_reviewed',4);// 已失效
                     break;
             }
 

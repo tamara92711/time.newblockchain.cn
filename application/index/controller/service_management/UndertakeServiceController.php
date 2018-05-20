@@ -21,7 +21,7 @@ class UndertakeServiceController extends Controller
     {
         $demand_type       = DemandTypeModel::where('pid',0)->field('id,name')->select();
         $demand_detail     = DemandTypeModel::where('pid',1)->field('id,name')->select();
-        $demand_status     = array('2'=>'发布中','3'=>'已承接','4'=>'已完成','5'=>'已取消','6'=>'已失效');
+        $demand_status     = array('2'=>'发布中','3'=>'已承接','4'=>'已完成','5'=>'已失效');
         $release_time      = array('1'=>'今日发布','2'=>'昨日发布','3'=>'近3天发布','4'=>'3天以上');
 
         $this->assign("demand_type",$demand_type);
@@ -103,37 +103,31 @@ class UndertakeServiceController extends Controller
                     $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
                     break;
                 case 5:
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
-                        ->where('d.applied_user_id',0)->where('d.state','<=',2);//已取消 cancled  已失效 wrong so change
-                    break;
-                case 6:
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$today'")
-                        ->where('d.applied_user_id',0)->where('d.state','<=',2);// 已失效 expired at user don't bit until validation time
+                    $temp_query =$temp_query->where('is_reviewed',4);//cancled  已失效 wrong so change
                     break;
             }
         }
 
         if ($time_currency >= 0)
         {
-
             switch ($time_currency)
             {
                 case 1:
-                    $temp_query =$temp_query->where('d.pay_amount','>',0);
+                    $temp_query =$temp_query->where('d.pay_amount','>','0');
                     break;
                 case 2:
-                    $temp_query =$temp_query->whereBetween('d.pay_amount','0,5');
+                    $temp_query =$temp_query->where('d.pay_amount','between','1,5');
                     break;
                 case 3:
-                    $temp_query =$temp_query->whereBetween('d.pay_amount','5,10');
+                    $temp_query =$temp_query->where('d.pay_amount','between','5,10');
                     break;
                 case 4:
-                    $temp_query =$temp_query->where('d.pay_amount','>',10);
+                    $temp_query =$temp_query->where('d.pay_amount','>','10');
                     break;
             }
             if ($time_currency_from > 0 and $time_currency_to > 0 )
             {
-                $temp_query =$temp_query->where('d.pay_amount','between',$time_currency_from,$time_currency_to);
+                $temp_query =$temp_query->where('d.pay_amount','>=',$time_currency_from)->where('d.pay_amount','<=',$time_currency_to);
             }
         }
 
@@ -206,44 +200,45 @@ class UndertakeServiceController extends Controller
         return json_encode($detailDemandType);
     }
 
-    public function getBuilderProject($demand_id,$state_id,$uid)
+    public function getBuilderProject($demand_id,$state_id,$uid,$is_reviewed)
     {
-        switch ($state_id)
+        //发布中 display
+        if ($state_id == 2 && $is_reviewed == 0)
         {
-            //发布中 display
-            case 2:
-                if($uid == session('user_id'))
-                {
-                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
-                    break;
-                }
-                else
-                {
-                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
-                    break;
-                }
-            case 3:
-                return redirect('/index/project/project_processing/project_accepted',["id" => $demand_id,"mode" => 0]);
-                break;
-            case 4:
-                return redirect('/index/project/project_processing/project_completed',["id" => $demand_id, "mode" => 0]);
-                break;
-            case 5:
-                return redirect('/index/project/project_processing/accepter_cancled',["id" => $demand_id,"mode" => 0]);
-                break;
-            case 6:
-                if($uid == session('user_id'))
-                {
-                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
-                    break;
-                }
-                else
-                {
-                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
-                    break;
-                }
-
+            if ($uid == session('user_id'))
+                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
+            else
+                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
         }
+        else if ($state_id == 3 && $is_reviewed == 0)
+        {
+            return redirect('/index/project/project_processing/project_accepted', ["id" => $demand_id, "mode" => 0]);
+        }
+        else if($state_id == 3 && $is_reviewed == 3)
+        {
+            return redirect('/index/project/project_processing/project_completed',["id" => $demand_id, "mode" => 0]);
+        }
+        else if($state_id == 2 && $is_reviewed == 4)
+        {
+            return redirect('/index/project/project_processing/project_cancled',["id" => $demand_id, "mode" => 0]);
+        }
+
+
+//            case 5:
+//                return redirect('/index/project/project_processing/accepter_cancled',["id" => $demand_id,"mode" => 0]);
+//                break;
+//            case 6:
+//                if($uid == session('user_id'))
+//                {
+//                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
+//                    break;
+//                }
+//                else
+//                {
+//                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
+//                    break;
+//                }
+
     }
 
 

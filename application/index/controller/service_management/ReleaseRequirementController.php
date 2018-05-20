@@ -35,6 +35,31 @@ class ReleaseRequirementController extends Controller
 
         //when modal clicked display address list of logined user
         $addressList = AddressModel::getAddressList(session('user_id'));
+        //addresslist detail address list
+        if(!empty($addressList[0]['onlyDetail']))
+            $this->assign('address_detail',$addressList[0]['onlyDetail']);
+        else
+            $this->assign('address_detail',"");
+    //addresslist region_1
+        if(!empty($addressList[0]['region_id_1']))
+            $this->assign('region_id_1',$addressList[0]['region_id_1']);
+        else
+            $this->assign('region_id_1',"");
+    //addresslist region_2
+        if(!empty($addressList[0]['region_id_2']))
+            $this->assign('region_id_2',$addressList[0]['region_id_2']);
+        else
+            $this->assign('region_id_2',"");
+    //addresslist contact_name
+        if(!empty($addressList[0]['name']))
+            $this->assign('contact_name',$addressList[0]['name']);
+        else
+            $this->assign('contact_name',"");
+    //addresslist contact_phone
+        if(!empty($addressList[0]['name']))
+            $this->assign('contact_phone',$addressList[0]['phone']);
+        else
+            $this->assign('contact_phone',"");
 
         $this->assign('addressList',$addressList);
         $this->assign('jsonData', $jsonData);

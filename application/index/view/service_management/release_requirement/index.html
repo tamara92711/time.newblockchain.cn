@@ -161,6 +161,8 @@
                                     <div class="left" style="padding-left:31px;">
                                         <label>服务地点：</label>
                                     </div>
+                                    <input type="hidden" id="contact_region1_default_id" value="{$region_id_1}"/>
+                                    <input type="hidden" id="contact_region2_default_id" value="{$region_id_2}"/>
                                     <div class="right" style="margin-left: 8px;">
                                         <select class="form-control" style=" width: 160px; height:35px;float: left; margin-right: 10px;" name="region_1" id="region_1">
                                         {foreach $region_level_1 as $key=>$val }
@@ -171,7 +173,7 @@
                                         <select class="form-control" style="width: 160px; height:35px;float: left; margin-bottom: 18px;" name="district" id="district">
 
                                         </select>
-                                        <textarea class="form-control" rows="3" name="detail_address" id="detail_address" style="height: 90px;" placeholder="请输入详细地址..."></textarea>
+                                        <textarea class="form-control" rows="3" name="detail_address" id="detail_address" style="height: 90px;" placeholder="请输入详细地址...">{$address_detail}</textarea>
                                         <a  class="btn button-select-existing-address" data-target="#receiver" data-toggle="modal" style="color: white;">选择已有地址</a>
                                     </div>
                                 </div>
@@ -180,7 +182,7 @@
                                         <label>联系人：</label>
                                     </div>
                                     <div class="right" style="margin-left: 8px;">
-                                        <input type="text" class="form-control" name="contact" id="contact"/>
+                                        <input type="text" class="form-control" name="contact" id="contact" value="{$contact_name}"/>
                                     </div>
                                 </div>
                                 <div class="form-group" style="border-bottom: none;">
@@ -188,7 +190,7 @@
                                         <label>联系电话: </label>
                                     </div>
                                     <div class="right" style="margin-left: 8px;">
-                                        <input type="text" class="form-control" name="contact_phone" id="contact_phone"/>
+                                        <input type="text" class="form-control" name="contact_phone" id="contact_phone" value="{$contact_phone}"/>
                                     </div>
                                 </div>
 
@@ -362,11 +364,11 @@
 <link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
 {/block}
 {block name="custom-js"}
-<script src="/assets/js/app.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/select2.full.min.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/jquery.validate.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
 <script src="/assets/js/form-validation/form-wizard.js" type="text/javascript"></script>
+<script src="/assets/js/app.js" type="text/javascript"></script>
 <script src="/assets/js/common/common.js" type="text/javascript"></script>
 <script src="/assets/js/jquery-scrollto.js" type="text/javascript"></script>
 <!--datepicker js start-->
@@ -381,7 +383,7 @@
         $("#step-1").addClass("progtrckr-done");
         showTree();
         calendars();
-        $("#region_1").change();
+
         //Get each demandtype's text
         getDemandTypeText();
         // first element checked in address list
@@ -390,8 +392,13 @@
         $('input[name=demand_type]:first').attr('checked',true);
         //treeview first child display
         $(".set .acc-plus").first().addClass("active").siblings(".content").slideDown(100);
-
+        //javascript 2018-05-20 get
         $("#published_time").val( new Date().toJSON().slice(0,10));
+
+        var region1_default_id = $("#contact_region1_default_id").val();
+        $("#region_1").val(region1_default_id);
+
+        $("#region_1").change();
     });
     //Get each demandtype's text
     var demand_type_val,demand_type_id;
@@ -409,10 +416,6 @@
         $('div.accordion-container').on('click', '*', function () {
             $("div.progress-bar-container").ScrollTo();
         });
-
-        // $('div.accordion-container').on('click', '*', function () {
-        //     $("btn button-next").ScrollTop(100);
-        // });
 
         return demand_type_val;
     }
@@ -446,6 +449,28 @@
                     .slideDown(200);
             }
         });
+    }
+
+    function region1Change()
+    {
+        var region1=$("#region_1").val();
+        var container = $('#district');
+        $.ajax({
+            url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
+            success : function (result) {
+                var jsonData = JSON.parse(result);
+                var response = jsonData.data;
+                var dataHtml = '';
+                // dataHtml+='<option value="" selected disabled hidden>全部</option>';
+                // <option selected="" value="全部" >全部</option>
+                $.each(response, function (index, item) {
+                    dataHtml +='<option value="'+index+'">'+item+'</option>';
+                });
+                container.html(dataHtml);
+                //set as default region2_id default selected in addresslist
+                $("#district").val($("#contact_region2_default_id").val());
+            }
+        })
     }
 
     function calendars()

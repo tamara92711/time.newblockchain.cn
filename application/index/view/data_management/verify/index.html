@@ -25,7 +25,7 @@
                                 <label>身份证号码：</label>
                             </div>
                             <div class="right">
-                                <input type="number" class="form-control" name="iden_number" id="iden_number" />
+                                <input type="text" class="form-control" name="iden_number" id="iden_number" />
                             </div>
                             <span style="color:red;margin-left: 20px;" id="iden_error">只插入号码。</span>
                         </div>
@@ -154,6 +154,11 @@
             label_selected: "Change File"
         });
     });
+
+    $("#iden_number").keypress(function () {
+        this.value = this.value.replace(/[^0-9\.]/g,'');
+    })
+
     $("#verifyForm").submit(function ()
     {
         // console.log("test");
@@ -164,8 +169,6 @@
             $("#name").focus();
             return false;
         }
-
-
 
         var iden_number = $("#iden_number").val();
         if(iden_number=="")

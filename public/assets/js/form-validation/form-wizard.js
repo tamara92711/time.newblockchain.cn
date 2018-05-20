@@ -305,7 +305,10 @@ var FormWizard = function () {
                         }
                         else if (result == "not_verify")
                         {
-                            alert("项目无法提交，因为真实姓名尚未验证。 请等待管理员批准。")
+                            $.alert({
+                                title: '注意!。',
+                                content: '项目无法提交，因为真实姓名尚未验证。 请等待管理员批准!。',
+                            });
                             window.location.href=('/index/service_management.release_requirement');
                         }
 
@@ -339,7 +342,10 @@ var FormWizard = function () {
                         }
                         else if (result == "not_verify")
                         {
-                            alert("项目无法提交，因为真实姓名尚未验证。 请等待管理员批准。")
+                            $.alert({
+                                title: '注意!。',
+                                content: '项目无法提交，因为真实姓名尚未验证。 请等待管理员批准!。',
+                        });
                             window.location.href=('/index/service_management.release_requirement');
                         }
                         else

@@ -79,12 +79,17 @@ class PersonalInformationController extends Controller
      */
     public function personalUpdate(Request $request)
     {
-//        return "update".$id;
+
         $oldPass = $request->param("beforepass");
-        $checkPass = UserModel::where('id',session('user_id'))->where('password',md5($oldPass))->count();
-        if ($checkPass == 0)
+        $newpass = $request->param("newpass");
+        $verifypass = $request->param("verifypass");
+        if(strlen($oldPass)>=1 && strlen($newpass)>=1 && strlen($verifypass)>=1)
         {
-            return "failure";
+            $checkPass = UserModel::where('id',session('user_id'))->where('password',md5($oldPass))->count();
+            if ($checkPass == 0)
+            {
+                return "failure";
+            }
         }
         else
         {

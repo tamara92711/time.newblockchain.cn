@@ -28,25 +28,7 @@ function generateDay(date)
     return day;
 }
 
-function region1Change()
-{
-    var region1=$("#region_1").val();
-    var container = $('#district');
-    $.ajax({
-        url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
-        success : function (result) {
-            var jsonData = JSON.parse(result);
-            var response = jsonData.data;
-            var dataHtml = '';
-            // dataHtml+='<option value="" selected disabled hidden>全部</option>';
-            // <option selected="" value="全部" >全部</option>
-            $.each(response, function (index, item) {
-                dataHtml +='<option value="'+index+'">'+item+'</option>';
-            });
-            container.html(dataHtml);
-        }
-    })
-}
+
 
 function getFirstMonthDay()
 {
@@ -64,10 +46,8 @@ function getDemandStatusFindJobList(state_id,is_reviewed)
         return '已承接';
     else  if(state_id == 3 && is_reviewed == 3)
         return '已完成';
-    else  if(state_id == 3 && is_reviewed == 4)
-        return '已过期';
-    else  if(state_id == 3 && is_reviewed == 5)
-        return '已取消';
+    else  if(state_id == 2 && is_reviewed == 4)
+        return '已失效';
 }
 
 function getDemandStatusPubliher(state_id,is_reviewed)
@@ -77,15 +57,13 @@ function getDemandStatusPubliher(state_id,is_reviewed)
     else  if(state_id == 2 && is_reviewed == 0)
         return '已发布';
     else  if(state_id == 3 && is_reviewed == 0)
-        return '已承接';
+        return '未完成';
     else  if(state_id == 3 && is_reviewed == 1)
-        return '已承接';
-    else  if(state_id == 3 && is_reviewed == 2)
         return '待评价';
     else  if(state_id == 3 && is_reviewed == 3)
         return '已完成';
-    else  if(state_id == 3 && is_reviewed == 4)
-        return '已过期';
+    else  if(state_id == 2 && is_reviewed == 4)
+        return '已失效';
     else  if(state_id == 3 && is_reviewed == 5)
         return '未完成';
 }
@@ -102,7 +80,7 @@ function getDemandStatusFreelancer(state_id,is_reviewed)
     //     return '待评价';
     else  if(state_id == 3 && is_reviewed == 3)
         return '已完成';
-    else  if(state_id == 3 && is_reviewed == 4)
+    else  if(is_reviewed == 4)
         return '已过期';
     else  if(state_id == 3 && is_reviewed == 5)
         return '已失效';
