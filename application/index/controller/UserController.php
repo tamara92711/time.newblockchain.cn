@@ -99,7 +99,7 @@ class UserController extends Controller
                 session('user_id',$user_record->id);
                 session('user_name',$user_record->name);
                 session('user_mobile',$user_record->mobile);
-                return redirect('/');
+                return redirect('/home');
             }
         }
     }

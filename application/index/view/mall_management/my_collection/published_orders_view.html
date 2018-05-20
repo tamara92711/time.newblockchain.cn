@@ -2,6 +2,7 @@
 {block name="page-title"}我的订单{/block}
 {block name="custom-css"}
 <link rel="stylesheet" href="/assets/css/index/mallmanage/my_orders.css"> 
+<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
 {/block}
 {block name="main-part"}
 <div class="qk-portlet">
@@ -82,4 +83,20 @@
         </div>
     </div>
 </div>
+{/block}
+{block name="custom-js"}
+<script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function (){
+        $("#time_from").datepicker({
+            autoHide: true,
+            format: 'yyyy-mm-dd'
+        });
+        $("#time_to").datepicker({
+            autoHide: true,
+            format: 'yyyy-mm-dd'
+        });
+        $(".calendar").val("OK");
+    });
+</script>
 {/block}
