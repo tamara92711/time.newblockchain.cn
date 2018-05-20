@@ -6,15 +6,14 @@
             <div class="login-title">
                 <p style="font-size:18px;font-family:ms-yahei-bold;color:#ff5656;margin-top:-15px;margin-left:109px;background-color:white;width:111px;padding-left:20px">用户登录</p>
             </div>
-            <?php if(Session::has('error')) {?>
-                <div style="text-align: center">
-                    <?php echo Session::get('error');?>
-                </div>
-            <?php } ?>
+            
             <div class="u-msg-wrap">
-                <div class="msg msg-warn" style="display:none;"> <i></i>
-                    <span>公共场所不建议自动登录，以防帐号丢失</span>
+                <?php if(Session::has('error')) {?>
+                <div class="msg msg-warn">
+                    <i></i>
+                    <span><?php echo Session::get('error');?></span>
                 </div>
+                <?php } ?>
                 <div class="msg msg-err" style="display:none;"> <i></i>
                     <span class="J-errorMsg"></span>
                 </div>
@@ -40,12 +39,9 @@
                     <img src="{:url('verify')}" id="verifyImage" onclick="this.src=this.src+'?'" alt="captcha" style="float: right;border: 1px solid #d2d2d2;border-radius: 4px;width: 117px;height: 40px;" />
                 </div>
                 <div class="clearfix"></div>
-                <div>
-                    <p id="errors"></p>
-                </div>
                 <button class="btn btn-login" onclick="checkLogin()">登录</button>
-                <div style="padding-top: 4px;padding-left: 17px;">
-                    <span style="margin-right: 135px;"><a href="/index/index/forgotpassword">忘记密码？</a></span>
+                <div style="padding-top: 4px;padding-left: 17px;padding-bottom:10px">
+                    <span style="margin-right: 135px;"><a href="/forgot_password">忘记密码？</a></span>
                     <span><a href="/register_form">免费注册</a></span>
                 </div>
             </div>

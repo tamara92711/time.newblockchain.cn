@@ -75,6 +75,7 @@ Route::resource('admin/member/real_name_verify','@admin/member/real_name_verify'
 Route::get('clear_phone_verify_code_session', '@index/index/clear_phone_verify_code_session');
 Route::get('home', '@index/index/home');
 Route::get('login_form','@index/user/login_form');
+Route::get('forgot_password','@index/user/forgot_password');
 Route::post('login','@index/user/submit_login');
 
 Route::get('register_form','@index/user/register_form');//->middleware('AuthMiddleware');

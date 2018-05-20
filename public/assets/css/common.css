@@ -470,7 +470,7 @@ body {
 
 .enter-veri-code > div > img {
   display: inline-block;
-    width: 99px;
+    width: 90px;
     height: 32px;
     background-color: #ffcccc;
     border: 1px solid #d9d9d9;
@@ -726,7 +726,6 @@ body {
 /*-------------------login-----------------*/
 .login {
   width: 372px;
-  height: 372px;
   margin-top: 44px;
   margin-left: 20px;
 }
@@ -734,7 +733,7 @@ body {
 .login-body .input-icon input {
   border: 1px solid #ff5656;
   height: 40px;
-  margin-bottom: 31px;
+  margin-bottom: 15px;
   padding-left: 49px;
   font-size: 14px;
   padding-top: 4px;
@@ -1072,8 +1071,6 @@ li {
 
 
 .u-msg-wrap {
-  height: 30px;
-  line-height: 24px;
   margin: 12px 17px 10px 15px;
   font-family: "Microsoft YaHei";
 }
@@ -1081,6 +1078,7 @@ li {
 .u-msg-wrap .msg.msg-warn {
   border: 1px solid #ffe9b1;
   background: #fff4d8;
+  text-align: center;
 }
 
 .u-msg-wrap .msg {

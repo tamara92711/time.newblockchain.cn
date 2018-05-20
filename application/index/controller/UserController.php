@@ -269,4 +269,13 @@ class UserController extends Controller
         $exists = UserModel::where('mobile', $mobile)->count();
         return ($exists)? true: false;
     }
+
+    public function forgot_password()//03忘记密码
+    {
+        $this->assign("header_nav", "");
+        $this->assign("nav_type", 1);
+        $temp = json_decode(session('temp'));
+        $this->assign("mobile", empty($temp)? '': $temp->mobile);
+        return $this->fetch();
+    }
 }
