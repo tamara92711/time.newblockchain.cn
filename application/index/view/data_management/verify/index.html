@@ -7,7 +7,8 @@
             <span class="qk-portlet-title-text">实名认证</span>
         </div>
         <div class="qk-portlet-content form">
-            <form action="/index/data_management/verify" id="verifyForm" enctype="multipart/form-data" method="POST">
+            <form action="/index/data_management/verify/0" id="verifyForm" enctype="multipart/form-data" method="POST">
+                <input type="hidden" name="_method" value="PUT"/>
                 <div>
                     <div style="float:left;width:675px">
                         <div class="form-group" style="width:652px">
@@ -15,7 +16,7 @@
                                 <label>姓名：</label>
                             </div>
                             <div class="right">
-                                <input type="text" class="form-control" name="name" id="name" />
+                                <input type="text" class="form-control" name="name" id="name" value="{$user['real_name']}"/>
                             </div>
                             <span style="color:red;margin-left: 20px;display: none;" id="name_error"></span>
                             <span class="error">This field is required</span>
@@ -25,7 +26,7 @@
                                 <label>身份证号码：</label>
                             </div>
                             <div class="right">
-                                <input type="text" class="form-control" name="iden_number" id="iden_number" />
+                                <input type="text" class="form-control" name="iden_number" id="iden_number" value="{$user['id_card_number']}"/>
                             </div>
                             <span style="color:red;margin-left: 20px;" id="iden_error">只插入号码。</span>
                         </div>
@@ -34,7 +35,7 @@
                                 <label>身份证正面：</label>
                             </div>
                             <div id="image-preview-positive" class="right add-picture">
-                                <input type="file" name="positive_id" id="positive_id" accept=".jpg,.png,.bmp"/>
+                                <input type="file" name="positive_id" id="positive_id" accept=".jpg,.png,.bmp" value="{$user['card_front_image']}"/>
                             </div>
                             <span style="color:red;margin-left: 35px;display: none" id="positive_image_error"></span>
                             <div style="color:red;margin-right: 15px;float: right;display: none" id="avarta_image_error"></div>
@@ -50,7 +51,7 @@
                         <label>身份证反面：</label>
                     </div>
                     <div id="image-preview-negative" class="right add-picture">
-                        <input type="file" name="negative_id" id="negative_id" />
+                        <input type="file" name="negative_id" id="negative_id" value="{$user['card_back_image']}"/>
                     </div>
                     <span style="color:red;margin-left: 35px;display: none" id="negative_image_error"></span>
                 </div>
@@ -60,7 +61,7 @@
                         <label>手持身份证：</label>
                     </div>
                     <div id="image-preview-handheld" class="right add-picture">
-                        <input type="file" name="handheld_id" id="handheld_id" />
+                        <input type="file" name="handheld_id" id="handheld_id" value="{$user['card_handled_image']}"/>
                     </div>
                     <span style="color:red;margin-left: 35px;display: none" id="handheld_image_error"></span>
                 </div>
@@ -85,6 +86,10 @@
         var scale = 0.25;
         var is_captured = false;
         
+        $("#image-preview-positive").css("background-image", "url({$user['card_front_image']})");
+        $("#image-preview-negative").css("background-image", "url({$user['card_back_image']})");
+        $("#image-preview-handheld").css("background-image", "url({$user['card_handled_image']}");
+
         $("#iden_number").keypress(function (event) {
             if (event.which < 48 || event.which > 57) event.preventDefault();
         });
@@ -176,28 +181,29 @@
 
 
         var positive = $("#positive_id").val();
-        if ( ! positive) {
-            $("#positive_image_error").text('请上传身份证正面.').show();
-            event.preventDefault();
-            return;
-        }
+        // console.log(positive);
+        // if ( ! positive) {
+        //     $("#positive_image_error").text('请上传身份证正面.').show();
+        //     event.preventDefault();
+        //     return;
+        // }
 
         var negative = $("#negative_id").val();
-        if ( ! negative) {
-            $("#negative_image_error").text('请上传身份证反面.').show();
-            event.preventDefault();
-            return;
-        }
+        // if ( ! negative) {
+        //     $("#negative_image_error").text('请上传身份证反面.').show();
+        //     event.preventDefault();
+        //     return;
+        // }
 
         var handheld = $("#handheld_id").val();
-        if ( ! handheld) {
-            $("#handheld_image_error").text('请上传手持身份证.').show();
-            event.preventDefault();
-            return;
-        }
+        // if ( !handheld) {
+        //     $("#handheld_image_error").text('请上传手持身份证.').show();
+        //     event.preventDefault();
+        //     return;
+        // }
 
         var avarta_image = $("#avatar_image").val();
-        if ( ! avarta_image) {
+        if ( !avarta_image) {
             $("#avarta_image_error").text('请拍下我自己的照片.').show();
             event.preventDefault();
             return;

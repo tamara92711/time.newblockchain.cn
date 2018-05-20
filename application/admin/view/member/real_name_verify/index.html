@@ -29,7 +29,7 @@
                 { "data": "real_name" },
                 { "data": "id_card_number" },
                 {
-                    "data": "is_passed",
+                    "data": "real_name_verified",
                     "render": function (is_passed) {
                         if (is_passed) return "<span class='label label-success'>是</span>";
                         else return "<span class='label label-danger'>否</span>";
@@ -38,8 +38,7 @@
                 {
                     "data": "id",
                     "render": function (id) {   
-                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i></button>" +
-                            "<button class='btn btn-danger delete' id='" + id + "'><i class='fa fa-trash'></i></button>";
+                        return "<button class='btn btn-primary update' id='" + id + "'><i class='fa fa-pencil'></i></button>";
                     }
                 }
             ],
@@ -87,7 +86,7 @@
                     $('#card_handled_image').attr("src", data.card_handled_image);
                     $('#avarta_image').attr("src", data.avarta_image);
                     $('#operation').val('update');
-                    if (data.is_passed) $("#is_passed").bootstrapSwitch('state', true);
+                    if (data.real_name_verified) $("#is_passed").bootstrapSwitch('state', true);
                     else $("#is_passed").bootstrapSwitch('state', false);
                 }
             })

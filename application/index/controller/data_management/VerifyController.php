@@ -3,6 +3,7 @@
 namespace app\index\controller\data_management;
 
 use app\common\model\RealNameVerifyModel;
+use app\common\model\UserModel;
 use think\Controller;
 use think\Request;
 
@@ -18,9 +19,24 @@ class VerifyController extends Controller
         $this->assign('side_nav', 'real_name_verify');
         $this->assign('header_nav', 'project_publish');
         $this->assign("nav_type", 1);
+        $user_id = session('user_id');
+        $user = UserModel::get($user_id)->toArray();
+        $user['card_front_image'] = $this->getImageUrl($user['card_front_image']);
+        $user['card_back_image'] = $this->getImageUrl($user['card_back_image']);
+        $user['card_handled_image'] = $this->getImageUrl($user['card_handled_image']);
+        $this->assign('user', $user);
         return $this->fetch();
     }
 
+    private function getImageUrl($path)
+    {
+        $url = "";
+        if (!empty($path)) {
+            $path = explode('\\',$path);
+            $url = '/uploads/' . $path[0] . '/' . $path[1];
+        }
+        return $url;
+    }
     /**
      * 显示创建资源表单页.
      *
@@ -39,30 +55,30 @@ class VerifyController extends Controller
      */
     public function save(Request $request)
     {
-        $link = new RealNameVerifyModel();
+        $user = new RealNameVerifyModel();
 
-        $link->user_id = session("user_id");
+        $user->user_id = session("user_id");
 
-        $link->user_name = $request->param('name');
-        $link->id_card_number = $request->param('iden_number');
+        $user->user_name = $request->param('name');
+        $user->id_card_number = $request->param('iden_number');
 
         if (!empty($request->file('positive_id')))
         {
             $image = $request->file('positive_id');
             $info = $image->move('./uploads/');
-            $link->card_front_image = $info->getSaveName();
+            $user->card_front_image = $info->getSaveName();
         }
         if (!empty($request->file('negative_id')))
         {
             $image = $request->file('negative_id');
             $info = $image->move('./uploads/');
-            $link->card_back_image = $info->getSaveName();
+            $user->card_back_image = $info->getSaveName();
         }
         if (!empty($request->file('handheld_id')))
         {
             $image = $request->file('handheld_id');
             $info = $image->move('./uploads/');
-            $link->card_handled_image = $info->getSaveName();
+            $user->card_handled_image = $info->getSaveName();
         }
 
         if (!empty($request->post('avatar_image')))
@@ -77,13 +93,13 @@ class VerifyController extends Controller
             $avatar_file = '' . time() . '.png';
             
             file_put_contents('./uploads/avarta/' . $avatar_file, $data);
-            $link->avarta_image = '/uploads/avarta/' . $avatar_file;
+            $user->avarta_image = '/uploads/avarta/' . $avatar_file;
             // $image = $request->file('handheld_id');
             // $info = $image->move('./uploads/');
-            // $link->avarta_image = $info->getSaveName();
+            // $user->avarta_image = $info->getSaveName();
         }
 
-        $link->save();
+        $user->save();
         return redirect('/index/data_management.verify');
     }
 
@@ -118,7 +134,50 @@ class VerifyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id = session("user_id");
+
+        $user = UserModel::get($id);
+
+        $user->real_name = $request->param('name');
+        $user->id_card_number = $request->param('iden_number');
+        $user->real_name_verified = false;
+
+        if (!empty($request->file('positive_id')))
+        {
+            $image = $request->file('positive_id');
+            $info = $image->move('./uploads/');
+            $user->card_front_image = $info->getSaveName();
+        }
+        if (!empty($request->file('negative_id')))
+        {
+            $image = $request->file('negative_id');
+            $info = $image->move('./uploads/');
+            $user->card_back_image = $info->getSaveName();
+        }
+        if (!empty($request->file('handheld_id')))
+        {
+            $image = $request->file('handheld_id');
+            $info = $image->move('./uploads/');
+            $user->card_handled_image = $info->getSaveName();
+        }
+
+        if (!empty($request->post('avatar_image')))
+        {
+            $data = $request->post('avatar_image');
+
+            list($type, $data) = explode(';', $data);
+            list(, $data)      = explode(',', $data);
+            $data = base64_decode($data);
+            if(!file_exists('./uploads/avarta'))
+                mkdir('./uploads/avarta',0777,true);
+            $avatar_file = '' . time() . '.png';
+            
+            file_put_contents('./uploads/avarta/' . $avatar_file, $data);
+            $user->avarta_image = '/uploads/avarta/' . $avatar_file;
+        }
+
+        $user->save();
+        return redirect('/verify')->with('result', 'success');
     }
 
     /**
