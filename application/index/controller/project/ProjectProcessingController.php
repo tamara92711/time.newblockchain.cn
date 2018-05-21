@@ -2,11 +2,11 @@
 
 namespace app\index\controller\project;
 
-use app\admin\controller\member\RealNameVerifyController;
+
 use app\common\model\ApplyModel;
 use app\common\model\DemandModel;
 use app\common\model\ProfessionalCertificateModel;
-use app\common\model\RealNameVerifyModel;
+use app\common\model\UserModel;
 use think\Controller;
 use think\Request;
 
@@ -173,8 +173,8 @@ class ProjectProcessingController extends Controller
         $data = DemandModel::getProjectCompletedJoin($temp);
 
         $user_id = $data[0]['publisher_id'];
-        $applied_avarta = RealNameVerifyModel::getAvarta($data[0]['applied_user_id']);
-        $publisher_avarta = RealNameVerifyModel::getAvarta($data[0]['publisher_id']);
+        $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
+        $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
 
         $this->assign('applied_avarta',$applied_avarta);
         $this->assign('publisher_avarta',$publisher_avarta);
@@ -209,8 +209,8 @@ class ProjectProcessingController extends Controller
         $freelancer_id = $data[0]['applied_user_id'];
         $publisher_id  = $data[0]['publisher_id'];
 
-        $applied_avarta = RealNameVerifyModel::getAvarta($data[0]['applied_user_id']);
-        $publisher_avarta = RealNameVerifyModel::getAvarta($data[0]['publisher_id']);
+        $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
+        $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
 
         $this->assign('applied_avarta',$applied_avarta);
         $this->assign('publisher_avarta',$publisher_avarta);
@@ -261,7 +261,7 @@ class ProjectProcessingController extends Controller
     {
 
         $link = new ApplyModel();
-        $count = RealNameVerifyModel::where('user_id',session('user_id'))->where('is_passed',1)->count();
+        $count = UserModel::where('id',session('user_id'))->where('real_name_verified',1)->count();
         if ($count > 0)
         {
             $link->demand_id = request()->param('demand_id');
@@ -292,7 +292,7 @@ class ProjectProcessingController extends Controller
         $certificate = ProfessionalCertificateModel::where('user_id',$user_id)
             ->column('*');
 
-        $avarta = RealNameVerifyModel::where('user_id',$user_id)->column('avarta_image');
+        $avarta = UserModel::where('user_id',$user_id)->column('avarta_image');
 
         $this->assign('data',$demand_data);
         $this->assign('user_data',$user_data);

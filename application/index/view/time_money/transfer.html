@@ -96,12 +96,9 @@
                         <label>方式：</label>
                     </div>
                     <div class="other-right" style="margin-right: 33px">
-                        <select class="form-control" style="padding: 0px 19px;font-size:14px" id="transaction_type">
+                        <select class="form-control" style="padding: 0px 19px;font-size:14px" id="transaction_type" >
                             <option value="1">充值</option>
                             <option value="2">转赠</option>
-                            <option value="3">购买</option>
-                            <option value="4">发布项目</option>
-                            <option value="5">承接项目</option>
                         </select>
                     </div>
                 </div>
@@ -133,6 +130,8 @@
 <script>
     $(document).ready(function () {
         $("#user_name1").focus();
+        $("#transaction_type").val(2);
+        displayTransactionHistory();
     });
         $(".inquire").click(function(event) {
             event.preventDefault();
@@ -144,17 +143,18 @@
             var real_name = $("#real_name").val();
             var mobile = $("#mobile").val();
             var amount = parseFloat($("#amount").val());
-            
+
             var total_amount = parseFloat($("#total_amount").text());
 
             if (amount > total_amount) {
-                $("#amount_error").text("Pay amount can't be larger than the balance.");
+                $("#amount_error").text("支付金额不能大于余额!。");
                 return;
             } else {
                 $("#amount_error").text("");
             }
+        });
+            // var result = validate();
 
-            var result = validate();
 
     $(".inquire").click(function() {
         displayTransactionHistory();
@@ -248,13 +248,22 @@
             data: { user_name: user_name, real_name: real_name, mobile: mobile, amount: amount },
             success: function (response)
             {
-                console.log(response);
+
                 response = JSON.parse(response);
                 if (response.is_error) {
                     alert(response.error_message);
                     return;
                 }
-                $("#total_amount").text(response.total_amount);
+                else{
+                    $.alert({
+                        title:'确认',
+                        content:'转赠成功',
+                    })
+                    $("#total_amount").text(response.total_amount);
+                    $("#transaction_type").val(2);
+                    displayTransactionHistory();
+                }
+
 
             }
         });
@@ -282,6 +291,9 @@
         var time_to = $("#time_to").val();
         var transaction_type = $("#transaction_type").val();
         var user_name = $("#user_name").val();
+
+        console.log('time_from='+time_from+'time_to='+time_to+'user_name='+user_name);
+
         $.ajax({
             url: "/index/time_money/gettransactionhistory",
             method: "POST",
@@ -311,9 +323,6 @@
                             switch (item.transaction_type) {
                                 case 1: transaction_type = "充值"; break;
                                 case 2: transaction_type = "转赠"; break;
-                                case 3: transaction_type = "购买"; break;
-                                case 4: transaction_type = "发布项目"; break;
-                                case 5: transaction_type = "承接项目"; break;
                             }
                             if (item.action) {
                                 transaction_type = '<td style="color:#01dc96">' + transaction_type + '</td>';

@@ -3,10 +3,10 @@
 namespace app\index\controller\service_management;
 
 use app\common\model\AddressModel;
-use app\common\model\RealNameVerifyModel;
 use app\common\model\DemandModel;
 use app\common\model\DemandTypeModel;
 use app\common\model\RegionModel;
+use app\common\model\UserModel;
 use think\Controller;
 use think\Request;
 use think\captcha\Captcha;
@@ -141,7 +141,7 @@ class ReleaseRequirementController extends Controller
         }
         else
         {
-            $count = RealNameVerifyModel::where('user_id',session('user_id'))->where('is_passed',1)->count();
+            $count = UserModel::where('id',session('user_id'))->where('real_name_verified',1)->count();
             if($count == 0)
                 echo "not_verify";
             else
