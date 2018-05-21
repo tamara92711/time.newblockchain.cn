@@ -181,11 +181,11 @@ Route::resource('index/project/project_expired','@index/project/project_expired'
 
 Route::resource('index/mall/index','@index/mall/index');
 
-Route::get('mall','@index/mall.index/index')->middleware('AuthMiddleware');
+Route::get('mall','@index/mall.index/index');
 
-Route::get('about_us', '@index/about_us.index/index')->middleware('AuthMiddleware');
+Route::get('about_us', '@index/about_us.index/index');
 
-Route::get('local_agencies', '@index/about_us.local_agencies/index')->middleware('AuthMiddleware');
+Route::get('local_agencies', '@index/about_us.local_agencies/index');
 
-Route::get('recruitment_information', '@index/about_us.recruitment_information/index')->middleware('AuthMiddleware');
+Route::get('recruitment_information', '@index/about_us.recruitment_information/index');
 
