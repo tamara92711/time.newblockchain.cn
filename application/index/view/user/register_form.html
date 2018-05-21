@@ -126,7 +126,7 @@
     validation.mvc_error = "手机验证码不正确！";
     validation.captcha_error = "验证码不正确！";
 
-    $("#mobile_verify_code").prop("readonly", true);
+    $("#mobile_verify_code").prop("readonly", false);
     $(document).ready(function () {
         $(".btn-register").prop("disabled", true);
         $("#region").val(1);
@@ -303,7 +303,7 @@
                         time($("#get-veri-code-button"), 60);
                         clear_phone_verify_code_session();
                         $("#mobile").prop("readonly", false);
-                        $("#mobile_verify_code").prop("readonly", true);
+                        // $("#mobile_verify_code").prop("readonly", true);
                     }
                 }
             });

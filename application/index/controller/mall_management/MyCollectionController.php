@@ -104,22 +104,25 @@ class MyCollectionController extends Controller
     public function add_to_cart(Request $request)
     {
         $product_id = $request->post('id');
+        $cart_product = new CartModel;
         if (Session::has('user_id'))
         {
             if (CartModel::where(['state'=>1,'product_id'=>$product_id])->select()->count() == 0)
             {
-                $cart_product = new CartModel;
+
                 $cart_product->user_id = session('user_id');
                 $cart_product->product_id = $product_id;
                 $cart_product->amount = 1;
                 $cart_product->save();
                 echo ('added');
             }
-            else {
+            else
+            {
                 echo ('already exist');
             }
         }
-        else {
+        else
+        {
             echo ('need_auth');
         }
     }
