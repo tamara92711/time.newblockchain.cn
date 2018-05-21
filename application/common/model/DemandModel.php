@@ -214,8 +214,8 @@ class DemandModel extends Model
     public static function getPublishedListWhereClause($query,$demand_type,$time_from,$time_to)
     {
         $query
-            ->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'" or
-                'DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
+            ->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
+            ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
             ->where('dt.pid',$demand_type)
             ->where('d.user_id',session('user_id'));
 
@@ -261,11 +261,31 @@ class DemandModel extends Model
 
     public static function getUndertakenListWhereClause($query,$demand_type,$time_from,$time_to)
     {
-         $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'" or
-                'DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
+         $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
+                ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
                 ->where('dt.pid',$demand_type);
-
+         //or usage
+//        $query->where('(DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>= :time_from or DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<= :time_to)
+//                    and dt.pid = :demand_type', ['time_from'=>$time_from, 'time_to'=>$time_to, 'demand_type' => $demand_type]);
         return $query;
+    }
+
+
+
+    public static  function getUnderkenAllist($demand_type,$time_from,$time_to)
+    {
+        $temp_query = DemandModel::getUnderkenList();
+        $temp_query = $temp_query ->where('d.applied_user_id',session('user_id'));
+        $temp_query = DemandModel::getUndertakenListWhereClause($temp_query,$demand_type,$time_from,$time_to);
+        $data       = DemandModel::getUnderkenListJoin($temp_query);
+
+        $temp_query_1 = DemandModel::getUnderkenList();
+        $temp_query_1 = $temp_query_1->wherein('d.id',DemandModel::getToUnderkenList());
+        $temp_query_1 = DemandModel::getUndertakenListWhereClause($temp_query_1,$demand_type,$time_from,$time_to);
+        $data_1       = DemandModel::getUnderkenListJoin($temp_query_1);
+
+
+        return array_merge($data,$data_1);
     }
     //待承接 get list function
     public static function getToUnderkenList()

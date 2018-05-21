@@ -68,40 +68,51 @@ class ShowUndertakenController extends Controller
         $demand_state = $request->param('demand_state');
 
         $temp_query = DemandModel::getUnderkenList();
-        $temp_query = DemandModel::getUndertakenListWhereClause($temp_query,$demand_type,$time_from,$time_to);
-        //待承接
-        if ($demand_state == 2)
+
+        if($demand_state == 0)
         {
-            $temp_query = $temp_query->wherein('d.id',DemandModel::getToUnderkenList());
+            $data = DemandModel::getUnderkenAllist($demand_type,$time_from,$time_to);
+            return json_encode(["data"=>$data]);
         }
         else
         {
-            $temp_query = $temp_query ->where('d.applied_user_id',session('user_id'));
-            switch ($demand_state)
+            //待承接
+            if ($demand_state == 2)
             {
-                case 3:
-                    $temp_query->where('d.state',$demand_state)->where('is_reviewed',0);
-                    break;
-                case 4:
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
-                        ->where('d.is_reviewed','<',3)->where('d.state',3);//已过期 expired task is running
-                    break;
-                case 5:
-                    $temp_query->where(['d.state'=>3,'is_reviewed'=>1]);//待评价
-                    break;
-                case 6:
-                    $temp_query->where(['d.state'=>3,'is_reviewed'=>3]);//已完成
-                    break;
-                case 7:
-                    $temp_query =$temp_query->where('d.is_reviewed',4);// 已失效
-                    break;
+                $temp_query = $temp_query->wherein('d.id',DemandModel::getToUnderkenList());
+            }
+            else
+            {
+                $temp_query = $temp_query ->where('d.applied_user_id',session('user_id'));
+                switch ($demand_state)
+                {
+                    case 3:
+                        $temp_query->where('d.state',$demand_state)->where('is_reviewed',0);
+                        break;
+                    case 4:
+                        $temp_query =$temp_query->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')>'."'$today'")
+                            ->where('d.is_reviewed','<',3)->where('d.state',3);//已过期 expired task is running
+                        break;
+                    case 5:
+                        $temp_query->where(['d.state'=>3,'is_reviewed'=>1]);//待评价
+                        break;
+                    case 6:
+                        $temp_query->where(['d.state'=>3,'is_reviewed'=>3]);//已完成
+                        break;
+                    case 7:
+                        $temp_query =$temp_query->where('d.is_reviewed',4);// 已失效
+                        break;
+                }
+
             }
 
-        }
-//        ->where('d.state',$demand_state)
-        $data       = DemandModel::getUnderkenListJoin($temp_query);
+            $temp_query = DemandModel::getUndertakenListWhereClause($temp_query,$demand_type,$time_from,$time_to);
+            $data       = DemandModel::getUnderkenListJoin($temp_query);
 
-        return json_encode(["data"=>$data]);
+            return json_encode(["data"=>$data]);
+        }
+
+
     }
 
 
