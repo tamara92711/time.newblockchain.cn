@@ -61,8 +61,7 @@ class RealNameVerifyController extends Controller
     {
         if ($id == 0)
         {
-            $result = UserModel::all();
-            $result = $result->toArray();
+            $result = UserModel::where('is_deleted', 0)->select()->toArray();
             foreach ($result as $key => $val)
             {
                 $result[$key]['user_name'] = $val['name'];
