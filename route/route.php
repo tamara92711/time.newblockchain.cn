@@ -8,8 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-
 use application\http\middleware\AuthMiddleware;
 
 Route::get('think', function () {
@@ -22,13 +20,15 @@ Route::get('hello/:name', 'index/hello');
 
 Route::resource('admin/links','@admin/links');
 
+Route::resource('admin/help','@admin/help');
+
 Route::resource('admin/volunteers','@admin/volunteers');
 
 //Route::get('index/data_management.address_manage/getregion2ByRegion1/:region1', '@index/data_management.address_manage/getregion2byregion1/:region1');
 
 Route::resource('admin/love_enterprise','admin/love_enterprise');
 
-Route::resource('admin/love_enterprise','admin/charitable_organizations');
+Route::resource('admin/charitable_organizations','admin/charitable_organizations');
 
 Route::resource('admin/advertise/trend_types','@admin/advertise/trend_types');
 
