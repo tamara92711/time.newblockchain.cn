@@ -161,8 +161,8 @@
                                     <div class="left" style="padding-left:31px;">
                                         <label>服务地点：</label>
                                     </div>
-                                    <input type="text" id="contact_region1_default_id" value="{$region_id_1}"/>
-                                    <input type="text" id="contact_region2_default_id" value="{$region_id_2}"/>
+                                    <input type="hidden" id="contact_region1_default_id" value="{$region_id_1}"/>
+                                    <input type="hidden" id="contact_region2_default_id" value="{$region_id_2}"/>
                                     <div class="right" style="margin-left: 8px;">
                                         <select class="form-control" style=" width: 160px; height:35px;float: left; margin-right: 10px;" name="region_1" id="region_1">
                                         {foreach $region_level_1 as $key=>$val }
@@ -341,8 +341,8 @@
                                     <p>{$val.detail}</p>
                                     <p>{$val.name} {$val.phone}</p>
                                 </div>
-                                <input type="text" id="contact_region1_id_{$val.id}" value="{$val.region_id_1}"/>
-                                <input type="text" id="contact_region2_id_{$val.id}" value="{$val.region_id_2}"/>
+                                <input type="hidden" id="contact_region1_id_{$val.id}" value="{$val.region_id_1}"/>
+                                <input type="hidden" id="contact_region2_id_{$val.id}" value="{$val.region_id_2}"/>
                                 <input type="hidden" id="contact_onlyDetail_{$val.id}" value="{$val.onlyDetail}"/>
                                 <input type="hidden" id="contact{$val.id}" value="{$val.name}"/>
                                 <input type="hidden" id="contact_phone_{$val.id}" value="{$val.phone}"/>
