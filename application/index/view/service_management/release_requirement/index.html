@@ -469,6 +469,7 @@
                 container.html(dataHtml);
                 //set as default region2_id default selected in addresslist
                 $("#district").val($("#contact_region2_default_id").val());
+                
             }
         })
     }
@@ -511,6 +512,13 @@
         // $('#published_time').datepicker().datepicker('setDate',new Date());
     }
 
+    $("#service_time_from").change(function () {
+        if ($("#service_time_from").val() <= format_date(new Date())) $("#service_time_from").val(format_date(new Date()));
+    });
+
+    $("#valid_time").change(function () {
+        if ($("#valid_time").val() <= format_date(new Date())) $("#valid_time").val(format_date(new Date()));
+    });
 
     $("#region_1").change(region1Change);
     /*
@@ -527,8 +535,9 @@
 
         $("#receiver").modal('hide');
         $("#region_1").val(contact_region1_id);
-        $("#district").val(contact_region2_id);
+        // $("#district").val(contact_region2_id);
         $("#detail_address").val(contact_onlyDetail_id);
+
         $("#contact").val(contact);
         $("#contact_phone").val(contact_phone);
 
