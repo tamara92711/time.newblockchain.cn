@@ -1,5 +1,6 @@
 <?php
 namespace app\index\controller;
+use app\index\validate\User;
 use think\Controller;
 use think\captcha\Captcha;
 use app\common\model\DemandModel;
@@ -99,12 +100,11 @@ class IndexController extends Controller
         $underker_query = DemandModel::getUnderkenList();
         $underker_query = $underker_query ->where('d.applied_user_id',session('user_id'));
         $underker_data = DemandModel::getUnderkenListJoinForMemberCenter($underker_query);
+        //user's information
+        $user_data = UserModel::getAlluserInformation();
 
-        $this->assign("published_data", $published_data);
-        $this->assign("underker_data", $underker_data);
-        $this->assign("header_nav", "personal_home");
-        $this->assign("side_nav", "");
-        $this->assign("nav_type", 0);
+        $this->assign(['user_data'=>$user_data,"published_data"=>$published_data,"underker_data" =>$underker_data, 'header_nav' =>'personal_home',"side_nav"=>'personal_info','nav_type'=>0]);
+
         return $this->fetch();
     }
 

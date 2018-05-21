@@ -13,7 +13,7 @@
             <div style="width:365px;height:240px;border:1px dashed #ff5656;outline:4px solid #ffd9d9;position:absolute;left:5px;top:5px;padding-left:62px;padding-top:31px">
                 <p>
                     <img src="/assets/img/name.png" />
-                     <span class="subtitle">会员姓名：</span>张某某
+                     <span class="subtitle">会员姓名：</span>{$user_data[0]['real_name']}
                 </p>
                 <p>
                     <img src="/assets/img/member-number.png" />
@@ -21,7 +21,7 @@
                 </p>
                 <p>
                     <img src="/assets/img/account-balance.png" />
-                     <span class="subtitle">账户余额：</span>1000
+                     <span class="subtitle">账户余额：</span>{$user_data[0]['total_amount']}
                 </p>
                 <p>
                     <img src="/assets/img/portion.png" />
@@ -29,7 +29,7 @@
                 </p>
                 <p>
                     <img src="/assets/img/time.png" />
-                     <span class="subtitle">上次登录时间：</span>2018-04-02 19：16：09
+                     <span class="subtitle">上次登录时间：</span>{$user_data[0]['last_login']}
                 </p>
             </div>
         </div>

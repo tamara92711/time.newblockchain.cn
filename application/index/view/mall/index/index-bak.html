@@ -151,7 +151,7 @@
 
                 var dataHtml = '';
                 $.each(response, function (index, item) {
-
+                    var btn_class = item[0].state ? "add-to-cart" : "delete-from-cart";
                     dataHtml += '<div class="col">\n' +
                         '        <img src="' + item[0].thumbnail + '" width="266px" height="267px"/>\n' +
                         '        <div class="contents">\n' +
@@ -165,14 +165,14 @@
                         '                <span style="float: right;">库存：' + item[0].in_stock + '</span>\n' +
                         '            </p>\n' +
                         '            <div class="actions">\n' +
-                        '                <a id="add_cart_button_' + item[0].id +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[0].id +')">加入购物车</a>\n' +
+                        '                <a id="add_cart_button_' + item[0].id +'" role="button" class="btn btn-danger '+ btn_class+'" onclick="add_cart(' + item[0].id +')">加入购物车</a>\n' +
                         '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
                         '            </div>\n' +
                         '        </div>\n' +
                         '    </div>';
                     if (item[1] != null)
                     {
-
+                        btn_class = item[1].state ? "add-to-cart" : "delete-from-cart";
                         dataHtml += '    <div class="col">\n' +
                             '        <img src="' + item[1].thumbnail + '" width="266px" height="267px"/>\n' +
                             '        <div class="contents">\n' +
@@ -186,7 +186,7 @@
                             '                <span style="float: right;">库存：' + item[1].in_stock + '</span>\n' +
                             '            </p>\n' +
                             '            <div class="actions">\n' +
-                            '                <a id="add_cart_button_' + item[1].id +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[1].id +')">加入购物车</a>\n' +
+                            '                <a id="add_cart_button_' + item[1].id +'" role="button" class="btn btn-danger ' + btn_class +'" onclick="add_cart(' + item[1].id +')">加入购物车</a>\n' +
                             '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
@@ -194,7 +194,7 @@
                     }
                     if (item[2] != null)
                     {
-
+                        btn_class = item[2].state ? "add-to-cart" : "delete-from-cart";
                         dataHtml += '    <div class="col">\n' +
                             '        <img src="' + item[2].thumbnail + '" width="266px" height="267px"/>\n' +
                             '        <div class="contents">\n' +
@@ -209,7 +209,7 @@
                             '                <span style="float: right;">库存：' + item[2].in_stock + '</span>\n' +
                             '            </p>\n' +
                             '            <div class="actions">\n' +
-                            '                <a id="add_cart_button_' + item[2].id +'" role="button" class="btn btn-danger add-to-cart" onclick="add_cart('+item[2].id+')">加入购物车</a>\n' +
+                            '                <a id="add_cart_button_' + item[2].id +'" role="button" class="btn btn-danger ' + btn_class +'" onclick="add_cart('+item[2].id+')">加入购物车</a>\n' +
                             '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
@@ -217,7 +217,7 @@
                     }
                     if (item[3] != null)
                     {
-
+                        btn_class = item[3].state ? "add-to-cart" : "delete-from-cart";
                         dataHtml += '<div class="col" style="margin-right: 0px;">\n' +
                             '        <img src="' + item[3].thumbnail + '" width="266px" height="267px"/>\n' +
                             '        <div class="contents">\n' +
@@ -231,7 +231,7 @@
                             '                <span style="float: right;">库存：' + item[3].in_stock + '</span>\n' +
                             '            </p>\n' +
                             '            <div class="actions">\n' +
-                            '                <a id="add_cart_button_'+ item[3].id  +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[3].id +')">加入购物车</a>\n' +
+                            '                <a id="add_cart_button_'+ item[3].id  +'" role="button" class="btn btn-danger ' + btn_class +'" onclick="add_cart(' + item[3].id +')">加入购物车</a>\n' +
                             '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
@@ -309,42 +309,53 @@
 
     function add_cart(id) {
         console.log(id);
-        var count = 0;
-
 
         console.log(container.data('pagination').model.pageNumber);
+        if ($("#add_cart_button_"+id).hasClass('add-to-cart'))
+        {
+            $("#add_cart_button_" + id).removeClass('add-to-cart');
 
-        product_json.items[id-1].state = false;
-
-        $.ajax({
-            url: '/add_to_cart',
-            method: 'post',
-            data: 'id='+id,
-            success: function (response) {
-
-                if (response == "need_auth")
-                {
-                    $.alert({
-                        title:'确认',
-                        content:'你不会登录。 请登录!.',
-                    })
-                    document.location = '/login_form';
+            $("#add_cart_button_" + id).addClass('delete-from-cart');
+            product_json.items[id-1].state = false;
+            $.ajax({
+                url: '/add_to_cart',
+                method: 'post',
+                data: 'id='+id,
+                success: function (response) {
+                    console.log(response);
+                    if (response == "need_auth")
+                    {
+                        alert('need login');
+                        document.location = '/login_form';
+                    }
+                    else {
+                        $("#add_cart_button_" + id).addClass('delete-from-cart');
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    $("#add_cart_button_" + id).addClass('add-to-cart');
+                    product_json.items[id-1].state = true;
                 }
-                else if (response == "already exist")
-                {
-                    $.alert({
-                        title:'确认',
-                        content:'该产品已存在于购物篮中!.',
-                    })
+            });
+        }
+        else
+        {
+            $("#add_cart_button_" + id).removeClass('delete-from-cart');
+            $.ajax({
+                url: '/delete_from_cart',
+                method: 'post',
+                data: 'id=' + id,
+                success: function (response) {
+                    console.log(response);
+                    $("#add_cart_button_" + id).addClass('add-to-cart');
+                },
+                error: function (error) {
+                    console.log(error);
+                    $("#add_cart_button_" + id).addClass('delete-from-cart');
                 }
-
-            },
-            error: function (error) {
-                console.log(error);
-                product_json.items[id-1].state = true;
-            }
-        });
-
+            });
+        }
     }
 
 </script> 
