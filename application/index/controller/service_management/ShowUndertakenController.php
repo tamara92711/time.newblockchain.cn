@@ -68,7 +68,9 @@ class ShowUndertakenController extends Controller
         $demand_state = $request->param('demand_state');
 
         $temp_query = DemandModel::getUnderkenList();
+    
         $temp_query = DemandModel::getUndertakenListWhereClause($temp_query,$demand_type,$time_from,$time_to);
+        
         //待承接
         if ($demand_state == 2)
         {

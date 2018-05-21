@@ -21,9 +21,9 @@ class VerifyController extends Controller
         $this->assign("nav_type", 1);
         $user_id = session('user_id');
         $user = UserModel::get($user_id)->toArray();
-        $user['card_front_image'] = $this->getImageUrl($user['card_front_image']) ?: "";
-        $user['card_back_image'] = $this->getImageUrl($user['card_back_image']) ?: "";
-        $user['card_handled_image'] = $this->getImageUrl($user['card_handled_image']) ?: "";
+        $user['card_front_image'] = $this->getImageUrl($user['card_front_image']) ?: "/assets/img/plus.png";
+        $user['card_back_image'] = $this->getImageUrl($user['card_back_image']) ?: "/assets/img/plus.png";
+        $user['card_handled_image'] = $this->getImageUrl($user['card_handled_image']) ?: "/assets/img/plus.png";
         $this->assign('user', $user);
         return $this->fetch();
     }

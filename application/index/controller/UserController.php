@@ -318,14 +318,14 @@ class UserController extends Controller
 
     public function name_exists($name)
     {
-        $user = UserModel::where('name', $name)->find();
+        $user = UserModel::where(['name' => $name, 'is_deleted' => 0])->find();
         if (empty($user)) return 0;
         return $user->id;
     }
 
     public function mobile_exists($mobile)
     {
-        $exists = UserModel::where('mobile', $mobile)->count();
+        $exists = UserModel::where(['mobile' => $mobile, 'is_deleted' => 0])->count();
         return ($exists)? true: false;
     }
 

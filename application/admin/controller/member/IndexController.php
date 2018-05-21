@@ -20,8 +20,9 @@ class IndexController extends Controller
     public function index()
     {
         $root_regions = RegionModel::where('level', 1)->column('name', 'id');
+        $regions = RegionModel::all()->column('name', 'id');
         $this->assign('regions', $root_regions);
-        $this->assign('regions1', json_encode($root_regions));
+        $this->assign('regions1', json_encode($regions));
 
         $job_types = JobTypeModel::all()->column('name', 'id');
         $this->assign('job_types', $job_types);
@@ -58,8 +59,8 @@ class IndexController extends Controller
         $user = new UserModel;
         $user->name = $request->param('name');
         $user->mobile = $request->param('mobile');
-        $user->region_1 = $request->param('region_1');
-        $user->region_2 = $request->param('region_2');
+        $user->region = $request->param('region_1');
+        $user->district = $request->param('region_2');
         $user->real_name = $request->param('real_name');
         $user->sex = $request->param('sex');
         $user->password = md5('123456');
@@ -79,7 +80,7 @@ class IndexController extends Controller
     {
         if ($id == 0)
         {
-            $result = UserModel::all()->toArray();
+            $result = UserModel::where('is_deleted', 0)->select()->toArray();
             return json_encode(["data" => $result]);
         }
         $data = UserModel::get($id);
@@ -109,8 +110,8 @@ class IndexController extends Controller
         $user = UserModel::get($id);
         $user->name = $request->param('name');
         $user->mobile = $request->param('mobile');
-        $user->region_1 = $request->param('region_1');
-        $user->region_2 = $request->param('region_2');
+        $user->region = $request->param('region_1');
+        $user->district = $request->param('region_2');
         $user->real_name = $request->param('real_name');
         $user->sex = $request->param('sex');
         $user->job_type = $request->param('job_type');
