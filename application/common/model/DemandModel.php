@@ -267,6 +267,22 @@ class DemandModel extends Model
 
         return $query;
     }
+
+    public static  function getUnderkenAllist($demand_type,$time_from,$time_to)
+    {
+        $temp_query = DemandModel::getUnderkenList();
+        $temp_query = $temp_query ->where('d.applied_user_id',session('user_id'));
+        $temp_query = DemandModel::getUndertakenListWhereClause($temp_query,$demand_type,$time_from,$time_to);
+        $data       = DemandModel::getUnderkenListJoin($temp_query);
+
+        $temp_query_1 = DemandModel::getUnderkenList();
+        $temp_query_1 = $temp_query_1->wherein('d.id',DemandModel::getToUnderkenList());
+        $temp_query_1 = DemandModel::getUndertakenListWhereClause($temp_query_1,$demand_type,$time_from,$time_to);
+        $data_1       = DemandModel::getUnderkenListJoin($temp_query_1);
+
+
+        return array_merge($data,$data_1);
+    }
     //待承接 get list function
     public static function getToUnderkenList()
     {

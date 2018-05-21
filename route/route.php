@@ -133,11 +133,11 @@ Route::get('verify', '@index/data_management.verify/index')->middleware('AuthMid
 
 Route::resource('index/index/love_enterprise','@index/index/love_enterprise');
 
-Route::get('love_enterprise', '@index/index.love_enterprise/index')->middleware('AuthMiddleware');
+Route::get('love_enterprise', '@index/index.love_enterprise/index');
 
 Route::resource('index/index/charitable_organization','@index/index/charitable_organization');
 
-Route::get('charitable_organization','@index/index.charitable_organization/index')->middleware('AuthMiddleware');
+Route::get('charitable_organization','@index/index.charitable_organization/index');
 
 Route::resource('index/index/complaints','@index/index/complaints');
 
@@ -149,7 +149,7 @@ Route::get('volunteers', '@index/index.volunteer_grace/index');
 
 Route::resource('index/index/news_center','@index/index/news_center');
 
-Route::get('/news_center', '@index/index.news_center/index')->middleware('AuthMiddleware');
+Route::get('/news_center', '@index/index.news_center/index');
 
 Route::get('/membercenter','index/index/membercenter')->middleware('AuthMiddleware');
 
