@@ -79,7 +79,7 @@ class IndexController extends Controller
     {
         $phone = request()->post("mobile");
         $user = UserModel::where('mobile', $phone)->find();
-        if (empty($user)) return $this->redirect('/index/index/forgotpassword')->with('temp', json_encode(input('post.')));
+        if (empty($user)) return $this->redirect('/forgot_password')->with('temp', json_encode(input('post.')));
         $user->password = md5(request()->post('password'));
         $user->save();
         return $this->redirect('/login_form');

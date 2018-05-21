@@ -82,7 +82,7 @@ Route::get('register_form','@index/user/register_form');//->middleware('AuthMidd
 Route::post('register','@index/user/submit_register');
 
 Route::get('sign_out','@index/user/sign_out');
-Route::post('create_phone_verify_code','@index/user/create_phone_verify_code');
+Route::post('/create_phone_verify_code','@index/user/create_phone_verify_code');
 
 Route::post('add_to_cart','@index/mall_management/my_collection/add_to_cart');
 Route::post('update_amount','@index/mall_management/my_collection/update_amount');

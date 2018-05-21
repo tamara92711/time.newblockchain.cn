@@ -343,7 +343,6 @@
     }
 
     function all_valid() {
-        var error = "";
         console.log("" + validation.name + validation.mobile + validation.password + validation.agree);
         if (!validation.name) error = error + validation.name_error + '<br>';
         if (!validation.mobile) error = error + validation.mobile_error + '<br>';
@@ -360,7 +359,6 @@
                 $(".btn-register").prop("disabled", false);
             } else {
                 $(".btn-register").prop("disabled", true);
-                // $("#error").html(error);
             }
     }
 
