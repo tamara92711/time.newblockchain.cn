@@ -91,7 +91,7 @@ Route::post('apply_payment','@index/mall_management/my_collection/apply_payment'
 
 Route::get('open_cart','@index/mall_management.my_collection/index')->middleware('AuthMiddleware');
 Route::get('order_published','@index/mall_management.my_collection/published_orders_view')->middleware('AuthMiddleware');
-Route::post('purchase_view','@index/mall_management.my_collection/purchase_view');//->middleware('AuthMiddleware');
+Route::post('purchase_view','@index/mall_management.my_collection/purchase_view')->middleware('AuthMiddleware');
 
 Route::get('ajax_alarm_cart','@index/mall_management.my_collection/get_pending_cart_count');
 
