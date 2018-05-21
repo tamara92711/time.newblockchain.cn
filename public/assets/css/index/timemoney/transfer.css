@@ -44,9 +44,10 @@
     margin-left: 21px;
     padding-top: 21px;
     width: 898px;
-    padding-bottom: 43px;
+    padding-bottom: 15px;
     margin-bottom: 0px;
     border-bottom: 1px dotted #d4d4d4;
+    overflow: hidden;
 }
 
 .numbers{
@@ -65,7 +66,6 @@
 
 .table-container{
     width: 898px;
-    height: 765px;
     border: 1px solid #eeeeee;
     margin: 49px 18px;
 }

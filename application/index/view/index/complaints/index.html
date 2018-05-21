@@ -110,7 +110,10 @@ $(document).ready(function () {
             success:function (result) {
                 if(result == "success")
                 {
-                    alert("success");
+                    $.alert({
+                        title: '确认',
+                        content: '您的投诉建议已成功提交给管理员!',
+                    });
                     reset();
                     $("#complaint_title").focus();
                 }

@@ -20,7 +20,7 @@ class ShowUndertakenController extends Controller
     public function index()
     {
         $demand_type        = DemandTypeModel::where('pid',0)->field('id,name')->select();
-        $demand_status = array('2'=>'待承接','3'=>'已承接','4'=>'已过期','5'=>'待评价','6'=>'已完成','7'=>'已失效');
+        $demand_status = array('0'=>'全部','2'=>'待承接','3'=>'已承接','4'=>'已过期','5'=>'待评价','6'=>'已完成','7'=>'已失效');
 
         $this->assign('demand_type',$demand_type);
         $this->assign('demand_status',$demand_status);

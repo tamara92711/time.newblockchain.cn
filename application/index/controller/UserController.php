@@ -99,8 +99,11 @@ class UserController extends Controller
                 session('user_id',$user_record->id);
                 session('user_name',$user_record->name);
                 session('user_mobile',$user_record->mobile);
-                UserModel::where('id',session('user_id'))->update(['last_login'=>date('Y-m-d H:i:s'),'last_ip'=>$_SERVER['REMOTE_ADDR']]);
-                return redirect('/');
+
+                UserModel::where('id',session('user_id'))->update(['last_login'=>date('Y-m-d H:i:s'),'last_ip'=>$request->ip()]);
+
+                return redirect('/home');
+
             }
         }
     }
