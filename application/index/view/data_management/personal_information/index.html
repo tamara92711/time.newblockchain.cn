@@ -378,8 +378,12 @@
                 } else {
                     console.log("" + mode + "-code:" + result.code);
                     console.log("" + mode + "-text:" + result.text);
-                    if (mode == 1) time($("#oldMobileVerifyCodeButton"), 60);
-                    if (mode == 2) time($("#newMobileVerifyCodeButton"), 60);
+                    if (mode == 1) {
+                        time($("#oldMobileVerifyCodeButton"), 60);
+                    }
+                    if (mode == 2) {
+                        time($("#newMobileVerifyCodeButton"), 60);
+                    }
                 }
             }
         });
