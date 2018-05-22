@@ -50,13 +50,36 @@ class IndexController extends Controller
         }
 
         $organizations = CharitableOrganizationModel::where('is_deleted', 0)->limit(6)->select()->toArray();
+        foreach ($organizations as $key => $value)
+        {
+            $organizations[$key]['image'] = $this->getImageUrl($value['image']);
+        }
+
+        $users = UserModel::where(['is_deleted' => 0, 'real_name_verified' => 1])->limit(10)->select()->toArray();
+        // $organizations = CharitableOrganizationModel::get($id);
+        // if (!empty($organizations->image)) {
+        //     $path = explode('\\',$data->image);
+        //     $organizations->image = '/uploads/' . $path[0] . '/' . $path[1];
+        // }
         
+        $this->assign("organizations", $organizations);
+        $this->assign("users", $users);
         $this->assign("latest_demands", $latest_demands);
         $this->assign("news", $news);
         $this->assign("organizations", $organizations);
         $this->assign("header_nav", "home");
         $this->assign("nav_type", 1);
         return $this->fetch();
+    }
+
+    private function getImageUrl($path)
+    {
+        $url = "";
+        if (!empty($path)) {
+            $path = explode('\\',$path);
+            $url = '/uploads/' . $path[0] . '/' . $path[1];
+        }
+        return $url;
     }
 
     public function register()//02注册

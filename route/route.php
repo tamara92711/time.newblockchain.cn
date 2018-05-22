@@ -26,9 +26,9 @@ Route::resource('admin/volunteers','@admin/volunteers');
 
 //Route::get('index/data_management.address_manage/getregion2ByRegion1/:region1', '@index/data_management.address_manage/getregion2byregion1/:region1');
 
-Route::resource('admin/love_enterprise','admin/love_enterprise');
+Route::resource('admin/love_enterprise','@admin/love_enterprise');
 
-Route::resource('admin/charitable_organizations','admin/charitable_organizations');
+Route::resource('admin/charitable_organizations','@admin/charitable_organizations');
 
 Route::resource('admin/advertise/trend_types','@admin/advertise/trend_types');
 
