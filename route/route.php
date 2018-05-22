@@ -188,4 +188,3 @@ Route::get('about_us', '@index/about_us.index/index')->middleware('AuthMiddlewar
 Route::get('local_agencies', '@index/about_us.local_agencies/index')->middleware('AuthMiddleware');
 
 Route::get('recruitment_information', '@index/about_us.recruitment_information/index')->middleware('AuthMiddleware');
-
