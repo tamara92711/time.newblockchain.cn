@@ -8,6 +8,7 @@ use think\Request;
 use app\common\model\CartModel;
 use app\common\model\AddressModel;
 use app\common\model\OrdersModel;
+use app\common\model\OrdersRootModel;
 use think\facade\Session;
 
 class MyCollectionController extends Controller
@@ -91,6 +92,39 @@ class MyCollectionController extends Controller
         return $this->fetch();
     }
 
+    public function get_orders()
+    {
+        $time_from = request()->param('time_from');
+        $time_to = request()->param('time_to');
+        $status = request()->param('status');
+        $user_id = session('user_id');
+
+        // $data = OrdersModel::where('create_time', '>=', $time_from)->where('create_time', '<=', $time_to)->where('status', $status)->select();
+        $data = OrdersRootModel::alias('o')
+                ->field('o.create_time, o.no, o.thumbnail, o.description, a.name, a.phone, concat(r1.name , r2.name , a.detail), pt.type_name, os.state')
+                ->join('qkl_address a', 'a.id = o.address_id')
+                ->join('qkl_region r1', 'r1.id = a.region_id_1')
+                ->join('qkl_region r2', 'r2.id = a.region_id_2')
+                ->join('qkl_pay_type pt', 'pt.id = o.pay_type_id')
+                ->join('qkl_order_state os', 'os.id = o.state')
+                ->where('o.create_time', '>=', $time_from)
+                ->where('o.create_time', '<=', $time_to)
+                ->where('o.user_id', $user_id)
+                ->where('o.state', $status)
+                ->fetchSql(false)
+                ->select();
+        // $data = OrdersModel::alias('o')
+        //         ->field('o.*,a.name as person_name, p.thumbnail, p.description')
+        //         ->where(['o.user_id'=> session('user_id'),
+        //                 'state' => $status])
+        //         ->where('o.create_time', '>=', $time_from)
+        //         ->where('o.create_time', '<=', $time_to)
+        //         ->join('qkl_product p','p.id = o.product_id')
+        //         ->join('qkl_address a','a.id = o.contact_id')
+        //         ->select();
+        return json_encode(['data' => $data]);
+    }
+
     /**
      * 显示创建资源表单页.
      *
@@ -109,7 +143,6 @@ class MyCollectionController extends Controller
         {
             if (CartModel::where(['state'=>1,'product_id'=>$product_id])->select()->count() == 0)
             {
-
                 $cart_product->user_id = session('user_id');
                 $cart_product->product_id = $product_id;
                 $cart_product->amount = 1;

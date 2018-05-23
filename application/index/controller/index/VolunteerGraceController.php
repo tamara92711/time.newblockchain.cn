@@ -73,8 +73,7 @@ class VolunteerGraceController extends Controller
 
             $data = Db::table('qkl_user')
                 ->alias('u')
-                ->leftJoin('qkl_real_name_verify rnv', 'rnv.user_id = u.id')
-                ->field('u.name, r.avg_rv, r.cnt_rv, a.cnt_apply, address.address, rnv.avarta_image image')
+                ->field('u.name, r.avg_rv, r.cnt_rv, a.cnt_apply, address.address, u.avarta_image image')
                 ->join([$sub_r=> 'r'], 'r.user_id = u.id')
                 ->join([$sub_a=> 'a'], 'a.user_id = r.user_id')
                 ->join([$sub_address=> 'address'], 'address.user_id = u.id')
