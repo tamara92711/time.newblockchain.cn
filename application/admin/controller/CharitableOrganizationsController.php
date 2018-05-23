@@ -77,6 +77,8 @@ class CharitableOrganizationsController extends Controller
      */
     public function edit($id)
     {
+        $this->assign('root_nav', 'charitable_organizations');
+        $this->assign('sub_nav', '');
         $data = CharitableOrganizationModel::get($id);
         if (!empty($data->image)) {
             $path = explode('\\',$data->image);

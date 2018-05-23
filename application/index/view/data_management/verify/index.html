@@ -87,14 +87,13 @@
         var video, $output;
         var scale = 0.25;
         var is_captured = false;
-
+        
         // $("#positive_id").css("background-image", "url({$user['card_front_image']})");
         // $("#negative_id").css("background-image", "url({$user['card_back_image']})");
         // $("#handheld_id").css("background-image", "url({$user['card_handled_image']}");
-
         $("#image-preview-positive").css("background-image", "url({$user['card_front_image']})");
         $("#image-preview-negative").css("background-image", "url({$user['card_back_image']})");
-        $("#image-preview-handheld").css("background-image", "url({$user['card_handled_image']}");
+        $("#image-preview-handheld").css("background-image", "url({$user['card_handled_image']})");
 
         $("#iden_number").keypress(function (event) {
             if (event.which < 48 || event.which > 57) event.preventDefault();

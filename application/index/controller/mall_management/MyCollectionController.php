@@ -8,6 +8,10 @@ use think\Request;
 use app\common\model\CartModel;
 use app\common\model\AddressModel;
 use app\common\model\OrdersModel;
+use app\common\model\OrdersRootModel;
+use app\common\model\RegionModel;
+use app\common\model\UserModel;
+use app\common\model\ProductModel;
 use think\facade\Session;
 
 class MyCollectionController extends Controller
@@ -40,9 +44,9 @@ class MyCollectionController extends Controller
     {
         $data = $request->post('ids');
         $ids = explode(',',$data);
-       // foreach ($ids as $key => $id) {
-       //     CartModel::where('state','1')->whereIn('product_id',$ids)->where('user_id', session('user_id'))->select();
-       // }
+        $regions_level_1 = RegionModel::where('level', 1)->column('name', 'id');
+
+        $this->assign('region_level_1', $regions_level_1);
 
         $this->assign('header_nav', 'mall');
         $this->assign("nav_type", 1);
@@ -55,40 +59,102 @@ class MyCollectionController extends Controller
         return $this->fetch();
     }
 
+    private function randomString($length = 6) {
+        $str = "";
+        $characters = array_merge(range('0','9'));
+        $max = count($characters) - 1;
+        for ($i = 0; $i < $length; $i++) {
+            $rand = mt_rand(0, $max);
+            $str .= $characters[$rand];
+        }
+        return $str;
+    }
 
     public function order(Request $request) 
     {
+        $image_added = false;
         $address_id = $request->post('address');
         $data = $request->post('ids');
         $ids = explode(',',$data);
         $carts = CartModel::alias('cart')->field('cart.*, qkl_product.type, qkl_product.name, qkl_product.price,qkl_product.description')->where('state','1')->whereIn('product_id',$ids)->where('user_id', session('user_id'))->join('qkl_product','qkl_product.id = cart.product_id')->select();
-        foreach ($carts as $key => $cart) {
-            $address = AddressModel::get($address_id);
-            $new_order = new OrdersModel;
-            $new_order->user_id = session('user_id');
-            $new_order->cart_id = $cart->id;
-            $new_order->product_id = $cart->product_id;
-            $new_order->product_price = $cart->price;
-            $new_order->amount = $cart->amount;
-            $new_order->contact_id = $address['id'];
-            $new_order->address = $address['detail'];
-            $new_order->phone = $address['phone'];
-            $new_order->status = 1;
-            $new_order->save();
 
+        $order = new OrdersModel;
+        $order->user_id = session('user_id');
+        $order->contact_id = $address_id;
+        $order->no = $this->randomString(13);
+        $order->address_id = $address_id;
+        $order->state = 2;
+        $order->id = OrdersModel::max('id') + 1;
+        // $order->save();
+        $total_amount = 0;
+        
+        foreach ($carts as $key => $cart) {
+            if (!$image_added) {
+                $product = ProductModel::get($cart->product_id);
+                $order->thumbnail = $product->thumbnail;
+                $order->description = $product->description;
+                $image_added = true;
+            }
+            $cart->order_id = $order->id;
             $cart->state = 4;
+
+            $total_amount += ($cart->amount * $cart->price);
             $cart->save();
         }
+        $order->total_amount = $total_amount;
+        $order->save();
+
+        $user = UserModel::get(session('user_id'));
+        $user->total_amount = $user->total_amount - $total_amount;
+        $user->save();
+
         return redirect('/order_published');
     }
 
     public function published_orders_view()
     {
+        $cnt_pending_pay = 0;
+        $cnt_pending_ship = 0;
+        $cnt_pending_comment = 0;
+
+        $cnt_pending_pay = OrdersModel::where(['user_id' => session('user_id'), 'state' => 1])->select()->count();
+        $cnt_pending_ship = OrdersModel::where(['user_id' => session('user_id'), 'state' => 2])->select()->count();
+        $cnt_pending_comment = OrdersModel::where(['user_id' => session('user_id'), 'state' => 4])->select()->count();
+
         $this->assign('header_nav', 'mall');
         $this->assign("nav_type", 0);
         $this->assign('side_nav', 'orders');
-        $this->assign('orders',OrdersModel::alias('order')->field('order.*,qkl_address.name as person_name, qkl_product.thumbnail,qkl_product.description')->where(['order.user_id'=>session('user_id')])->join('qkl_product','qkl_product.id = order.product_id')->join('qkl_address','qkl_address.id = order.contact_id')->select());
+
+        $this->assign('cnt_pending_pay', $cnt_pending_pay);
+        $this->assign('cnt_pending_ship', $cnt_pending_ship);
+        $this->assign('cnt_pending_comment', $cnt_pending_comment);
+
         return $this->fetch();
+    }
+
+    public function get_orders()
+    {
+        $time_from = request()->param('time_from');
+        $time_to = request()->param('time_to');
+        $time_to = date("Y-m-d", strtotime("+1 day", strtotime($time_to)));
+        $status = request()->param('status');
+        $user_id = session('user_id');
+        
+        // $data = OrdersModel::where('create_time', '>=', $time_from)->where('create_time', '<=', $time_to)->where('status', $status)->select();
+        $query = OrdersModel::alias('o')
+                ->field('o.total_amount, o.create_time, o.no, o.thumbnail, o.description, a.name, a.phone, concat(r1.name , r2.name , a.detail), os.state')
+                ->join('qkl_address a', 'a.id = o.address_id')
+                ->join('qkl_region r1', 'r1.id = a.region_id_1')
+                ->join('qkl_region r2', 'r2.id = a.region_id_2')
+                ->join('qkl_order_state os', 'os.id = o.state')
+                ->where('o.create_time', '>=', $time_from)
+                ->where('o.create_time', '<=', $time_to)
+                ->where('o.user_id', $user_id)
+                ->order('o.create_time desc');
+        if ($status != 0) $query = $query->where('o.state', $status);
+        // $query = $query->fetchSql()->select();
+        $data = $query->select();
+        return json_encode(['data' => $data]);
     }
 
     /**
@@ -104,15 +170,15 @@ class MyCollectionController extends Controller
     public function add_to_cart(Request $request)
     {
         $product_id = $request->post('id');
-        $cart_product = new CartModel;
         if (Session::has('user_id'))
         {
-            if (CartModel::where(['state'=>1,'product_id'=>$product_id])->select()->count() == 0)
+            if (CartModel::where(['state'=>1,'product_id'=>$product_id, 'user_id' => session('user_id')])->select()->count() == 0)
             {
-
+                $cart_product = new CartModel;
                 $cart_product->user_id = session('user_id');
                 $cart_product->product_id = $product_id;
                 $cart_product->amount = 1;
+                $cart_product->state = 1;
                 $cart_product->save();
                 echo ('added');
             }

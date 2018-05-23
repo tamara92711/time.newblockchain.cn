@@ -66,46 +66,12 @@
         </div>
         <div id="jssor_2" style="position:relative;margin:0 auto;top:0px;left:0px;width:1100px;overflow:hidden;visibility:hidden;">
             <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1100px;height:194px;overflow:hidden;">
+                {foreach $organizations as $key=>$value}
                 <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_01.png" />
-                    <div>某青年团队</div>
+                    <img src="{$value.image}" />
+                    <div>{$value.name}</div>
                 </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_02.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_03.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_04.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_05.png" />
-                    <div>某青年志愿者团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_01.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_02.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_03.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/youxiu_04.png" />
-                    <div>某青年团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_05.png" />
-                    <div>某青年志愿者团队</div>
-                </div>
+                {/foreach}
             </div>
             <!-- Arrow Navigator -->
             <div data-u="arrowleft" class="jssora073" style="width:50px;height:50px;top:0px;left:30px;" data-autocenter="2" data-scale="0.75" data-scale-left="0.75">
@@ -132,46 +98,12 @@
         </div>
         <div id="jssor_3" style="position:relative;margin:0 auto;top:0px;left:0px;width:1100px;overflow:hidden;visibility:hidden;">
             <div data-u="slides" style="cursor:default;position:relative;top:0px;left:0px;width:1100px;height:194px;overflow:hidden;">
+                {foreach $users as $key=>$user}
                 <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_01.png" />
-                    <div>某青年志愿者</div>
+                    <img src="{$user.avarta_image}" />
+                    <div>{$user.name}</div>
                 </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_02.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_01.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_04.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_05.png" />
-                    <div>某青年志愿者团队</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_01.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_02.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_01.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_04.png" />
-                    <div>某青年志愿者</div>
-                </div>
-                <div class="qk-img-slide">
-                    <img src="/assets/img/volunteer_05.png" />
-                    <div>某青年志愿者团队</div>
-                </div>
+                {/foreach}
             </div>
             <!-- Arrow Navigator -->
             <div data-u="arrowleft" class="jssora073" style="width:50px;height:50px;top:0px;left:30px;" data-autocenter="2" data-scale="0.75" data-scale-left="0.75">

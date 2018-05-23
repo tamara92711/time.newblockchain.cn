@@ -4,9 +4,9 @@ namespace app\admin\controller;
 
 use think\Controller;
 use think\Request;
-use app\common\model\LinkModel;
+use app\common\model\HelpLinkModel;
 
-class LinksController extends Controller
+class HelpController extends Controller
 {
     /**
      * 显示资源列表
@@ -15,7 +15,7 @@ class LinksController extends Controller
      */
     public function index()
     {
-        $this->assign('root_nav', 'links');
+        $this->assign('root_nav', 'helps');
         $this->assign('sub_nav', '');
         return $this->fetch();
     }
@@ -27,8 +27,7 @@ class LinksController extends Controller
      */
     public function create()
     {
-
-        return $this->fetch('/admin/links/index');
+        //
     }
 
     /**
@@ -39,11 +38,11 @@ class LinksController extends Controller
      */
     public function save(Request $request)
     {
-        $link = new LinkModel;
-        $link->name = $request->param('link_name');
-        $link->url = $request->param('link_url');
-        $link->is_show = $request->param('is_show');
-        $link->save();
+        $help = new HelpLinkModel;
+        $help->name = $request->param('link_name');
+        $help->url = $request->param('link_url');
+        $help->is_show = $request->param('is_show');
+        $help->save();
     }
 
     /**
@@ -56,17 +55,11 @@ class LinksController extends Controller
     {
         if ($id == 0)
         {
-            $result = LinkModel::where('is_deleted', 0)->select();
+            $result = HelpLinkModel::where('is_deleted', 0)->select();
             return json_encode(["data" => $result]);
         }
-        $data = LinkModel::get($id);
+        $data = HelpLinkModel::get($id);
         return json_encode($data);
-    }
-
-    public function getLinksList()
-    {
-        $data = LinkModel::all();
-        return json_encode(["data" => $data]);
     }
 
     /**
@@ -77,17 +70,7 @@ class LinksController extends Controller
      */
     public function edit($id)
     {
-        $data = LinkModel::get($id);
-        $this->assign([
-            'id' => $data->id,
-            'name' => $data->name,
-            'url' => $data->url,
-            'logo' => $data->logo,
-            'order_by' => $data->order_by,
-            'is_show' => $data->is_show,
-            'new_window' => $data->new_window,
-        ]);
-        return $this->fetch();
+        //
     }
 
     /**
@@ -99,11 +82,11 @@ class LinksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $link = LinkModel::get($id);
-        $link->name = $request->param('link_name');
-        $link->url = $request->param('link_url');
-        $link->is_show = $request->param('is_show');
-        $link->save();
+        $help = HelpLinkModel::get($id);
+        $help->name = $request->param('link_name');
+        $help->url = $request->param('link_url');
+        $help->is_show = $request->param('is_show');
+        $help->save();
     }
 
     /**
@@ -114,8 +97,8 @@ class LinksController extends Controller
      */
     public function delete($id)
     {
-        $link = LinkModel::get($id);
-        $link->is_deleted = 1;
-        $link->save();
+        $help = HelpLinkModel::get($id);
+        $help->is_deleted = 1;
+        $help->save();
     }
 }
