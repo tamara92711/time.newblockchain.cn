@@ -64,14 +64,14 @@
             if ($("#time_from").val() >= $("#time_to").val()) $("#time_to").val($("#time_from").val());
         });
 
-        $("#search-button").click(function() {
-            alert("Search Button Clicked");
+        $(".search-button").click(function() {
             search();
         });
         search();
     });
 
     function search() {
+        $(".search-button").prop('disabled', true);
         var time_from = $("#time_from").val();
         var time_to = $("#time_to").val();
         var status = $("#order-status").val();
@@ -80,41 +80,41 @@
             method: "GET",
             data: { time_from: time_from, time_to: time_to, status: status },
             success: function (response) {
-                alert(response);
+                $(".search-button").prop('disabled', false);
                 data = response.data;
                 var html = "";
                 for (var i = 0; i < data.length; i++) {
                     html += '<div class="order-box">' +
-                        '<div class="order-item">' +
-                        '<div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">' +
-                        '<div class="col-md-3">' + data[i]['create_time'] + '</div>'
-                    '<div class="col-md-9">' + '订单编号：' + data[i]['id'] + '</div>' +
-                        '</div>' +
-                        '<div class="order-item-body row">' +
-                        '<div class="order-detail row">' +
-                        '<img src="' + data[i]['thumbnail'] + '" class="order-image" />' +
-                        '<div>' + data[i]['description'] + '</div>' +
-                        '</div>' +
-                        '<div class="vline1"></div>' +
-                        '<div class="order-receiver">' +
-                        '<p>' + data[i]['person_name'] + '</p>' +
-                        '</div>' +
-                        '<div class="vline1"></div>' +
-                        '<div class="order-amount">' +
-                        '<p class="amount">' + (data[i]['product_price'] * data[i]['product_amount']) + '</p>' +
-                        '<span class="label label-default">支付宝支付</span>' +
-                        '</div>' +
-                        '<div class="vline1"></div>' +
-                        '<div class="order-status">' +
-                        '<span class="status-text">待收货</span>' +
-                        '<div class="status-info">' +
-                        '<p>韵达快递</p>' +
-                        '<p>3905941819433</p>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>' +
-                        '</div>';
+                                '<div class="order-item">' +
+                                    '<div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">' +
+                                        '<div class="col-md-3">' + data[i]['create_time'] + '</div>'
+                                        '<div class="col-md-9">' + '订单编号：' + data[i]['id'] + '</div>' +
+                                    '</div>' +
+                                    '<div class="order-item-body row">' +
+                                        '<div class="order-detail row">' +
+                                            '<img src="' + data[i]['thumbnail'] + '" class="order-image" />' +
+                                            '<div>' + data[i]['description'] + '</div>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-receiver">' +
+                                            '<p>' + data[i]['person_name'] + '</p>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-amount">' +
+                                            '<p class="amount">' + (data[i]['product_price'] * data[i]['product_amount']) + '</p>' +
+                                            '<span class="label label-default">支付宝支付</span>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-status">' +
+                                            '<span class="status-text">待收货</span>' +
+                                            '<div class="status-info">' +
+                                                '<p>韵达快递</p>' +
+                                                '<p>3905941819433</p>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
                 }
                 $("#order-list").html(html);
             }
