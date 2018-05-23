@@ -263,21 +263,10 @@
     function sort(param, sortMethod) {
         var data_json = product_json;
 
-        if (sortMethod == 'asc') {
-            if (param == 'total_sales')
-                data_json.items = sortByKey(data_json.items, 'sales_count', 'asc');
-            else if (param == 'price')
-                data_json.items = sortByKey(data_json.items, 'price', 'asc');
-            else if (param == 'comments')
-                data_json.items = sortByKey(data_json.items, 'comments', 'asc');
-        }
-        else if (sortMethod == 'desc') {
-            if (param == 'total_sales')
-                data_json.items = sortByKey(data_json.items, 'sales_count', 'desc');
-            else if (param == 'price')
-                data_json.items = sortByKey(data_json.items, 'price', 'desc');
-            else if (param == 'comments')
-                data_json.items = sortByKey(data_json.items, 'comments', 'desc');
+        if (sortMethod) {
+            var sort_key = param;
+            if (param == 'total_sales') sort_key = 'sales_count';
+            data_json.items = sortByKey(data_json.items, sort_key, sortMethod);
         }
         build_pagination(data_json);
     }
@@ -310,7 +299,6 @@
     function add_cart(id) {
         console.log(id);
         var count = 0;
-
 
         console.log(container.data('pagination').model.pageNumber);
 

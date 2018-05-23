@@ -1,10 +1,6 @@
-{extend name="/common/templates/tpl-w-sb"}
-{block name="page-title"}我的订单{/block}
-{block name="custom-css"}
-<link rel="stylesheet" href="/assets/css/index/mallmanage/my_orders.css"> 
-<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css">
-{/block}
-{block name="main-part"}
+{extend name="/common/templates/tpl-w-sb"} {block name="page-title"}我的订单{/block} {block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/mallmanage/my_orders.css">
+<link rel="stylesheet" href="/assets/datepicker/datepicker.min.css"> {/block} {block name="main-part"}
 <div class="qk-portlet">
     <div class="qk-portlet-title" style="padding-left:27px;padding-top:13px;height:50px;">
         <img class="qk-portlet-title-img" src="/assets/img/order_list.png" style="margin-right: 6px;" />
@@ -21,9 +17,9 @@
             <div class="gap"></div>
             <div class="row" id="search-orders">
                 <span>查询时间：</span>
-                <input type="text" class="form-control calendar" id="time_from" name="time_from"/>
+                <input type="text" class="form-control calendar" id="time_from" name="time_from" />
                 <span id="fromto">至</span>
-                <input type="text" class="form-control calendar" id="time_to" name="time_to"/>
+                <input type="text" class="form-control calendar" id="time_to" name="time_to" />
                 <button class="btn search-button">查询</button>
             </div>
         </div>
@@ -36,59 +32,25 @@
             <div class="vline"></div>
             <div class="hitem">
                 <select id="order-status" class="form-control">
-                    <option>全部状态</option>
-                    <option>待付款</option>
-                    <option>待收货</option>
-                    <option>待评价</option>
-                    <option>已完成</option>
-                    <option>已取消</option>
+                    <option value="0">全部状态</option>
+                    <option value="1">待付款</option>
+                    <option value="2">待收货</option>
+                    <option value="3">待评价</option>
+                    <option value="4">已完成</option>
+                    <option value="5">已取消</option>
                 </select>
             </div>
         </div>
         <div id="order-list">
-            <?php foreach($orders as $order) {?>
-            <div class="order-box">
-                <div class="order-item">
-                    <div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">
-                        <div class="col-md-3">{$order['create_time']}</div>
-                        <div class="col-md-9">订单编号：{$order['id']}</div>
-                    </div>
-                    <div class="order-item-body row">
-                        <div class="order-detail row">
-                            <img src="{$order['thumbnail']}" class="order-image" />
-                            <div>{$order['description']}</div>
-                        </div>
-                        <div class="vline1"></div>
-                        <div class="order-receiver">
-                            <p>{$order['person_name']}</p>
-                        </div>
-                        <div class="vline1"></div>
-                        <div class="order-amount">
-                            <p class="amount">
-                                <span class="currency">￥</span><?php echo $order['product_price'] *$order['amount'];?> </p>
-                            <span class="label label-default">支付宝支付</span>
-                        </div>
-                        <div class="vline1"></div>
-                        <div class="order-status">
-                            <span class="status-text">待收货</span>
-                            <div class="status-info">
-                                <p>韵达快递</p>
-                                <p>3905941819433</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <?php }?>
+            {/*Comment*/}
         </div>
     </div>
 </div>
-{/block}
-{block name="custom-js"}
+{/block} {block name="custom-js"}
 <script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
 <script src="/assets/js/common/common.js" type="text/javascript"></script>
 <script>
-    $(document).ready(function (){
+    $(document).ready(function () {
         $("#time_from").datepicker({
             autoHide: true,
             format: 'yyyy-mm-dd'
@@ -101,6 +63,61 @@
         $(".calendar").change(function () {
             if ($("#time_from").val() >= $("#time_to").val()) $("#time_to").val($("#time_from").val());
         });
+
+        $(".search-button").click(function() {
+            search();
+        });
+        search();
     });
-</script>
-{/block}
+
+    function search() {
+        $(".search-button").prop('disabled', true);
+        var time_from = $("#time_from").val();
+        var time_to = $("#time_to").val();
+        var status = $("#order-status").val();
+        $.ajax({
+            url: "orders",
+            method: "GET",
+            data: { time_from: time_from, time_to: time_to, status: status },
+            success: function (response) {
+                $(".search-button").prop('disabled', false);
+                data = response.data;
+                var html = "";
+                for (var i = 0; i < data.length; i++) {
+                    html += '<div class="order-box">' +
+                                '<div class="order-item">' +
+                                    '<div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">' +
+                                        '<div class="col-md-3">' + data[i]['create_time'] + '</div>'
+                                        '<div class="col-md-9">' + '订单编号：' + data[i]['id'] + '</div>' +
+                                    '</div>' +
+                                    '<div class="order-item-body row">' +
+                                        '<div class="order-detail row">' +
+                                            '<img src="' + data[i]['thumbnail'] + '" class="order-image" />' +
+                                            '<div>' + data[i]['description'] + '</div>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-receiver">' +
+                                            '<p>' + data[i]['person_name'] + '</p>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-amount">' +
+                                            '<p class="amount">' + (data[i]['product_price'] * data[i]['product_amount']) + '</p>' +
+                                            '<span class="label label-default">支付宝支付</span>' +
+                                        '</div>' +
+                                        '<div class="vline1"></div>' +
+                                        '<div class="order-status">' +
+                                            '<span class="status-text">待收货</span>' +
+                                            '<div class="status-info">' +
+                                                '<p>韵达快递</p>' +
+                                                '<p>3905941819433</p>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                }
+                $("#order-list").html(html);
+            }
+        })
+    }
+</script> {/block}

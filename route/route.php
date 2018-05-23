@@ -90,6 +90,7 @@ Route::post('delete_from_cart','@index/mall_management/my_collection/delete_from
 Route::post('apply_payment','@index/mall_management/my_collection/apply_payment');//->middleware('AuthMiddleware');
 
 Route::get('open_cart','@index/mall_management.my_collection/index')->middleware('AuthMiddleware');
+Route::get('orders','@index/mall_management.my_collection/get_orders');
 Route::get('order_published','@index/mall_management.my_collection/published_orders_view')->middleware('AuthMiddleware');
 Route::post('purchase_view','@index/mall_management.my_collection/purchase_view')->middleware('AuthMiddleware');
 
@@ -181,10 +182,11 @@ Route::resource('index/project/project_expired','@index/project/project_expired'
 
 Route::resource('index/mall/index','@index/mall/index');
 
-Route::get('mall','@index/mall.index/index')->middleware('AuthMiddleware');
+Route::get('mall','@index/mall.index/index');
 
-Route::get('about_us', '@index/about_us.index/index')->middleware('AuthMiddleware');
+Route::get('about_us', '@index/about_us.index/index');
 
-Route::get('local_agencies', '@index/about_us.local_agencies/index')->middleware('AuthMiddleware');
+Route::get('local_agencies', '@index/about_us.local_agencies/index');
 
-Route::get('recruitment_information', '@index/about_us.recruitment_information/index')->middleware('AuthMiddleware');
+Route::get('recruitment_information', '@index/about_us.recruitment_information/index');
+
