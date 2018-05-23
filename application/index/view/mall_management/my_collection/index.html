@@ -57,7 +57,7 @@
             <span class="counts" id="checkedTotalCount">0</span>件商品</div>
         <div class="fl" style="margin-top: -9px; padding-left: 56px;float:left;">总价：
             <span class="total-money">￥0</span></div>
-        <div class="fl button-clearing" style="margin-top: -13px; margin-left: 27px;float:left;" onclick="order()">去结算</div>
+        <div class="fl button-clearing" style="margin-top: -13px; margin-left: 27px;float:left;cursor:pointer" onclick="order()">去结算</div>
     </div>
 
 
@@ -180,22 +180,6 @@
         form.append(input1);
         $(document.body).append(form);
         form.submit();
-
-/*
-
-        $.ajax({
-            url: '/apply_payment',
-            method: 'post',
-            data: "data="+ids,
-            success: function (result) {
-                console.log(result);
-                document.location = "/purchase_view";
-            },
-            error: function (error) {
-                console.log(error);
-            }
-        });*/
-    /*    */
     }
 </script>
 {/block}

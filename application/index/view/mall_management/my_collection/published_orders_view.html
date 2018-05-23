@@ -10,9 +10,9 @@
         <div class="row" style="margin:0px;padding:0px;height:40px;margin-bottom:35px">
             <div class="row" id="all-orders">
                 <div class="col-md-3">全部订单</div>
-                <div class="col-md-3">待付款(2)</div>
-                <div class="col-md-3">待收货(3)</div>
-                <div class="col-md-3">待评价(0)</div>
+                <div class="col-md-3">待付款({$cnt_pending_pay})</div>
+                <div class="col-md-3">待收货({$cnt_pending_ship})</div>
+                <div class="col-md-3">待评价({$cnt_pending_comment})</div>
             </div>
             <div class="gap"></div>
             <div class="row" id="search-orders">
@@ -81,14 +81,15 @@
             data: { time_from: time_from, time_to: time_to, status: status },
             success: function (response) {
                 $(".search-button").prop('disabled', false);
+                response = JSON.parse(response);
                 data = response.data;
                 var html = "";
                 for (var i = 0; i < data.length; i++) {
                     html += '<div class="order-box">' +
                                 '<div class="order-item">' +
                                     '<div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">' +
-                                        '<div class="col-md-3">' + data[i]['create_time'] + '</div>'
-                                        '<div class="col-md-9">' + '订单编号：' + data[i]['id'] + '</div>' +
+                                        '<div class="col-md-3">' + data[i]['create_time'] + '</div>' + 
+                                        '<div class="col-md-9">' + '订单编号：' + data[i]['no'] + '</div>' +
                                     '</div>' +
                                     '<div class="order-item-body row">' +
                                         '<div class="order-detail row">' +
@@ -97,26 +98,23 @@
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-receiver">' +
-                                            '<p>' + data[i]['person_name'] + '</p>' +
+                                            '<p>' + data[i]['name'] + '</p>' +
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-amount">' +
-                                            '<p class="amount">' + (data[i]['product_price'] * data[i]['product_amount']) + '</p>' +
+                                            '<p class="amount">' + data[i]['total_amount'] + '</p>' +
                                             '<span class="label label-default">支付宝支付</span>' +
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-status">' +
                                             '<span class="status-text">待收货</span>' +
-                                            '<div class="status-info">' +
-                                                '<p>韵达快递</p>' +
-                                                '<p>3905941819433</p>' +
-                                            '</div>' +
                                         '</div>' +
                                     '</div>' +
                                 '</div>' +
                             '</div>';
                 }
                 $("#order-list").html(html);
+                $(".status-text").after('<div class="status-info"><p>韵达快递</p><p>3905941819433</p></div>');
             }
         })
     }
