@@ -15,36 +15,43 @@
         <div class="fl" style="margin-top: -4px; padding-left: 137px;float:left;">小计</div>
         <div class="fl" style="margin-top: -4px; padding-left: 102px;float:left;">操作</div>
     </div>
-    <?php foreach($products as $product) {?>
-    <div class="rows-container" id="product-record-{$product->id}">
-        <div class="rows">
-            <div class="checkbox checkbox-primary" style="float:left;padding-top: 51px; padding-right: 42px;">
-                <input id="ordercheck-{$product->id}" type="checkbox">
-                <label for="ordercheck-{$product->id}"></label>
-            </div>
-            <img src="{$product->thumbnail}" style="height: 110px" class="fl"/>
-            <div class="description-1">{$product->description}</div>
-            <div class="currency-1" id="primaryvalue-{$product->id}">{$product->price}</div>
-            <div class="min-and-plus-region">
-                <div class="min-add-button">
-                    <div class="input-group">
-                        <a onclick="amount_increase('{$product->id}','-1')" class="input-group-addon minus increment">
-                            <i class="fa fa-minus" aria-hidden="true"></i>
-                        </a>
-                        <input type="number" min="0" id="amount-{$product->id}" onchange="amount_change('{$product->id}')"  value="{$product->amount}" style="width: 32px;height: 28px; text-align: center;">
-                        <a onclick="amount_increase('{$product->id}','1')" class="input-group-addon plus increment">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                        </a>
-                    </div>
-
+    {if (empty($products)) OR ($products->count() == 0)}
+        <div style="text-align: center;font-size: 27px;font-weight:bolder">没有资料</div>
+    {else/}
+        <?php foreach($products as $product) {?>
+        <div class="rows-container" id="product-record-{$product->id}">
+            <div class="rows">
+                <div class="checkbox checkbox-primary" style="float:left;padding-top: 51px; padding-right: 42px;">
+                    <input id="ordercheck-{$product->id}" type="checkbox">
+                    <label for="ordercheck-{$product->id}"></label>
                 </div>
+                <img src="{$product->thumbnail}" style="height: 110px" class="fl" />
+                <div class="description-1">{$product->description}</div>
+                <div class="currency-1" id="primaryvalue-{$product->id}">{$product->price}</div>
+                <div class="min-and-plus-region">
+                    <div class="min-add-button">
+                        <div class="input-group">
+                            <a onclick="amount_increase('{$product->id}','-1')" class="input-group-addon minus increment">
+                                <i class="fa fa-minus" aria-hidden="true"></i>
+                            </a>
+                            <input type="number" min="0" id="amount-{$product->id}" onchange="amount_change('{$product->id}')" value="{$product->amount}"
+                                style="width: 32px;height: 28px; text-align: center;">
+                            <a onclick="amount_increase('{$product->id}','1')" class="input-group-addon plus increment">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a>
+                        </div>
+        
+                    </div>
+                </div>
+                <div class="currency-2" id="totalvalue-{$product->id}">
+                    <?php echo $product->price * $product->amount;?>
+                </div>
+                <a href="#" class="button-delete" id="del-{$product->id}" onclick="delete_from_cart('{$product->id}')">删除</a>
+                <a type="button" role="button" class="right" style="padding-left: 36px;" id="fav-{$product->id}" onclick="addToFav('{$product->id}')">移入收藏夹</a>
             </div>
-            <div class="currency-2" id="totalvalue-{$product->id}"><?php echo $product->price * $product->amount;?></div>
-            <a href="#" class="button-delete" id="del-{$product->id}" onclick="delete_from_cart('{$product->id}')">删除</a>
-            <a href="#" class="right" style="padding-left: 36px;" id="fav-{$product->id}" onclick="addToFav('{$product->id}')">移入收藏夹</a>
         </div>
-    </div>
-    <?php } ?>
+        <?php } ?>
+    {/if}
     
     <div class="table-header" style="margin-top:10px;margin-bottom: 60px;">
         <div class="checkbox checkbox-primary" style="float:left;">
@@ -56,7 +63,7 @@
         <div class="fl" style="margin-top: -4px; padding-left: 475px;float:left;">已选择
             <span class="counts" id="checkedTotalCount">0</span>件商品</div>
         <div class="fl" style="margin-top: -9px; padding-left: 56px;float:left;">总价：
-            <span class="total-money">￥0</span></div>
+            <span class="total-money">0</span></div>
         <div class="fl button-clearing" style="margin-top: -13px; margin-left: 27px;float:left;cursor:pointer" onclick="order()">去结算</div>
     </div>
 
@@ -180,6 +187,17 @@
         form.append(input1);
         $(document.body).append(form);
         form.submit();
+    }
+
+    function addToFav(product_id) {
+        $.ajax({
+            url:"/add_to_collection",
+            method:"GET",
+            data: {product_id: product_id},
+            success: function(response) {
+
+            }
+        })
     }
 </script>
 {/block}

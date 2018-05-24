@@ -59,8 +59,11 @@ class ServiceManageController extends Controller
             return $this->fetch();
     }
 
-    public function messageDetails()//41消息详情   41 message details
+    public function message_details()//41消息详情   41 message details
     {
+        $this->assign("header_nav", "message");
+        $this->assign("side_nav", "");
+        $this->assign("nav_type", 0);
         return $this->fetch();
     }
 }

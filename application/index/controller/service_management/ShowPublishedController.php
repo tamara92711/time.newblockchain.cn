@@ -61,6 +61,7 @@ class ShowPublishedController extends Controller
 
         $user_id= $request->param('user_id');
         $demand_id= $request->param('demand_id');
+        $demand = DemandModel::get($demand_id);
         $review = $request->param('review');
         $review_txt= $request->param('review_txt');
         if (!empty($request->file('publiher-image')))
@@ -83,7 +84,6 @@ class ShowPublishedController extends Controller
 
         //已承接->已完成 3 freelancer->employeer to riview so update review field as 2
         $link->save();
-
         if($mode == 1 )
         {
             //state 3 : 已承接 is review 1 so freelance gave review employeer to  set 1 as default
@@ -91,7 +91,11 @@ class ShowPublishedController extends Controller
             $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',1)->count();
             //if freelancer give review to employer, project compelted so update is_review field as 3
             if ($count > 0)
+            {
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
+                $this->transfer_time_money($demand_id);
+            }
+                
             //if freelancer don't give review to employer project compelted so update is_review field as 1
             else if ($count == 0)
                 DemandModel::where('id',$demand_id)->where('state','=',3)->update(['is_reviewed'=>1,'complete_time'=>date('Y-m-d H:i:s')]);
@@ -99,8 +103,6 @@ class ShowPublishedController extends Controller
             //if success go to success page
             return redirect('/index/service_management.show_undertaken');
         }
-
-
         //employeer -> freelance    to review
         else if ($mode ==0 )
         {
@@ -108,18 +110,52 @@ class ShowPublishedController extends Controller
             //check if employeer give review to freelancer
             $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',2)->count();
             //if employer give review to freelancer project compelted so update is_review field as 3
-            if ($count > 0)
+            if ($count > 0) {
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
+                $this->transfer_time_money($demand_id);
+            }
+                
             //if employer don't give review to freelancer project compelted so update is_review field as 1
             else if ($count == 0)
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>2,'complete_time'=>date('Y-m-d H:i:s')]);
 
             return redirect('/index/service_management.show_published');
         }
-
-
     }
 
+    public function transfer_time_money($demand_id) {//incomplete
+        $demand = DemandModel::get($demand_id);
+        $debit = $demand->user_id;
+        $credit = $demand->applied_user_id;
+        $amount = $demand->pay_amount;
+
+        $trans2 = new TransactionUserModel;
+        $trans2->user1_id = $user1_id;
+        $trans2->user2_id = 1;
+        $trans2->amount = $amount;
+        $trans2->action = 1;
+        $trans2->transaction_type = 1;
+        $trans2->state = 1;
+        $trans2->rate = 1;
+        $trans2->balance = UserModel::get($user1_id)->total_amount;
+        $trans2->currency_type = 1;
+        // $trans2->doUserTransaction($user1_id, 1, $amount, 1, 1, 1, 1);
+
+        $trans1 = new TransactionUserModel;
+        $trans1->user2_id = $user1_id;
+        $trans1->user1_id = 1;
+        $trans1->amount = $amount;
+        $trans1->action = 1;
+        $trans1->transaction_type = 1;
+        $trans1->state = 1;
+        $trans1->rate = 1;
+        $trans1->balance = UserModel::get(1)->total_amount;
+        $trans1->currency_type = 0;
+        // $trans1->doUserTransaction(1, $user1_id, $amount, 1, 1, 1, 0);
+        
+        $trans1->save();
+        $trans2->save();
+    }
     /**
      * 显示指定的资源
      *

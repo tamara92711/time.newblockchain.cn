@@ -5,8 +5,9 @@ namespace app\index\controller\mall_management;
 use think\Controller;
 use think\Request;
 
-use app\common\model\CartModel;
 use app\common\model\AddressModel;
+use app\common\model\CartModel;
+use app\common\model\CollectionModel;
 use app\common\model\OrdersModel;
 use app\common\model\OrdersRootModel;
 use app\common\model\ProductModel;
@@ -267,6 +268,15 @@ class MyCollectionController extends Controller
         echo CartModel::where(['state'=>1,'user_id'=>session('user_id')])->select()->count();
     }
 
+    public function add_to_collection() {
+        $product_id = request()->product_id;
+        $collection = CollectionModel::where(['user_id' => session('user_id'), 'product_id' => $product_id])->find();
+        if (!empty($collection)) return "exists";
+        $collection = new CollectionModel;
+        $collection->user_id = session('user_id');
+        $collection->product_id = $product_id;
+        $collection->save();
+    }
     /**
      * 保存新建的资源
      *
