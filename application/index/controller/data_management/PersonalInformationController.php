@@ -22,8 +22,24 @@ class PersonalInformationController extends Controller
         $this->assign('side_nav', 'personal_info');
         $user_data = UserModel::getAlluserInformation();
 
+        if(!empty($user_data[0]['real_name']))
+            $user_real_name = $user_data[0]['real_name'];
+        else
+            $user_real_name = '';
+
+        if(!empty($user_data[0]['fixed']))
+            $user_fixed = $user_data[0]['fixed'];
+        else
+            $user_fixed = '';
+
+        if(!empty($user_data[0]['email']))
+            $user_email = $user_data[0]['email'];
+        else
+            $user_email = '';
+
+        $this->assign(['user_real_name'=>$user_real_name,'user_fixed'=>$user_fixed,'user_email'=>$user_email]);
         $this->assign('user_data',$user_data);
-//        $this->assign('user_id',session('user_id'));
+
         return $this->fetch();
     }
 

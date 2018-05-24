@@ -174,6 +174,7 @@ var FormWizard = function () {
 
                 var demand_type         = getDemandTypeText();
                 if (typeof demand_type ==='undefined') demand_type_val = $('input[name = "demand_type"]:checked').next('label').text();
+                console.log(demand_type_val)
 
                 $("#demand_type_confirm").val(demand_type_val);
                 $("#payment_time_confirm").val(pay_amount);
@@ -331,7 +332,10 @@ var FormWizard = function () {
                             $("#captcha_error").text("验证码错误");
                         }
                         else
+                        {
                             window.location.href=('/index/service_management.show_published');
+                        }
+
                     }
                 })
             }).hide();

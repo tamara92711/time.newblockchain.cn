@@ -450,10 +450,34 @@
             }
         });
     }
+    function insertAddress()
+    {
+        var checked_id = $("input[name='candidate']:checked").val();
+        var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
+        var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
+        var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+        var contact = $("#contact"+checked_id).val();
+        var contact_phone = $("#contact_phone_"+checked_id).val();
+
+        $("#receiver").modal('hide');
+        $("#region_1").val(contact_region1_id);
+        // $("#district").val(contact_region2_id);
+        $("#detail_address").val(contact_onlyDetail_id);
+
+        $("#contact").val(contact);
+        $("#contact_phone").val(contact_phone);
+
+        insertAddressRegion1Change(contact_region1_id,contact_region2_id)
+        // console.log(contact_region1_id);
+        // console.log(contact_region2_id);
+
+
+    }
 
     function region1Change()
     {
         var region1=$("#region_1").val();
+
         var container = $('#district');
         $.ajax({
             url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,

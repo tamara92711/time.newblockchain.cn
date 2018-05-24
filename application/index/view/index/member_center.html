@@ -17,7 +17,7 @@
                 </p>
                 <p>
                     <img src="/assets/img/member-number.png" />
-                     <span class="subtitle">会员编号：</span>0000001
+                     <span class="subtitle">会员编号：</span>{:model('Demand')->makeMemberId($user_data[0]['id'])}
                 </p>
                 <p>
                     <img src="/assets/img/account-balance.png" />
@@ -40,13 +40,13 @@
                 <div style="border-bottom: 1px dashed #ff9710;padding-bottom: 11px">
                     <p class="yellow-colored" style="color:#ff9710"><img src="/assets/img/paper-plane-yellow.png" />我发布的需求</p>
                     <p class="yellow-content" style="word-spacing: 27px;">
-                        未被承接(0) 已承接(0) 未完成(0) 已完成(0) 为评论(0)
+                        未被承接({$unBidCnt}) 已承接({$publi_Statics[0]['progressCount']}) 未完成({$publi_Statics[0]['progressCount']}) 已完成({$publi_Statics[0]['completeCount']}) 未评论({$publi_Statics[0]['waitingCount']})
                     </p>
                 </div>
                 <div style="padding-top:28px">
                     <p class="yellow-colored" style="color:#ff9710"><img src="/assets/img/undertake-yellow.png" />我承接的需求</p>
                     <p class="yellow-content" style="word-spacing: 31px;">
-                        已承接(0) 待审核(0) 已完成(0) 未评论(0)
+                        已承接({$freeStatics[0]['progressCount']}) 待审核({$unAppliedCnt}) 已完成({$freeStatics[0]['completeCount']}) 未评论({$freeStatics[0]['waitingCount']})
                     </p>
                 </div>
             </div>

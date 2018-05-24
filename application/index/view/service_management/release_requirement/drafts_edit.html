@@ -384,7 +384,7 @@
         //Get each demandtype's text
         getDemandTypeText();
         //first element checked in address list
-        // $('input[name="candidate"]:first').attr('checked',true);
+        $('input[name="candidate"]:first').attr('checked',true);
         init();
         //after first region_1 change so region2 changed!!
         $("#region_1").change();
@@ -504,6 +504,7 @@
         $("#detail_address").val(contact_onlyDetail_id);
         $("#contact").val(contact);
         $("#contact_phone").val(contact_phone);
+        insertAddressRegion1Change(contact_region1_id,contact_region2_id)
     }
 
     //compare function wheater one field >= other field

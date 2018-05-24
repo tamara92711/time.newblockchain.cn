@@ -94,7 +94,7 @@ class ShowUndertakenController extends Controller
                             ->where('d.is_reviewed','<',3)->where('d.state',3);//已过期 expired task is running
                         break;
                     case 5:
-                        $temp_query->where(['d.state'=>3,'is_reviewed'=>1]);//待评价
+                        $temp_query->where('(d.state =3 and d.is_reviewed = 1) or (d.state =3 and d.is_reviewed = 2)');//待评价
                         break;
                     case 6:
                         $temp_query->where(['d.state'=>3,'is_reviewed'=>3]);//已完成
@@ -158,10 +158,13 @@ class ShowUndertakenController extends Controller
             return redirect('/index/project/project_processing/accepter_completed',["id" => $demand_id,"mode" => 0]);
         //biding state publise select freelancer
         if ($state_id == 2 && $is_reviewed == 0)
-            return redirect('/index/project/project_processing/project_published',["id" => $demand_id,"mode" => 0]);
+            return redirect('/index/project/project_processing/project_published',["id" => $demand_id,"mode" => 0,"display_id"=>'bid']);
         //waiting evaluated from publisher
         if ($state_id == 3 && $is_reviewed == 1)
             return redirect('/index/project/project_processing/accepter_completed',["id" => $demand_id,"mode" => 1]);
+        //employeer give review at first to freelance so freelance completed project.
+        if ($state_id == 3 && $is_reviewed == 2)
+            return redirect('/index/project/project_processing/accepter_completed',["id" => $demand_id,"mode" => 2]);
         //completed state
         if ($state_id == 3 && $is_reviewed == 3)
             return redirect('/index/project/project_processing/project_publish_complete',["id" => $demand_id]);

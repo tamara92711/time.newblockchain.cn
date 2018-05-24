@@ -162,6 +162,7 @@ class ReleaseRequirementController extends Controller
     {
         $link=DemandModel::get($request->param('demand_id'));
 
+
         $link->demand_type          = $request->param("demand_type");
         $link->title                = $request->param("title");
         $link->detail               = $request->param("detail");
@@ -284,18 +285,7 @@ class ReleaseRequirementController extends Controller
         $captcha->expire = 30;  //有效期
         $captcha->useNoise = true;  //不添加杂点
 
-
         return $captcha->entry();
     }
 
-//    public function check($value = '')
-//    {
-//        $captcha = new Captcha();
-//        if (!$captcha->check($value)) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//
-//    }
 }

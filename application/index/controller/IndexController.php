@@ -129,15 +129,23 @@ class IndexController extends Controller
     public function memberCenter() //05会员中心
     {
         //show project list i posted
-        $publish_query = DemandModel::getPublishedListField();
-        $publish_query = $publish_query->where('d.user_id',session('user_id'));
+        $publish_query  = DemandModel::getPublishedListField();
+        $publish_query  = $publish_query->where('d.user_id',session('user_id'));
         $published_data  = DemandModel::getPublishedListJoinForMemberCenter($publish_query);
         //show project list i accepted
         $underker_query = DemandModel::getUnderkenList();
         $underker_query = $underker_query ->where('d.applied_user_id',session('user_id'));
-        $underker_data = DemandModel::getUnderkenListJoinForMemberCenter($underker_query);
+        $underker_data  = DemandModel::getUnderkenListJoinForMemberCenter($underker_query);
         //user's information
-        $user_data = UserModel::getAlluserInformation();
+        $user_data      = UserModel::getAlluserInformation();
+        //freelancer bided project that publisher offer,but count of publisher don't select biding freelancer
+        $unAppliedCnt   = DemandModel::calculateFreelancerStatics_1();
+        $freeStatics    = DemandModel::calculateFreelancerStatics_2();
+
+        $unBidCnt       = DemandModel::calculatePublisherUnBidCount();
+        $publi_Statics  = DemandModel::calculatePublisherStatics_2();
+
+        $this->assign(['unAppliedCnt'=>$unAppliedCnt,'freeStatics'=>$freeStatics,'unBidCnt'=>$unBidCnt,'publi_Statics'=>$publi_Statics]);
 
         $this->assign(['user_data'=>$user_data,"published_data"=>$published_data,"underker_data" =>$underker_data, 'header_nav' =>'personal_home',"side_nav"=>'personal_info','nav_type'=>0]);
 

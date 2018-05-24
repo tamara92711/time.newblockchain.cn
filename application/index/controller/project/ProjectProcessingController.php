@@ -8,6 +8,7 @@ use app\common\model\DemandModel;
 use app\common\model\ProfessionalCertificateModel;
 use app\common\model\UserModel;
 use think\Controller;
+use think\Exception;
 use think\Request;
 
 class ProjectProcessingController extends Controller
@@ -88,7 +89,7 @@ class ProjectProcessingController extends Controller
         //
     }
 
-    public function project_published($id, $mode)
+    public function project_published($id, $mode,$display_id)
     {
         $temp = DemandModel::getProjectInformation($id);
         $data = DemandModel::getProjectJoin($temp);
@@ -96,11 +97,11 @@ class ProjectProcessingController extends Controller
         $isbid = ApplyModel::where('user_id',session('user_id'))->where('demand_id',$id)->count();
         if($isbid == 1 )
         {
-            $this->assign('mode',0);
+            $this->assign(['mode'=>0,'display_id'=>$display_id]);
         }
         else
         {
-            $this->assign('mode',$mode);
+            $this->assign(['mode'=>$mode,'display_id'=>$display_id]);
         }
 
         if (DemandModel::where(['id'=>$id,'user_id'=>session('user_id'),'applied_user_id'=>0])->where('is_reviewed','<>',4)->count() > 0)
@@ -108,10 +109,8 @@ class ProjectProcessingController extends Controller
         else
             $this->assign('cancelMode',0);//don't see project cancel button
 
-        $this->assign('data',$data);
-        $this->assign('header_nav', 'project_apply');
-        $this->assign("nav_type", 1);
-        $this->assign('side_nav', 'project_published');
+        $this->assign(['data'=>$data,'header_nav'=>'project_apply','nav_type'=>1,'side_nav'=>'project_published']);
+
         return $this->fetch();
     }
 
@@ -168,34 +167,51 @@ class ProjectProcessingController extends Controller
     */
     public function accepter_completed($id,$mode)
     {
-
-        $temp = DemandModel::getProjectField($id);
-        $data = DemandModel::getProjectCompletedJoin($temp);
-
-        $user_id = $data[0]['publisher_id'];
-        $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
-        $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
-
-        $this->assign('applied_avarta',$applied_avarta);
-        $this->assign('publisher_avarta',$publisher_avarta);
-        $this->assign('data',$data);
-        $this->assign('header_nav', 'project_apply');
-
-        if ($mode == 0)
-            $this->assign('mode',$mode);
-        else if ($mode == 1)
+        try
         {
-            $review_data = DemandModel::getReviewInformation($id,$user_id);
-            $this->assign('review_data',$review_data);
-            $this->assign('mode',$mode);
+            $temp = DemandModel::getProjectField($id);
+            $data = DemandModel::getProjectCompletedJoin($temp);
 
+            $user_id = $data[0]['publisher_id'];
+            $publisher_id = $data[0]['publisher_id'];
+            $freelance_id = $data[0]['applied_user_id'];
+            $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
+            $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
+
+            $this->assign('applied_avarta',$applied_avarta);
+            $this->assign('publisher_avarta',$publisher_avarta);
+            $this->assign('data',$data);
+            $this->assign('header_nav', 'project_apply');
+            //display empty
+            if ($mode == 0)
+                $this->assign('mode',$mode);
+            //display freelance's review data
+            else if ($mode == 1)
+            {
+                $review_data = DemandModel::getReviewInformation($id,$freelance_id);
+                $this->assign('review_data',$review_data);
+                $this->assign('mode',$mode);
+
+            }
+            else if ($mode == 2)
+            {
+                $review_data = DemandModel::getReviewInformation($id,$publisher_id);
+                $this->assign('review_data',$review_data);
+                $this->assign('mode',$mode);
+
+            }
+            $this->assign($data);
+
+            $this->assign("nav_type", 1);
+            $this->assign('side_nav', 'project_applied');
+
+            return $this->fetch();
         }
-        $this->assign($data);
+        catch (Exception $exception)
+        {
+            \think\facade\Log::write('accepter_completed function error',$exception->getMessage());
+        }
 
-        $this->assign("nav_type", 1);
-        $this->assign('side_nav', 'project_applied');
-
-        return $this->fetch();
     }
     /*
      * upload image
@@ -203,55 +219,82 @@ class ProjectProcessingController extends Controller
     public function publish_completed($id,$mode)
     {
 
-        $temp = DemandModel::getProjectField($id);
-        $data = DemandModel::getProjectCompletedJoin($temp);
-
-        $freelancer_id = $data[0]['applied_user_id'];
-        $publisher_id  = $data[0]['publisher_id'];
-
-        $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
-        $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
-
-        $this->assign('applied_avarta',$applied_avarta);
-        $this->assign('publisher_avarta',$publisher_avarta);
-        $this->assign('data',$data);
-        $this->assign('header_nav', 'project_apply');
-        $this->assign("nav_type", 1);
-        $this->assign('side_nav', 'project_published');
-
-        if ($mode == 0)
-            $this->assign('mode',$mode);
-        //freelance give review to publisher ,,,so goto complete step
-        else if ($mode == 1)
+        try
         {
-            $review_data = DemandModel::getReviewInformation($id,$publisher_id);
-            $this->assign('review_data',$review_data);
-            $this->assign('mode',$mode);
+            $temp = DemandModel::getProjectField($id);
+            $data = DemandModel::getProjectCompletedJoin($temp);
 
+            $publisher_id  = $data[0]['publisher_id'];
+            $freelancer_id  = $data[0]['applied_user_id'];
+
+            $applied_avarta = UserModel::getAvarta($data[0]['applied_user_id']);
+            $publisher_avarta = UserModel::getAvarta($data[0]['publisher_id']);
+
+            if(!empty($applied_avarta))
+                $applied_avarta = $applied_avarta;
+            else
+                $applied_avarta ='';
+
+            if(!empty($publisher_avarta))
+                $publisher_avarta = $publisher_avarta;
+            else
+                $publisher_avarta ='';
+
+            $this->assign(['applied_avarta'=>$applied_avarta,'publisher_avarta'=>$publisher_avarta,'data'=>$data,
+                         'header_nav'=>'project_apply',"nav_type", 1,"nav_type"=>1,'side_nav'=>'project_published']);
+
+            if ($mode == 0)
+                $this->assign('mode',$mode);
+            //freelance give review to publisher ,,,so goto complete step  , display freelance's evaulating
+            else if ($mode == 1 )
+            {
+                $review_data = DemandModel::getReviewInformation($id,$freelancer_id);
+                $this->assign('review_data',$review_data);
+                $this->assign('mode',$mode);
+
+            }
+
+            else if ( $mode == 2)
+            {
+                $review_data = DemandModel::getReviewInformation($id,$publisher_id);
+                $this->assign('review_data',$review_data);
+                $this->assign('mode',$mode);
+
+            }
+            return $this->fetch();
         }
-        return $this->fetch();
+        catch (Exception $exception)
+        {
+            \think\facade\Log::write('publish_completed function error',$exception->getMessage());
+        }
+
     }
 
     public function project_publish_complete($id)
     {
 
-        $temp = DemandModel::getProjectField($id);
-        $data = DemandModel::getProjectCompletedJoin($temp);
+        try{
+            $temp = DemandModel::getProjectField($id);
+            $data = DemandModel::getProjectCompletedJoin($temp);
 
-        $freelancer_id = $data[0]['applied_user_id'];
-        $publisher_id  = $data[0]['publisher_id'];
+            $freelancer_id = $data[0]['applied_user_id'];
+            $publisher_id  = $data[0]['publisher_id'];
 
-        $freelancer_review_data = DemandModel::getReviewInformation($id,$publisher_id);
-        $publisher_review_data = DemandModel::getReviewInformation($id,$freelancer_id);
+            $freelancer_review_data = DemandModel::getReviewInformation($id,$publisher_id);
+            $publisher_review_data = DemandModel::getReviewInformation($id,$freelancer_id);
 
-        $this->assign('freelancer_review_data',$freelancer_review_data);
-        $this->assign('publisher_review_data',$publisher_review_data);
-        $this->assign('data',$data);
+            $this->assign('freelancer_review_data',$freelancer_review_data);
+            $this->assign('publisher_review_data',$publisher_review_data);
+            $this->assign('data',$data);
 
-        $this->assign('header_nav', 'project_apply');
-        $this->assign("nav_type", 1);
-        $this->assign('side_nav', 'project_published');
-        return $this->fetch();
+            $this->assign('header_nav', 'project_apply');
+            $this->assign("nav_type", 1);
+            $this->assign('side_nav', 'project_published');
+            return $this->fetch();
+        } catch (Exception $exception)
+        {
+            \think\facade\Log::write('project_publish_complete function error',$exception->getMessage());
+        }
     }
 
     /*
@@ -279,12 +322,10 @@ class ProjectProcessingController extends Controller
     */
     public function show_freelancer_detail($demand_id,$user_id)
     {
-        $this->assign('header_nav', 'project_publish');
-        $this->assign("nav_type", 1);
-        $this->assign('side_nav', 'project_published');
+        $this->assign(['header_nav'=>'project_publish',"nav_type"=>1,'side_nav'=>'project_published']);
 
         //get porject published detail
-        $temp = DemandModel::getProjectField($demand_id);
+        $temp = DemandModel::getProjectInformation($demand_id);
         $demand_data = DemandModel::getProjectJoin($temp);
 
         $user_data = ApplyModel::getUserReviewList($user_id);
@@ -292,14 +333,10 @@ class ProjectProcessingController extends Controller
         $certificate = ProfessionalCertificateModel::where('user_id',$user_id)
             ->column('*');
 
-        $avarta = UserModel::where('user_id',$user_id)->column('avarta_image');
+        $avarta = UserModel::where('id',$user_id)->column('avarta_image');
 
-        $this->assign('data',$demand_data);
-        $this->assign('user_data',$user_data);
-        $this->assign('certi_data',$certificate);
-        $this->assign('demand_id',$demand_id);
-        $this->assign('user_id',$user_id);
-        $this->assign('avarta',$avarta);
+        $this->assign(['data'=>$demand_data,'user_data'=>$user_data,'certi_data'=>$certificate,'demand_id'=>$demand_id,'user_id'=>$user_id,'avarta'=>$avarta]);
+
         return $this->fetch();
     }
 
