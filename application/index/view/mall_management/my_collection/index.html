@@ -47,7 +47,7 @@
                     <?php echo $product->price * $product->amount;?>
                 </div>
                 <a href="#" class="button-delete" id="del-{$product->id}" onclick="delete_from_cart('{$product->id}')">删除</a>
-                <a type="button" role="button" class="right" style="padding-left: 36px;" id="fav-{$product->id}" onclick="addToFav('{$product->id}')">移入收藏夹</a>
+                <a role="button" class="right" style="padding-left: 36px;" id="fav-{$product->id}" onclick="addToFav('{$product->id}')">移入收藏夹</a>
             </div>
         </div>
         <?php } ?>
@@ -195,7 +195,22 @@
             method:"GET",
             data: {product_id: product_id},
             success: function(response) {
-
+                switch(response) {
+                    case "success": {
+                        $.alert({
+                            title: '成功',
+                            content: '商品添加收藏里成功!',
+                        });
+                        break;
+                    }
+                    case "exists": {
+                        $.alert({
+                            title: '已经存在',
+                            content: '商品已经存在收藏里!',
+                        });
+                        break;
+                    }
+                }
             }
         })
     }
