@@ -24,7 +24,7 @@ class IndexController extends Controller
     public function index()
     {
         // return '<style type="text/css">*{ padding: 0; margin: 0; } div{ padding: 4px 48px;} a{color:#2E5CD5;cursor: pointer;text-decoration: none} a:hover{text-decoration:underline; } body{ background: #fff; font-family: "Century Gothic","Microsoft yahei"; color: #333;font-size:18px;} h1{ font-size: 100px; font-weight: normal; margin-bottom: 12px; } p{ line-height: 1.6em; font-size: 42px }</style><div style="padding: 24px 48px;"> <h1>:) </h1><p> ThinkPHP V5.1<br/><span style="font-size:30px">12载初心不改（2006-2018） - 你值得信赖的PHP框架</span></p></div><script type="text/javascript" src="https://tajs.qq.com/stats?sId=64890268" charset="UTF-8"></script><script type="text/javascript" src="https://e.topthink.com/Public/static/client.js"></script><think id="eab4b9f840753f8e7"></think>';
-        return redirect('/index/index/home');
+        return redirect('/home');
     }
 
     public function hello($name = 'ThinkPHP5')
@@ -50,13 +50,36 @@ class IndexController extends Controller
         }
 
         $organizations = CharitableOrganizationModel::where('is_deleted', 0)->limit(6)->select()->toArray();
+        foreach ($organizations as $key => $value)
+        {
+            $organizations[$key]['image'] = $this->getImageUrl($value['image']);
+        }
+
+        $users = UserModel::where(['is_deleted' => 0, 'real_name_verified' => 1])->limit(10)->select()->toArray();
+        // $organizations = CharitableOrganizationModel::get($id);
+        // if (!empty($organizations->image)) {
+        //     $path = explode('\\',$data->image);
+        //     $organizations->image = '/uploads/' . $path[0] . '/' . $path[1];
+        // }
         
+        $this->assign("organizations", $organizations);
+        $this->assign("users", $users);
         $this->assign("latest_demands", $latest_demands);
         $this->assign("news", $news);
         $this->assign("organizations", $organizations);
         $this->assign("header_nav", "home");
         $this->assign("nav_type", 1);
         return $this->fetch();
+    }
+
+    private function getImageUrl($path)
+    {
+        $url = "";
+        if (!empty($path)) {
+            $path = explode('\\',$path);
+            $url = '/uploads/' . $path[0] . '/' . $path[1];
+        }
+        return $url;
     }
 
     public function register()//02注册
@@ -77,12 +100,25 @@ class IndexController extends Controller
 
     public function resetPassword()
     {
+        $code = request()->param("captcha_code");
+        $captcha = $this->captcha;
+
+        if (!$captcha->check($code)) {
+            return redirect('/forgot_password')->with('error', '验证码不正确');
+        }
+
+        $mvc = request()->param("mobile_verify_code");
+        if ($mvc != session('mobile_verify_code')) {
+            return redirect('/forgot_password')->with('error', '手机验证码不正确');
+        }   
+
         $phone = request()->post("mobile");
         $user = UserModel::where('mobile', $phone)->find();
-        if (empty($user)) return $this->redirect('/forgot_password')->with('temp', json_encode(input('post.')));
+        if (empty($user)) return redirect('/forgot_password')->with('error', '手机号码不存在');
+
         $user->password = md5(request()->post('password'));
         $user->save();
-        return $this->redirect('/login_form');
+        return redirect('/login_form');
     }
 
     public function login()//04登录

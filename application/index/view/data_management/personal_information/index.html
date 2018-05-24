@@ -229,8 +229,6 @@
         $("input[name=gender][value={$user_data[0]['sex']}]").prop("checked", true);
 
         var readonly = $("new_mobile").attr("readonly");
-
-
     })
 
     $("#personal_form").submit(function (e) {
@@ -381,8 +379,10 @@
                     // console.log("" + mode + "-text:" + result.text);
                     // $("#new_mobile").focus();
                 } else {
-                    // console.log("" + mode + "-code:" + result.code);
-                    // console.log("" + mode + "-text:" + result.text);
+
+                    console.log("" + mode + "-code:" + result.code);
+                    console.log("" + mode + "-text:" + result.text);
+                  
                     if (mode == 1) {
                         time($("#oldMobileVerifyCodeButton"), 60);
                     }

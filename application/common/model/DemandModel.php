@@ -297,9 +297,11 @@ class DemandModel extends Model
 
     public static function getPublishedListWhereClause($query,$demand_type,$time_from,$time_to)
     {
-        $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
-                ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
-                ->where('d.user_id',session('user_id'));
+        $query
+            ->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'" or
+                'DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
+            ->where('dt.pid',$demand_type)
+            ->where('d.user_id',session('user_id'));
 
         if ($demand_type == 0)
             $query->where('d.id','>=',0);
@@ -354,13 +356,8 @@ class DemandModel extends Model
             $query->where('d.id','>=',0);
         else
             $query->where('dt.pid',$demand_type);
-         //or usage
-//        $query->where('(DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>= :time_from or DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<= :time_to)
-//                    and dt.pid = :demand_type', ['time_from'=>$time_from, 'time_to'=>$time_to, 'demand_type' => $demand_type]);
         return $query;
     }
-
-
 
     public static  function getUnderkenAllist($demand_type,$time_from,$time_to)
     {

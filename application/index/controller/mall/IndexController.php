@@ -52,9 +52,9 @@ class IndexController extends Controller
     }
     public function search($product_name=null)
     {
-        $product_type = \request()->product_type;
-        $time_money = \request()->time_money;
-        $key = \request()->key;
+        $product_type = request()->product_type;
+        $time_money = request()->time_money;
+        $key = request()->key;
         if (is_null($product_type)) $product_type = 0;
         if (is_null($time_money))   $time_money = 1;
         if (is_null($key))          $key = 1;
@@ -96,9 +96,9 @@ class IndexController extends Controller
         $result = $result->select()->toArray();
         foreach ($result as $key => $value)
         {
-            $result[$key]['comments'] = ProductReviewModel::where([/*'user_id' => 1,*/ 'product_id' => $value['id']])->count();
+            $result[$key]['comments'] = ProductReviewModel::where(['product_id' => $value['id']])->count();
             if (Session::has('user_id')){
-                $result[$key]['state'] = CartModel::where(['state'=>1,'product_id'=>$value['id'],'user_id'=>session('user_id')])->select()->count() > 0 ? false : true ;
+                $result[$key]['state'] = CartModel::where(['product_id'=>$value['id'],'user_id'=>session('user_id')])->select()->count() > 0 ? false : true ;
                 $result[$key]['auth'] = true;
             }
             else {

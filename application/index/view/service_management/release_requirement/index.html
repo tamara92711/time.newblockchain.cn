@@ -395,10 +395,6 @@
         //javascript 2018-05-20 get
         $("#published_time").val( new Date().toJSON().slice(0,10));
 
-        var checked_id = $("input[name='candidate']:checked").val();
-        var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
-        var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
-
         var region1_default_id = $("#contact_region1_default_id").val();
         $("#region_1").val(region1_default_id);
 
@@ -478,12 +474,10 @@
 
     }
 
-
-
     function region1Change()
     {
         var region1=$("#region_1").val();
-        // console.log(region1);
+
         var container = $('#district');
         $.ajax({
             url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
@@ -499,7 +493,7 @@
                 container.html(dataHtml);
                 //set as default region2_id default selected in addresslist
                 $("#district").val($("#contact_region2_default_id").val());
-
+                
             }
         })
     }
@@ -554,7 +548,26 @@
     /*
         User show one item of address detail
      */
+    function insertAddress()
+    {
+        var checked_id = $("input[name='candidate']:checked").val();
+        var contact_region1_id = $("#contact_region1_id_"+checked_id).val();
+        var contact_region2_id = $("#contact_region2_id_"+checked_id).val();
+        var contact_onlyDetail_id = $("#contact_onlyDetail_"+checked_id).val();
+        var contact = $("#contact"+checked_id).val();
+        var contact_phone = $("#contact_phone_"+checked_id).val();
 
+        $("#receiver").modal('hide');
+        $("#region_1").val(contact_region1_id);
+        // $("#district").val(contact_region2_id);
+        $("#detail_address").val(contact_onlyDetail_id);
+
+        $("#contact").val(contact);
+        $("#contact_phone").val(contact_phone);
+
+        $("#region_1").change()
+        $("#district").val(contact_region2_id);
+    }
     //compare function wheater one field >= other field
     jQuery.validator.addMethod("greaterThan", function(value, element, params) {
         if ($(params[0]).val() != '') {

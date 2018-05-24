@@ -5,19 +5,19 @@
                 <div class="footer-cell">
                     <div>友情链接</div>
                     <div>
-                        <p>某企业名称</p>
-                        <p>某企业名称</p>
-                        <p>某公益机构名称</p>
-                        <p>某公益机构名称</p>
+                         {foreach :model('link')->where(['is_deleted' => 0, 'is_show' => 1])->limit(4)->select() as $key=>$item } 
+                            <p><a href="{$item->url}">{$item->name}</a></p>
+                         {/foreach}
                     </div>
                 </div>
                 <div class="footer-cell">
                     <div>帮助中心</div>
                     <div>
-                        <p><a href="">志愿者操作手册</a></p>
-                        <p><a href="">志愿者操作手册</a></p>
-                        <p><a href="">志愿者操作手册</a></p>
-                        <p><a href="">志愿者操作手册</a></p>
+                        {foreach :model('help_link')->where(['is_deleted' => 0, 'is_show' => 1])->limit(4)->select() as $key=>$item }
+                        <p>
+                            <a href="{$item->url}">{$item->name}</a>
+                        </p>
+                        {/foreach}
                     </div>
                 </div>
                 <div class="footer-cell">

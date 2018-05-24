@@ -277,22 +277,25 @@ class UserController extends Controller
 
     public function verify()
     {
-        // $code =input( 'get.captcha_code' );
-        // $captcha = new Captcha;
         $captcha = $this->captcha;
         $captcha->length = 4;
         $captcha->imageW = 120;
         $captcha->imageH = 35;
         $captcha->fontSize = 16;
-        $captcha->expire = 30;  //有效期
+        $captcha->expire = 3600;  //有效期
         $captcha->useNoise = true;  //不添加杂点
 
-
-        // $result1 = $captcha->entry($type);
-        // $result2 = $captcha->entry($type);
-        // $result3 = $captcha->entry("other type");
-
         return $captcha->entry();
+    }
+
+    function captcha_code_correct()
+    {
+        $code = request()->param('captcha_code');
+        $captcha = $this->captcha;
+        if (!$captcha->check($code)) {
+            return false;
+        }
+        return true;
     }
 
     public function realNameCorrect()

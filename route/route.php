@@ -8,8 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-
 use application\http\middleware\AuthMiddleware;
 
 Route::get('think', function () {
@@ -22,13 +20,15 @@ Route::get('hello/:name', 'index/hello');
 
 Route::resource('admin/links','@admin/links');
 
+Route::resource('admin/help','@admin/help');
+
 Route::resource('admin/volunteers','@admin/volunteers');
 
 //Route::get('index/data_management.address_manage/getregion2ByRegion1/:region1', '@index/data_management.address_manage/getregion2byregion1/:region1');
 
-Route::resource('admin/love_enterprise','admin/love_enterprise');
+Route::resource('admin/love_enterprise','@admin/love_enterprise');
 
-Route::resource('admin/love_enterprise','admin/charitable_organizations');
+Route::resource('admin/charitable_organizations','@admin/charitable_organizations');
 
 Route::resource('admin/advertise/trend_types','@admin/advertise/trend_types');
 
@@ -90,6 +90,7 @@ Route::post('delete_from_cart','@index/mall_management/my_collection/delete_from
 Route::post('apply_payment','@index/mall_management/my_collection/apply_payment');//->middleware('AuthMiddleware');
 
 Route::get('open_cart','@index/mall_management.my_collection/index')->middleware('AuthMiddleware');
+Route::get('orders','@index/mall_management.my_collection/get_orders');
 Route::get('order_published','@index/mall_management.my_collection/published_orders_view')->middleware('AuthMiddleware');
 Route::post('purchase_view','@index/mall_management.my_collection/purchase_view')->middleware('AuthMiddleware');
 
@@ -133,11 +134,11 @@ Route::get('verify', '@index/data_management.verify/index')->middleware('AuthMid
 
 Route::resource('index/index/love_enterprise','@index/index/love_enterprise');
 
-Route::get('love_enterprise', '@index/index.love_enterprise/index')->middleware('AuthMiddleware');
+Route::get('love_enterprise', '@index/index.love_enterprise/index');
 
 Route::resource('index/index/charitable_organization','@index/index/charitable_organization');
 
-Route::get('charitable_organization','@index/index.charitable_organization/index')->middleware('AuthMiddleware');
+Route::get('charitable_organization','@index/index.charitable_organization/index');
 
 Route::resource('index/index/complaints','@index/index/complaints');
 
@@ -149,7 +150,7 @@ Route::get('volunteers', '@index/index.volunteer_grace/index');
 
 Route::resource('index/index/news_center','@index/index/news_center');
 
-Route::get('/news_center', '@index/index.news_center/index')->middleware('AuthMiddleware');
+Route::get('/news_center', '@index/index.news_center/index');
 
 Route::get('/membercenter','index/index/membercenter')->middleware('AuthMiddleware');
 
@@ -181,11 +182,11 @@ Route::resource('index/project/project_expired','@index/project/project_expired'
 
 Route::resource('index/mall/index','@index/mall/index');
 
-Route::get('mall','@index/mall.index/index')->middleware('AuthMiddleware');
+Route::get('mall','@index/mall.index/index');
 
-Route::get('about_us', '@index/about_us.index/index')->middleware('AuthMiddleware');
+Route::get('about_us', '@index/about_us.index/index');
 
-Route::get('local_agencies', '@index/about_us.local_agencies/index')->middleware('AuthMiddleware');
+Route::get('local_agencies', '@index/about_us.local_agencies/index');
 
-Route::get('recruitment_information', '@index/about_us.recruitment_information/index')->middleware('AuthMiddleware');
+Route::get('recruitment_information', '@index/about_us.recruitment_information/index');
 
