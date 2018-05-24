@@ -1,14 +1,17 @@
 <?php
 namespace app\index\controller;
 use app\index\validate\User;
+use think\Db;
 use think\Controller;
 use think\captcha\Captcha;
+
+use app\common\model\CharitableOrganizationModel;
 use app\common\model\DemandModel;
-use app\common\model\RegionModel;
 use app\common\model\DemandTypeModel;
+use app\common\model\MessageModel;
 use app\common\model\NewsModel;
 use app\common\model\NewsTypeModel;
-use app\common\model\CharitableOrganizationModel;
+use app\common\model\RegionModel;
 use app\common\model\UserModel;
 
 
@@ -223,6 +226,32 @@ class IndexController extends Controller
         $this->assign("side_nav", "");
         $this->assign("nav_type", 0);
         return $this->fetch();
+    }
+
+    public function get_messages()
+    {
+        $user_id = session('user_id');
+        $state = request()->state;
+
+        $search_criteria = [];
+        $search_criteria['receiver_id'] = $user_id;
+        if ($state != 2) $search_criteria['state'] = $state;
+        // $messages = MessageModel::where($search_criteria)->order('create_time desc')->select();
+        $messages = Db::table('qkl_message')
+                        ->alias('m')
+                        ->field('m.id, m.title, u.name, m.create_time ctime, m.state, m.content')
+                        ->join('qkl_user u', 'u.id = m.sender_id')
+                        ->where($search_criteria)
+                        ->order('m.id desc')
+                        ->select();
+
+        return json_encode(['data' => $messages]);
+    }
+
+    public function message_count() {
+        $user_id = session('user_id');
+        $cnt = MessageModel::where(['receiver_id'=> $user_id, 'state' => 0])->select()->count();
+        return $cnt;
     }
 
     public function purchaseInterface()  //39购买界面

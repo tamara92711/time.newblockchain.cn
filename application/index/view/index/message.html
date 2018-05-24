@@ -10,15 +10,15 @@
         <div class="qk-portlet-content" style="width: 100%;padding-top: 25px;padding-left:25px;">
             <div class="row" style="margin-top: 0px; margin-left: 23px;">
                 <div class="cri-key " style="width: 48px;margin-top: -3px;margin-left: 7px;">选择：</div>
-                <input id="lx-1" class="radio-inline__input" type="radio" name="lx" value="item-1" >
+                <input id="lx-1" class="radio-inline__input" type="radio" name="lx" value="2" >
                 <label class="radio-inline__label mr10" for="lx-1" style="font-size: 16px;margin-left: 32px;margin-top: -7px;">
                     全部
                 </label>
-                <input id="lx-2" class="radio-inline__input" type="radio" name="lx" value="item-1" style="font-size: 16px;margin-left: 32px;margin-top: -7px;">
+                <input id="lx-2" class="radio-inline__input" type="radio" name="lx" value="1" style="font-size: 16px;margin-left: 32px;margin-top: -7px;">
                 <label class="radio-inline__label mr10" for="lx-2" style="font-size: 16px;margin-left: -2px;margin-top: -7px;">
                     已读
                 </label>
-                <input id="lx-3" class="radio-inline__input" type="radio" name="lx" value="item-1">
+                <input id="lx-3" class="radio-inline__input" type="radio" name="lx" value="0">
                 <label class="radio-inline__label mr10" for="lx-3" style="font-size: 16px;margin-left: -3px;margin-top: -7px;">
                     未读
                 </label>
@@ -43,51 +43,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>6</td>
-                            <td>
-                                <div class="checkbox checkbox-primary" style="padding-left:0px;">
-                                <input id="checkbox_6" type="checkbox">
-                                <label for="checkbox_6"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="/index/service_manage/message_details">内容标题内容标题内容标题内容标题</a>
-                            </td>
-                            <td>管理者</td>
-                            <td>2018-04-11 12:10</td>
-                            <td>已读</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>
-                                <div class="checkbox checkbox-primary" style="padding-left:0px;">
-                                    <input id="checkbox_5" type="checkbox">
-                                    <label for="checkbox_5"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="/index/service_manage/message_details">内容标题内容标题内容标题内容标题</a>
-                            </td>
-                            <td>管理者</td>
-                            <td>2018-04-11 12:10</td>
-                            <td>已读</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>
-                                <div class="checkbox checkbox-primary" style="padding-left:0px;">
-                                    <input id="checkbox_4" type="checkbox">
-                                    <label for="checkbox_4"></label>
-                                </div>
-                            </td>
-                            <td>
-                                <a href="/index/service_manage/message_details">内容标题内容标题内容标题内容标题</a>
-                            </td>
-                            <td>管理者</td>
-                            <td>2018-04-11 12:10</td>
-                            <td>已读</td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -112,7 +67,49 @@
                 $('#checkAll').prop('checked', false);
             }
         });
+
+        $('input[type=radio][name=lx]').prop("checked", false);
+        $('#lx-3').prop("checked", true);
+        search(0);//
+        $('input[type=radio][name=lx]').change(function () {
+            search($(this).val());
+        });
+        //$('input[type=radio][name=lx]').change();
     });
+
+    function search(state)
+    {
+        $.ajax({
+            url:"/index/index/get_messages",
+            method:"GET",
+            data: {state:state},
+            success: function(response) {
+                var mstate = ['未读', '已读'];
+                response = JSON.parse(response);
+                messages = response.data;
+                html = "";
+                for (var i = 0; i < messages.length; i++) {
+                    html += '<tr>' +
+                                '<td>' + (messages.length - i) + '</td >' +
+                                '<td>' +
+                                    '<div class="checkbox checkbox-primary" style="padding-left:0px;">' +
+                                        '<input id="checkbox_' + messages[i]['id'] + '" type="checkbox">' +
+                                        '<label for="checkbox_' + messages[i]['id'] + '"></label>' +
+                                    '</div>' +
+                                '</td>' +
+                                '<td>' +
+                                    '<a href="/index/service_manage/message_details">' + messages[i]['title'] + '</a>' +
+                                '</td>' +
+                                '<td>' + messages[i]['name'] + '</td>' +
+                                '<td>' + messages[i]['ctime'] + '</td>' +
+                                '<td>' + mstate[messages[i]['state']] + '</td>' +
+                            '</tr>';
+                }
+                if (html == "") html = "<tr><td colspan='6' style='text-align:center;font-size:20px;color:#ff5656'>没有消息</td></tr>";
+                $("tbody").html(html);
+            }
+        })
+    }
 
 </script>
 {/block}

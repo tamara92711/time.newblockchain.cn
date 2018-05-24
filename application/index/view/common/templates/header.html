@@ -20,9 +20,9 @@
                             <span class="badge badge-danger" style="margin-top: -28px;margin-left: 21px;position: absolute;" id="cart_cnt"></span>
                         </div>
                         <div class="alarm dropdown dropdown-extended dropdown-notification" id="alarm">
-                            <a href="/index/index/message" class="dropdown-toggle">
+                            <a href="/index/index/message" id="alarm_ref">
                                 <img src="/assets/img/alarm.png" />
-                                <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;">1</span>
+                                <span class="badge badge-danger" style="position: relative;top: -4px;right: 6px;" id="message_count"></span>
                             </a>
                         </div>
                         <div class="character" style="float:right">
@@ -90,18 +90,32 @@
 </div>
 <script>
     // setInterval(get_collection_count, 1000);
+    // setInterval(get_unread_message_count, 3000);
     function get_collection_count() {
         if (($("#cart_cnt").get()).length != 0) {
             $.ajax({
                 url: "/ajax_alarm_cart",
                 method: 'get',
                 success: function (res) {
-                    console.log('ajax');
                     if (res > 0)
                         $("#cart_cnt").html(res);
                 }
             });
         }
+    }
+
+    $("#alarm_ref").click(function(event) {
+
+    })
+    function get_unread_message_count() {
+        $.ajax({
+            url: "/message_count",
+            method: 'get',
+            success: function (res) {
+                if (res > 0)
+                    $("#message_count").html(res);
+            }
+        });
     }
 
     function open_cart() {
