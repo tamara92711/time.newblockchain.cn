@@ -74,10 +74,14 @@ Route::resource('admin/member/real_name_verify','@admin/member/real_name_verify'
 // Route::group('front');
 Route::get('clear_phone_verify_code_session', '@index/index/clear_phone_verify_code_session');
 Route::get('home', '@index/index/home');
+Route::get('message', '@index/index/message')->middleware('AuthMiddleware');
+Route::get('message_count', '@index/index/message_count');
+Route::get('message_details', '@index/service_manage/message_details')->middleware('AuthMiddleware');;
 Route::get('login_form','@index/user/login_form');
 Route::get('forgot_password','@index/user/forgot_password');
-Route::get('add_to_collection','@index/mall_management/my_collection/add_to_collection');
-Route::get('my_collection','@index/mall_manage/my_collection');
+Route::get('add_to_collection','@index/mall_management/my_collection/add_to_collection')->middleware('AuthMiddleware');;
+Route::get('my_collection','@index/mall_manage/my_collection')->middleware('AuthMiddleware');
+Route::get('add_new_certificate','@index/data_management.professional_certificate/create')->middleware('AuthMiddleware');
 Route::post('login','@index/user/submit_login');
 
 Route::get('register_form','@index/user/register_form');//->middleware('AuthMiddleware');
