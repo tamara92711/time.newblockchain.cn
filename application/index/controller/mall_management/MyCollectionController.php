@@ -276,6 +276,7 @@ class MyCollectionController extends Controller
         $collection->user_id = session('user_id');
         $collection->product_id = $product_id;
         $collection->save();
+        return "success";
     }
     /**
      * 保存新建的资源

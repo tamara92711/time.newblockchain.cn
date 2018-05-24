@@ -1,7 +1,4 @@
-{extend name="/common/templates/tpl-wo-sb2"}
-
-{block name="page-title"}关于我们{/block}
-{block name="main-part"}
+{extend name="/common/templates/tpl-wo-sb2"} {block name="page-title"}关于我们{/block} {block name="main-part"}
 <div class="containers">
     <div class="header-topic-container">
         <div class="aboutUs-topic"> 关于我们</div>
@@ -12,8 +9,8 @@
 
     <p class="topic-3">公司介绍</p>
     <div class="bb-red-dash" style="padding-bottom: 52px;">
-        <img src="/assets/img/35-1.png" style="float:left;"/>
-        <div  style="float:left;margin-top: 20px; margin-left: 20px;width: 550px;">关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍</div>
+        <img src="/assets/img/35-1.png" style="float:left;" />
+        <div style="float:left;margin-top: 20px; margin-left: 20px;width: 550px;">关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍关于我们的介绍</div>
         <div class="clearfix"></div>
     </div>
 
@@ -21,8 +18,24 @@
     <p class="topic-3" style="margin-top: 45px;">联系我们</p>
     <p>联系电话：400-000-000</p>
     <p>公司地址：某某市某某区某某街道某某大楼某某号4-5</p>
+
+    <div id="bmap" style="width:100%;height:423px">
+    </div>
 </div>
-{/block}
-{block name="custom-css"}
-<link href="/assets/css/index/about_us/index.css" rel="stylesheet" type="text/css" />
-{/block}
+{/block} {block name="custom-css"}
+<link href="/assets/css/index/about_us/index.css" rel="stylesheet" type="text/css" /> {/block} 
+{block name="custom-js"}
+<script src="http://api.map.baidu.com/api?v=2.0&ak=sHQs4xHdQO4yEy6NRUU4bnfenqtsPR49"></script>
+<script>
+    var map = new BMap.Map("bmap");
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+    var myGeo = new BMap.GeoCoder();
+    myGeo.getPoint(value.address, function (point) {
+        if (point) {
+            map.centerAndZoom(point, 16);
+            map.addOverlay(new BMap.Marker(point));
+        } else {
+            alert("");
+        }
+    }, "北京市");
+</script> {/block}

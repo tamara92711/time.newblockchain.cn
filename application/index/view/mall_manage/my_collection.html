@@ -12,151 +12,73 @@
 
     <div class="qk-portlet-content" style="padding:20px;padding-bottom: 66px;padding-right: 0px;">
         <div class="row">
-            {foreach $collection as $key=>product}
-            {/foreach}
+            {foreach $collection as $key=>$product}
             <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png"/>
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：<span class="price-value">100.00</span></p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
+                <img class="product-image" src="{$product['thumbnail']}" />
+                <p class="product-desc">{$product['description']}</p>
                 <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
+                    <span class="price-value">{$product['price']}</span>
                 </p>
                 <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
+                    <a href="#" role="button" class="btn btn-danger add-to-cart" onclick="add_cart({$product['id']})">加入购物车</a>
+                    <a href="#" role="button" class="btn btn-danger buy-now" onclick="order({$product['id']})">立即购买</a>
                 </div>
             </div>
-
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
-            <div class="col">
-                <img class="product-image" src="/assets/img/cart-image.png" />
-                <p class="product-desc">原创设计北欧简约床边挂袋毛毡 遥控器平板寝室卧室沙发整理</p>
-                <p class="product-price">时间币：
-                    <span class="price-value">100.00</span>
-                </p>
-                <div class="actions">
-                    <a href="#" role="button" class="btn btn-danger add-to-cart">加入购物车</a>
-                    <a href="#" role="button" class="btn btn-danger buy-now">立即购买</a>
-                </div>
-            </div>
-            
+            {/foreach}            
         </div>
     </div>
 </div> 
+{/block}
+
+{block name="custom-js"}
+<script>
+    function add_cart(id) {
+        $.ajax({
+            url: '/add_to_cart',
+            method: 'post',
+            data: 'id=' + id,
+            success: function (response) {
+
+                if (response == "need_auth") {
+                    $.alert({
+                        title: '需要登录',
+                        content: '这个操作需要会员登录！',
+                    })
+                    document.location = '/login_form';
+                }
+                else if (response == "already exist") {
+                    $.alert({
+                        title: '已经存在',
+                        content: '商品已经存在购物车里!.',
+                    })
+                }
+
+            },
+            error: function (error) {
+                console.log(error);
+                product_json.items[id - 1].state = true;
+            }
+        });
+
+    }
+
+    function order(id) {
+        var ids = "" + id;
+        console.log(ids);
+        if (ids.length == 0) {
+            alert("请选择产品");
+            return 0;
+        }
+
+
+        var form = $("<form method='post'></form>");
+        form.attr({ "action": '/purchase_view' });
+        var input1 = $("<input type='hidden'>");
+        input1.attr("name", 'ids');
+        input1.val(ids);
+        form.append(input1);
+        $(document.body).append(form);
+        form.submit();
+    }
+</script>
 {/block}
