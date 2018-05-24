@@ -66,7 +66,7 @@ class IndexController extends Controller
         if (is_null($time_money))   $time_money = 1;
         if (is_null($key))          $key = 1;
 
-        $result = ProductModel::where("is_deleted", 0);
+        $result = ProductModel::where("is_deleted", 0);//->limit(5);
         switch ($time_money)
         {
             case 1:
@@ -76,25 +76,26 @@ class IndexController extends Controller
                 $result->where('price','between','0,50');
                 break;
             case 3:
-                $result->where('price','between','51,100');
+                $result->where('price','between','50,100');
                 break;
             case 4:
                 $result->where('price','between','100,200');
                 break;
             case 5:
-                $result->where('price','>','200');
+                $result->where('price','>=','200');
                 break;
         }
         if($product_type == 0)
             $result->where('type','>',$product_type);
         else
             $result->where('type',$product_type);
+
         if (!empty($key))
         {
             if ($key == 1 )
-                $result->wherelike('name','%%');
+                $result->wherelike('description','%%');
             else
-                $result ->whereLike('name',$key.'%');
+                $result ->whereLike('description',$key.'%');
         }
 
 
