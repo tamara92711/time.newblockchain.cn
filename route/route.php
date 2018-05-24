@@ -76,6 +76,8 @@ Route::get('clear_phone_verify_code_session', '@index/index/clear_phone_verify_c
 Route::get('home', '@index/index/home');
 Route::get('login_form','@index/user/login_form');
 Route::get('forgot_password','@index/user/forgot_password');
+Route::get('add_to_collection','@index/mall_management/my_collection/add_to_collection');
+Route::get('my_collection','@index/mall_manage/my_collection');
 Route::post('login','@index/user/submit_login');
 
 Route::get('register_form','@index/user/register_form');//->middleware('AuthMiddleware');

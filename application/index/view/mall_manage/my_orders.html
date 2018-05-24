@@ -1,0 +1,183 @@
+{extend name="/common/templates/tpl-w-sb"}
+{block name="page-title"}我的订单{/block}
+{block name="custom-css"}
+<link rel="stylesheet" href="/assets/css/index/mallmanage/my_orders.css"> 
+{/block}
+{block name="main-part"}
+<div class="qk-portlet">
+    <div class="qk-portlet-title" style="padding-left:27px;padding-top:13px;height:50px;">
+        <img class="qk-portlet-title-img" src="/assets/img/order_list.png" style="margin-right: 6px;" />
+        <span class="qk-portlet-title-text">我的订单</span>
+    </div>
+    <div class="qk-portlet-content" style="padding:20px;padding-bottom: 66px;">
+        <div class="row" style="margin:0px;padding:0px;height:40px;margin-bottom:35px">
+            <div class="row" id="all-orders">
+                <div class="col-md-3">全部订单</div>
+                <div class="col-md-3">待付款(2)</div>
+                <div class="col-md-3">待收货(3)</div>
+                <div class="col-md-3">待评价(0)</div>
+            </div>
+            <div class="gap"></div>
+            <div class="row" id="search-orders">
+                <span>查询时间：</span>
+                <input type="text" class="form-control calendar" id="time_from" name="time_from"/>
+                <span id="fromto">至</span>
+                <input type="text" class="form-control calendar" id="time_to" name="time_to"/>
+                <button class="btn search-button">查询</button>
+            </div>
+        </div>
+        <div class="row" id="order-list-header">
+            <div class="hitem" style="width:466px">订单详情</div>
+            <div class="vline"></div>
+            <div class="hitem" style="width:126px">收货人</div>
+            <div class="vline"></div>
+            <div class="hitem" style="width:140px">金额</div>
+            <div class="vline"></div>
+            <div class="hitem">
+                <select id="order-status" class="form-control">
+                    <option>全部状态</option>
+                    <option>待付款</option>
+                    <option>待收货</option>
+                    <option>待评价</option>
+                    <option>已完成</option>
+                    <option>已取消</option>
+                </select>
+            </div>
+        </div>
+        <div id="order-list">
+            <div class="order-box">
+                <div class="order-item">
+                    <div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">
+                        <div class="col-md-3">2018-04-03 12:12:12</div>
+                        <div class="col-md-9">订单编号：1234123412344</div>
+                    </div>
+                    <div class="order-item-body row">
+                        <div class="order-detail row">
+                            <img src="/assets/img/order-detail-image.png" class="order-image" />
+                            <div>北欧门口超薄翻斗鞋柜简约现代门厅玄关柜实 木大容量17cm省空间</div>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-receiver">
+                            <p>收货人姓名</p>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-amount">
+                            <p class="amount">
+                                <span class="currency">￥</span>560</p>
+                            <span class="label label-default">支付宝支付</span>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-status">
+                            <span class="status-text">待收货</span>
+                            <div class="status-info">
+                                <p>韵达快递</p>
+                                <p>3905941819433</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-box">
+                <div class="order-item">
+                    <div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">
+                        <div class="col-md-3">2018-04-03 12:12:12</div>
+                        <div class="col-md-9">订单编号：1234123412344</div>
+                    </div>
+                    <div class="order-item-body row">
+                        <div class="order-detail row">
+                            <img src="/assets/img/order-detail-image.png" class="order-image" />
+                            <div>北欧门口超薄翻斗鞋柜简约现代门厅玄关柜实 木大容量17cm省空间</div>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-receiver">
+                            <p>收货人姓名</p>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-amount">
+                            <p class="amount">
+                                <span class="currency">￥</span>560</p>
+                            <span class="label label-default">支付宝支付</span>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-status">
+                            <span class="status-text">待收货</span>
+                            <div class="status-info">
+                                <p>韵达快递</p>
+                                <p>3905941819433</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-box">
+                <div class="order-item">
+                    <div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">
+                        <div class="col-md-3">2018-04-03 12:12:12</div>
+                        <div class="col-md-9">订单编号：1234123412344</div>
+                    </div>
+                    <div class="order-item-body row">
+                        <div class="order-detail row">
+                            <img src="/assets/img/order-detail-image.png" class="order-image" />
+                            <div>北欧门口超薄翻斗鞋柜简约现代门厅玄关柜实 木大容量17cm省空间</div>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-receiver">
+                            <p>收货人姓名</p>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-amount">
+                            <p class="amount">
+                                <span class="currency">￥</span>560</p>
+                            <span class="label label-default">支付宝支付</span>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-status">
+                            <span class="status-text">待收货</span>
+                            <div class="status-info">
+                                <p>韵达快递</p>
+                                <p>3905941819433</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-box">
+                <div class="order-item">
+                    <div class="order-item-header row" style="margin-top:0px;border-bottom:1px dashed #ffbaba;padding-bottom:14px">
+                        <div class="col-md-3">2018-04-03 12:12:12</div>
+                        <div class="col-md-9">订单编号：1234123412344</div>
+                    </div>
+                    <div class="order-item-body row">
+                        <div class="order-detail row">
+                            <img src="/assets/img/order-detail-image.png" class="order-image" />
+                            <div>北欧门口超薄翻斗鞋柜简约现代门厅玄关柜实 木大容量17cm省空间</div>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-receiver">
+                            <p>收货人姓名</p>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-amount">
+                            <p class="amount">
+                                <span class="currency">￥</span>560</p>
+                            <span class="label label-default">支付宝支付</span>
+                        </div>
+                        <div class="vline1"></div>
+                        <div class="order-status">
+                            <span class="status-text">待收货</span>
+                            <div class="status-info">
+                                <p>韵达快递</p>
+                                <p>3905941819433</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{/block}
