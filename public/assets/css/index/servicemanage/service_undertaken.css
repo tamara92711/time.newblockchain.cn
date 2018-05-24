@@ -60,8 +60,15 @@ select.form-control:not([size]):not([multiple]) {
     padding-top: 11px;
     padding-bottom: 9px;
     text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
+table{
+    width: 100%;
+    table-layout: fixed
+}
 .modal-title {
     color: #ff5656;
     font-size: 18px;

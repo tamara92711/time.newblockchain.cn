@@ -480,4 +480,60 @@ class DemandModel extends Model
         return $zeorString.$member_id;
     }
 
+    /*
+    * freelancer bided project that publisher offer,but count of publisher don't select biding freelancer
+    */
+    public static  function calculateFreelancerStatics_1()
+    {
+        $unAppliedCnt = Db::table('qkl_demand d')
+            ->where('d.applied_user_id','<>',session('user_id'))
+            ->where('a.user_id',session('user_id'))
+            ->join('qkl_apply a','d.id = a.demand_id')
+            ->count();
+
+        return $unAppliedCnt;
+
+    }
+    /*
+     *  complete ,progress , waiting count get
+    */
+    public static  function calculateFreelancerStatics_2()
+    {
+        $result = Db::query("SELECT   CASE WHEN (is_reviewed = 3) THEN COUNT(1) ELSE 0 END AS completeCount,
+                                                CASE WHEN (is_reviewed = 0) THEN COUNT(1) ELSE 0 END AS progressCount,
+                                                CASE WHEN (is_reviewed = 1) THEN COUNT(1) ELSE 0 END AS waitingCount
+                                                FROM qkl_demand
+                                                WHERE state = 3 AND applied_user_id =".session('user_id'));
+
+        return $result;
+
+    }
+
+    public static  function calculatePublisherUnBidCount()
+    {
+        $unBidCnt = Db::table('qkl_demand d')
+            ->where('d.user_id',session('user_id'))
+            ->where('a.demand_id','null')
+            ->leftJoin('qkl_apply a','d.id = a.demand_id')
+            ->count();
+
+        return $unBidCnt;
+
+    }
+
+    /*
+     *  complete ,progress , waiting count get
+    */
+    public static  function calculatePublisherStatics_2()
+    {
+        $result = Db::query("SELECT CASE WHEN (is_reviewed = 3) THEN COUNT(1) ELSE 0 END AS completeCount,
+                                        CASE WHEN (is_reviewed = 0) THEN COUNT(1) ELSE 0 END AS progressCount,
+                                        CASE WHEN (is_reviewed = 2) THEN COUNT(1) ELSE 0 END AS waitingCount
+                                        FROM qkl_demand
+                                        WHERE state = 3 AND user_id =".session('user_id'));
+
+        return $result;
+
+    }
+
 }

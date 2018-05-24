@@ -120,13 +120,18 @@ $(document).ready(function () {
                 else if (result == "fail")
                 {
                     $("label#captcha_error").text("验证码错误").show();
-                    // $("input#captcha").focus();
+
                 }
 
             }
         })
     });
 
+    // function refreshVerify() {
+    //     var ts = Date.parse(new Date())/1000;
+    //     var img = document.getElementById('verify_img');
+    //     img.src = "/captcha?id="+ts;
+    // }
     function validation() {
         $('.error').hide();
         var complaint_title = $("input#complaint_title").val();

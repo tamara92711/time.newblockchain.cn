@@ -32,3 +32,8 @@ p .subtitle {
 .yellow-content {
     margin-left: 26px;
 }
+
+table{
+    width: 100%;
+    table-layout: fixed;
+}

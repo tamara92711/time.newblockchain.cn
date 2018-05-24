@@ -59,12 +59,20 @@ select.form-control:not([size]):not([multiple]) {
     border-top: 1px dotted grey;
 }
 
+table{
+    width: 100%;
+    table-layout: fixed;
+}
+
 .qk-portlet-content-1 > table > tbody > tr > td {
     font-family: ms-yahei-regular;
     font-size: 14px;
     padding-top: 11px;
     padding-bottom: 9px;
     text-align: center;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 .modal-title {

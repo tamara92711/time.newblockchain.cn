@@ -285,18 +285,7 @@ class ReleaseRequirementController extends Controller
         $captcha->expire = 30;  //有效期
         $captcha->useNoise = true;  //不添加杂点
 
-
         return $captcha->entry();
     }
 
-//    public function check($value = '')
-//    {
-//        $captcha = new Captcha();
-//        if (!$captcha->check($value)) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//
-//    }
 }
