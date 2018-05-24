@@ -128,12 +128,15 @@ class MyCollectionController extends Controller
         $trans2->user1_id = 0;
         $trans2->amount = $amount;
         $trans2->action = 1;
-        $trans2->transaction_type = 1;
+        $trans2->transaction_type = 3;
         $trans2->state = 1;
         $trans2->rate = 1;
-        $trans2->balance = UserModel::get(1)->total_amount;
+        // $trans2->balance = UserModel::get(1)->total_amount;
         $trans2->currency_type = 1;
 
+        $trans1->save();
+        $trans2->save();
+        
         return redirect('/order_published');
     }
 
