@@ -9,21 +9,21 @@ How to install project
 
 Available Urls implemented right now (for test)
 ===============================================
-+ /index/index/home                         01首页
-+ /index/index/register                     02注册
-+ /index/index/login                        04登录
-+ /index/index/forgotPassword               03忘记密码
-+ /index/index/memberCenter                 05会员中心
++ /home                         01首页
++ /register_form                     02注册
++ /login_form                        04登录
++ /forgotPassword               03忘记密码
++ /memberCenter                 05会员中心
 + /index/index/projectPublishing            14项目详细页(发布中)
 + /index/index/projectAccepted              15项目详细页(已承接)
 + /index/index/projectComplete              16项目详细页(已完成)
 + /index/index/projectCancel                17项目详细页(已取消)
-+ /index/index/complaintSuggestions         29投诉与建议
-+ /index/index/newsCenter                   30新闻中心
-+ /index/index/loveEnterprise               31爱心企业
-+ /index/index/chairtableOrganization       32慈善公益组织
-+ /index/index/volunteerGrace               33志愿者
-+ /index/index/publicWelfareMall            34公益商城
++ /complaints       29投诉与建议
++ /news_center                   30新闻中心
++ /love_enterprise               31爱心企业
++ /chairtable_organization       32慈善公益组织
++ /volunteers               33志愿者
++ /mall            34公益商城
 + /index/index/addNewCertificate            44新增证书
 + /index/index/message                      40消息
 + /index/index/purchaseInterface            39购买界面
