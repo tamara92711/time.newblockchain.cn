@@ -164,7 +164,7 @@
                 $.each(response, function (index, item) {
 
                     dataHtml += '<div class="col">\n' +
-                        '        <img src="' + item[0].thumbnail + '" width="266px" height="267px"/>\n' +
+                        '        <a href="/index/mall.index/product_detail/"><img src="' + item[0].thumbnail + '" width="266px" height="267px"/></a>\n' +
                         '        <div class="contents">\n' +
                         '            <p>\n' +
                         '                <span>总销量：' + item[0].sales_count + '</span>\n' +
@@ -177,7 +177,7 @@
                         '            </p>\n' +
                         '            <div class="actions">\n' +
                         '                <a id="add_cart_button_' + item[0].id +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[0].id +')">加入购物车</a>\n' +
-                        '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                        '                <a role="button" class="btn btn-danger buy-now" onclick="order(' + item[0].id + ')">立即购买</a>\n' +
                         '            </div>\n' +
                         '        </div>\n' +
                         '    </div>';
@@ -185,7 +185,7 @@
                     {
 
                         dataHtml += '    <div class="col">\n' +
-                            '        <img src="' + item[1].thumbnail + '" width="266px" height="267px"/>\n' +
+                            '        <a href="/index/mall.index/product_detail/"><img src="' + item[1].thumbnail + '" width="266px" height="267px"/></a>\n' +
                             '        <div class="contents">\n' +
                             '            <p>\n' +
                             '                <span>总销量：' + item[1].sales_count + '</span>\n' +
@@ -198,7 +198,7 @@
                             '            </p>\n' +
                             '            <div class="actions">\n' +
                             '                <a id="add_cart_button_' + item[1].id +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[1].id +')">加入购物车</a>\n' +
-                            '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '                <a role="button" class="btn btn-danger buy-now" onclick="order(' + item[1].id + ')">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
                             '    </div>';
@@ -207,7 +207,7 @@
                     {
 
                         dataHtml += '    <div class="col">\n' +
-                            '        <img src="' + item[2].thumbnail + '" width="266px" height="267px"/>\n' +
+                            '        <a href="/index/mall.index/product_detail/"><img src="' + item[2].thumbnail + '" width="266px" height="267px"/></a>\n' +
                             '        <div class="contents">\n' +
                             '            <p>\n' +
                             '                <span>总销量：' + item[2].sales_count + '</span>\n' +
@@ -221,7 +221,7 @@
                             '            </p>\n' +
                             '            <div class="actions">\n' +
                             '                <a id="add_cart_button_' + item[2].id +'" role="button" class="btn btn-danger add-to-cart" onclick="add_cart('+item[2].id+')">加入购物车</a>\n' +
-                            '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '                <a role="button" class="btn btn-danger buy-now" onclick="order(' + item[2].id + ')">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
                             '    </div>';
@@ -230,7 +230,7 @@
                     {
 
                         dataHtml += '<div class="col" style="margin-right: 0px;">\n' +
-                            '        <img src="' + item[3].thumbnail + '" width="266px" height="267px"/>\n' +
+                            '        <a href="/index/mall.index/product_detail/"><img src="' + item[3].thumbnail + '" width="266px" height="267px"/></a>\n' +
                             '        <div class="contents">\n' +
                             '            <p>\n' +
                             '                <span>总销量：' + item[3].sales_count + '</span>\n' +
@@ -243,7 +243,7 @@
                             '            </p>\n' +
                             '            <div class="actions">\n' +
                             '                <a id="add_cart_button_'+ item[3].id  +'" role="button" class="btn btn-danger add-to-cart"" onclick="add_cart(' + item[3].id +')">加入购物车</a>\n' +
-                            '                <a role="button" class="btn btn-danger buy-now">立即购买</a>\n' +
+                            '                <a role="button" class="btn btn-danger buy-now" onclick="order(' + item[3].id + ')">立即购买</a>\n' +
                             '            </div>\n' +
                             '        </div>\n' +
                             '    </div>';
@@ -362,8 +362,23 @@
         });
 
     }
+    function order(id) {
+            var ids = "" + id;
+            console.log(ids);
+            if (ids.length == 0) {
+                alert("请选择产品");
+                return 0;
+            }
 
 
-
+            var form = $("<form method='post'></form>");
+            form.attr({ "action": '/purchase_view' });
+            var input1 = $("<input type='hidden'>");
+            input1.attr("name", 'ids');
+            input1.val(ids);
+            form.append(input1);
+            $(document.body).append(form);
+            form.submit();
+        }
 </script> 
 {/block}

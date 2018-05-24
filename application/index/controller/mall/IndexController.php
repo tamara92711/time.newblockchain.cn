@@ -24,6 +24,13 @@ class IndexController extends Controller
         return $this->fetch();
     }
 
+    public function product_detail()
+    {
+        $this->assign('header_nav', 'mall');
+        $this->assign("nav_type", 1);
+        return $this->fetch();
+    }
+
     /**
      * 显示创建资源表单页.
      *
