@@ -49,6 +49,7 @@
 {/block} {block name="custom-js"}
 <script src="/assets/datepicker/datepicker.js" type="text/javascript"></script>
 <script src="/assets/js/common/common.js" type="text/javascript"></script>
+<script src="/assets/js/popper.min.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         $("#time_from").datepicker({
@@ -98,23 +99,24 @@
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-receiver">' +
-                                            '<p data-toggle="tooltip" title="Some title" data-placement="bottom" >' + data[i]['name'] + '</p>' +
+                                            '<p data-toggle="tooltip" title="Some title" data-placement="bottom" id="tt_' + data[i]['id'] + '" tt-name="' + data[i]['name'] + '" tt-mobile="' + data[i]['phone'] + '" tt-address="' +data[i]['address'] + '">' + data[i]['name'] + '</p>' +
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-amount">' +
                                             '<p class="amount">' + data[i]['total_amount'] + '</p>' +
-                                            // '<span class="label label-default">支付宝支付</span>' +
                                         '</div>' +
                                         '<div class="vline1"></div>' +
                                         '<div class="order-status">' +
-                                            '<span class="status-text">待收货</span>' +
+                                            '<span class="status-text-' + data[i]['sid'] + '">待收货</span>' +
                                         '</div>' +
                                     '</div>' +
                                 '</div>' +
                             '</div>';
+                    
                 }
                 $("#order-list").html(html);
-                $(".status-text").after('<div class="status-info"><p>韵达快递</p><p>3905941819433</p></div>');
+                $(".status-text-2").after('<div class="status-info"><p>韵达快递</p><p>3905941819433</p></div>');
+                $('[data-toggle="tooltip"]').tooltip();
             }
         })
     }

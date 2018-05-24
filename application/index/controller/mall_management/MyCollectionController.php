@@ -9,9 +9,11 @@ use app\common\model\CartModel;
 use app\common\model\AddressModel;
 use app\common\model\OrdersModel;
 use app\common\model\OrdersRootModel;
-use app\common\model\RegionModel;
-use app\common\model\UserModel;
 use app\common\model\ProductModel;
+use app\common\model\RegionModel;
+use app\common\model\TransactionUserModel;
+use app\common\model\UserModel;
+
 use think\facade\Session;
 
 class MyCollectionController extends Controller
@@ -72,14 +74,15 @@ class MyCollectionController extends Controller
 
     public function order(Request $request) 
     {
+        $user_id = session('user_id');
         $image_added = false;
         $address_id = $request->post('address');
         $data = $request->post('ids');
         $ids = explode(',',$data);
-        $carts = CartModel::alias('cart')->field('cart.*, qkl_product.type, qkl_product.name, qkl_product.price,qkl_product.description')->where('state','1')->whereIn('product_id',$ids)->where('user_id', session('user_id'))->join('qkl_product','qkl_product.id = cart.product_id')->select();
+        $carts = CartModel::alias('cart')->field('cart.*, qkl_product.type, qkl_product.name, qkl_product.price,qkl_product.description')->where('state','1')->whereIn('product_id',$ids)->where('user_id', $user_id)->join('qkl_product','qkl_product.id = cart.product_id')->select();
 
         $order = new OrdersModel;
-        $order->user_id = session('user_id');
+        $order->user_id = $user_id;
         $order->contact_id = $address_id;
         $order->no = $this->randomString(13);
         $order->address_id = $address_id;
@@ -104,9 +107,32 @@ class MyCollectionController extends Controller
         $order->total_amount = $total_amount;
         $order->save();
 
-        $user = UserModel::get(session('user_id'));
+        $user = UserModel::get($user_id);
         $user->total_amount = $user->total_amount - $total_amount;
         $user->save();
+
+        $trans1 = new TransactionUserModel;
+        $trans1->user1_id = $user_id;
+        $trans1->user2_id = 0;
+        $trans1->amount = $total_amount;
+        $trans1->action = 0;
+        $trans1->transaction_type = 3;
+        $trans1->state = 1;
+        $trans1->rate = 1;
+        $trans1->balance = UserModel::get($user_id)->total_amount;
+        $trans1->currency_type = 1;
+        // $trans2->doUserTransaction($user1_id, 1, $amount, 1, 1, 1, 1);
+
+        $trans2 = new TransactionUserModel;
+        $trans2->user2_id = $user_id;
+        $trans2->user1_id = 0;
+        $trans2->amount = $amount;
+        $trans2->action = 1;
+        $trans2->transaction_type = 1;
+        $trans2->state = 1;
+        $trans2->rate = 1;
+        $trans2->balance = UserModel::get(1)->total_amount;
+        $trans2->currency_type = 1;
 
         return redirect('/order_published');
     }
@@ -142,7 +168,7 @@ class MyCollectionController extends Controller
         
         // $data = OrdersModel::where('create_time', '>=', $time_from)->where('create_time', '<=', $time_to)->where('status', $status)->select();
         $query = OrdersModel::alias('o')
-                ->field('o.total_amount, o.create_time, o.no, o.thumbnail, o.description, a.name, a.phone, concat(r1.name , r2.name , a.detail), os.state')
+                ->field('o.id, o.total_amount, o.create_time, o.no, o.thumbnail, o.description, a.name, a.phone, concat(r1.name , r2.name , a.detail) address, o.state as sid, os.state')
                 ->join('qkl_address a', 'a.id = o.address_id')
                 ->join('qkl_region r1', 'r1.id = a.region_id_1')
                 ->join('qkl_region r2', 'r2.id = a.region_id_2')
