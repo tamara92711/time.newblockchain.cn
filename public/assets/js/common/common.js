@@ -38,16 +38,31 @@ function getFirstMonthDay()
 
 }
 
-function getDemandStatusFindJobList(state_id,is_reviewed)
+function getLastMonthDay()
 {
-    if(state_id == 2 && is_reviewed == 0)
-        return '发布中';
-    else  if(state_id == 3 && is_reviewed == 0)
-        return '已承接';
-    else  if(state_id == 3 && is_reviewed == 3)
-        return '已完成';
-    else  if(state_id == 2 && is_reviewed == 4)
-        return '已失效';
+    var date = new Date();
+    var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return lastDay;
+}
+
+function getDemandStatusFindJobList(state_id,is_reviewed,display_id)
+{
+    if (display_id == 'unbid')
+    {
+        if(state_id == 2 && is_reviewed == 0)
+            return '发布中';
+        else  if(state_id == 3 && is_reviewed == 0)
+            return '已承接';
+        else  if(state_id == 3 && is_reviewed == 3)
+            return '已完成';
+        else  if(state_id == 2 && is_reviewed == 4)
+            return '已失效';
+    }
+    else (display_id == 'bid' && state_id == 2 && is_reviewed == 0)
+    {
+            return '待承接';
+    }
+
 }
 
 function getDemandStatusPubliher(state_id,is_reviewed)
@@ -58,7 +73,7 @@ function getDemandStatusPubliher(state_id,is_reviewed)
         return '已发布';
     else  if(state_id == 3 && is_reviewed == 0)
         return '未完成';
-    else  if(state_id == 3 && is_reviewed == 1)
+    else  if(state_id == 3 && is_reviewed == 1 || state_id == 3 && is_reviewed == 2)
         return '待评价';
     else  if(state_id == 3 && is_reviewed == 3)
         return '已完成';
@@ -74,10 +89,8 @@ function getDemandStatusFreelancer(state_id,is_reviewed)
         return '待承接';
     else  if(state_id == 3 && is_reviewed == 0)
         return '已承接';
-    else  if(state_id == 3 && is_reviewed == 1)
+    else  if(state_id == 3 && is_reviewed == 1 || state_id == 3 && is_reviewed == 2)
         return '待评价';
-    // else  if(state_id == 3 && is_reviewed == 2)
-    //     return '待评价';
     else  if(state_id == 3 && is_reviewed == 3)
         return '已完成';
     else  if(is_reviewed == 4)
@@ -127,3 +140,28 @@ function format_date(date) {
     date = yyyy + '-' + mm + '-' + dd;
     return date;
 }
+
+
+function insertAddressRegion1Change(region1,district)
+{
+    console.log(region1);
+    var container = $('#district');
+    $.ajax({
+        url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,
+        success : function (result) {
+            var jsonData = JSON.parse(result);
+            var response = jsonData.data;
+            var dataHtml = '';
+            // dataHtml+='<option value="" selected disabled hidden>全部</option>';
+            // <option selected="" value="全部" >全部</option>
+            $.each(response, function (index, item) {
+                dataHtml +='<option value="'+index+'">'+item+'</option>';
+            });
+            container.html(dataHtml);
+            //set as default region2_id default selected in addresslist
+            $("#district").val(district);
+
+        }
+    })
+}
+

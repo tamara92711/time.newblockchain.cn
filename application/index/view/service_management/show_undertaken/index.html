@@ -17,7 +17,7 @@
                     </div>
                     <div class="right" style="margin-right: 33px">
                         <select class="form-control" id="demand_type" name="demand_type">
-                            <!--<option value="" selected disabled hidden>请选择需求类型</option>-->
+                            <option value="0" selected>全部</option>
                             {foreach $demand_type as $key=>$val }
                             <option value="{$val.id}">{$val.name}</option>
                             {/foreach}
@@ -110,9 +110,9 @@
             zIndex: 2048,
             format:'yyyy-mm-dd'
         });
-        var firstMonthDay = getFirstMonthDay();
-        $('#time_from').datepicker().datepicker('setDate',firstMonthDay);
-        $('#time_to').datepicker().datepicker('setDate',new Date());
+
+        $('#time_from').datepicker().datepicker('setDate',getFirstMonthDay());
+        $('#time_to').datepicker().datepicker('setDate',getLastMonthDay());
     }
 
 

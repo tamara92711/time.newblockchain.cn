@@ -1281,3 +1281,22 @@ input.valid, textarea.valid{
 span.err_text {
   color: #ff5656;
 }
+
+.review_text{
+  margin-top: 7px;
+  margin-left: 31px;
+  word-wrap: break-word;
+  line-height: 25px;
+}
+
+.ml23{
+  margin-left: 23px;
+}
+
+.mt10{
+  margin-top: 10px;
+}
+
+.mb7{
+  margin-bottom: 0px;
+}

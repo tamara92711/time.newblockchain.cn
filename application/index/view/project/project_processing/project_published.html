@@ -6,10 +6,14 @@
         <p>{$data[0]['title']}</p>
     </div>
     <div class="row">
-        <button type="submit" class="btn published">已发布</button>
+        {if $display_id == 'unbid'}
+            <button type="submit" class="btn published">已发布</button>
+        {else if $display_id == 'bid'/}
+            <button type="submit" class="btn published">待承接</button>
+        {/if}
     </div>
     <div class="row">
-        <label class="texts">发布人：<span>{$data[0]['publiser_name']}</span></label>
+        <label class="texts" >发布人：<span>{$data[0]['publiser_name']}</span></label>
         <label class="texts" style="margin-left: 80px;margin-top: 20px;">需求类型:<span style="margin-left:7px;">{$data[0]['demand_type']}</span></label>
         <label class="texts" style="margin-left: 82px;margin-top: 20px;">支付时间币<span style="margin-left:11px;">{$data[0]['pay_amount']}</span></label>
         <label class="texts" style="margin-left: 84px;margin-top: 20px;">发布时间<span style="margin-left:11px;">{$data[0]['published_time']}</span></label>
@@ -121,8 +125,9 @@
                     $.alert({
                         title: '投标成功',
                         content: '您的出价已成功完成!'
-
                     });
+                    $(".published").text('待承接').show();
+                    $(".undertake").attr('disabled','disabled');
                 }
             }
         })

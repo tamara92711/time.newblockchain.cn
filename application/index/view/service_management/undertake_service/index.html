@@ -13,7 +13,11 @@
                 <span style="color:#ff5656" style="margin-left: 6px">服务分类</span>
             </div>
             <nav class="sidebar-list">
-                <ul style="margin-bottom:12px">
+                <ul style="margin-bottom:12px" id="parent_demand_type">
+                    <li>
+                        <input id="dt0" class="radio-inline__input" type="radio" name="demand_type" value="0" />
+                        <label class="radio-inline__label" for="dt0" style="padding: 0px;margin-bottom: 0px;">全部分类</label>
+                    </li>
                     {foreach $demand_type as $key=>$val}
                     <li>
                         <input id="dt{$val.id}" class="radio-inline__input" type="radio" name="demand_type" value="{$val.id}" />
@@ -96,12 +100,11 @@
 <script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
 <script src="/assets/js/common/common.js" type="text/javascript"></script>
 <script>
-    $(document).ready(function () {
-        $("#dt1").prop("checked", true);
-        $("#dt1").change();
+    $(document).ready(function ()
+    {
+        $("#dt0").prop("checked", true);
         //all setting at initial
-        // inintialSetting();
-        search();
+        inintialSetting();
     });
 
     //container as public
@@ -115,11 +118,11 @@
         $("#ds-1").prop('checked',true);
         $("#tc-1").prop('checked',true);
         $("#rt-1").prop('checked',true);
+        search();
     }
 
     $("#time_currency_to").focus(function () {
         $("#tc-5").prop('checked',true);
-
     })
 
 
@@ -128,26 +131,35 @@
         // $("#first").hide();
         var demandType = $('input[name=demand_type]:checked').val();
         var container = $("#detailDemandTypes");
+        // console.log(demandType)
+        if(demandType != 0)
+        {
+            $.ajax({
+                url : '/index/service_management/undertake_service/getDetailByDemandType/demandType/'+demandType,
+                success:function (result)
+                {
 
+                    var response = JSON.parse(result);
+                    var dataHtml = '<input id="detaildemand_'+demandType+'" class="radio-inline__input" type="radio" name="detaildemand_type" value='+demandType+' />\n' +
+                        '<label class="radio-inline__label" for="detaildemand_'+demandType+'">全部</label>';
+                    $.each(response, function (index, item) {
+                        dataHtml +='<input id=detaildemand_'+item.id+' class="radio-inline__input" type="radio" name="detaildemand_type" value='+item.id+' />\n' +
+                            '<label id="type" class="radio-inline__label" for=detaildemand_'+item.id+'>' + item.name + '</label>'
 
-        $.ajax({
-            url : '/index/service_management/undertake_service/getDetailByDemandType/demandType/'+demandType,
-            success:function (result)
-            {
+                    });
 
-                var response = JSON.parse(result);
-                var dataHtml = '<input id="detaildemand_'+demandType+'" class="radio-inline__input" type="radio" name="detaildemand_type" value='+demandType+' />\n' +
-                    '<label class="radio-inline__label" for="detaildemand_'+demandType+'">全部</label>';
-                $.each(response, function (index, item) {
-                    dataHtml +='<input id=detaildemand_'+item.id+' class="radio-inline__input" type="radio" name="detaildemand_type" value='+item.id+' />\n' +
-                        '<label id="type" class="radio-inline__label" for=detaildemand_'+item.id+'>' + item.name + '</label>'
-
-                });
-
-                container.html(dataHtml);
-                // $("#detaildemand_1").prop('checked',true);
-            }
-        })
+                    container.html(dataHtml);
+                    $($("#detailDemandTypes").children()[0]).prop("checked",true);
+                    search();
+                }
+            })
+        }
+        else
+        {
+           var dataHtml = '';
+            container.html(dataHtml);
+            search();
+        }
     })
 
     //when detail demand type's is clicked.
@@ -159,21 +171,25 @@
     //when detail demand type's is clicked.
     $("#release_time").change(search);
 
-    function search() {
-        var demand_type = $('input[name=detaildemand_type]:checked').val();
-        var demand_status = $('input[name=demand_status]:checked').val();
-        var time_currency = $('input[name=time_currency]:checked').val();
-        var release_time = $('input[name=release_time]:checked').val();
+
+    function search()
+    {
+        var parent_demand_type = $('input[name=demand_type]:checked').val();
+        var detail_demand_type = $('input[name=detaildemand_type]:checked').val();
+        var demand_status      = $('input[name=demand_status]:checked').val();
+        var time_currency      = $('input[name=time_currency]:checked').val();
+        var release_time       = $('input[name=release_time]:checked').val();
         var time_currency_from = $("#time_currency_from").val();
-        var time_currency_to = $("#time_currency_to").val();
-        if (typeof demand_type === 'undefined') demand_type = -1;
+        var time_currency_to   = $("#time_currency_to").val();
+
+        if (parent_demand_type == 0) detail_demand_type = 0;
         if (typeof(demand_status)==="undefined") demand_status = -1;
         if (typeof(time_currency)==="undefined") time_currency = -1;
         if (typeof(release_time)==="undefined") release_time = -1;
         if (typeof(time_currency_from)==="undefined") time_currency_from = -1;
         if (typeof(time_currency_to)==="undefined") time_currency_to = -1;
 
-        var dataString = 'demand_type='+demand_type+'&demand_status='+demand_status+'&time_currency='+time_currency+'&release_time='+release_time+'&time_currency_from='+time_currency_from+'&time_currency_to='+time_currency_to;
+        var dataString = 'detail_demand_type='+detail_demand_type+'&demand_status='+demand_status+'&time_currency='+time_currency+'&release_time='+release_time+'&time_currency_from='+time_currency_from+'&time_currency_to='+time_currency_to;
         console.log(dataString);
         $.ajax({
             url  : '/index/service_management/undertake_service/1',
@@ -183,7 +199,7 @@
             {
 
                 response = JSON.parse(result);
-                // console.log(response);
+                console.log(response);
                 var options = {
                     dataSource: response,
                     callback: function (response, pagination) {
@@ -195,8 +211,8 @@
                             dataHtml += '<div class="qk-post-content">';
                             dataHtml += '<div class="qk-post-title">';
                             dataHtml += '<img src="/assets/img/title.png" class="qk-post-title-img" />';
-                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/uid/'+item.user_id+'/is_reviewed/'+item.is_reviewed+'">'+item.title+'</a></span>'
-                            dataHtml += '<span class="qk-post-title-status">'+getDemandStatusFindJobList(item.state,item.is_reviewed)+'</span>';
+                            dataHtml += '<span class="qk-post-title-text"><a href="/index/service_management/undertake_service/getBuilderProject/demand_id/'+item.id+'/state_id/'+item.state+'/uid/'+item.user_id+'/is_reviewed/'+item.is_reviewed+'/display_id/'+item.display_id+'">'+item.title+'</a></span>'
+                            dataHtml += '<span class="qk-post-title-status">'+getDemandStatusFindJobList(item.state,item.is_reviewed,item.display_id)+'</span>';
                             dataHtml += '</div>';
                             dataHtml += '<div class="qk-post-body">';
                             dataHtml += '<div style="border-bottom: 1px solid #e4e4e4;">';

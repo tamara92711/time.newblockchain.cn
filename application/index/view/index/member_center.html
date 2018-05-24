@@ -17,7 +17,7 @@
                 </p>
                 <p>
                     <img src="/assets/img/member-number.png" />
-                     <span class="subtitle">会员编号：</span>0000001
+                     <span class="subtitle">会员编号：</span>{:model('Demand')->makeMemberId($user_data[0]['id'])}
                 </p>
                 <p>
                     <img src="/assets/img/account-balance.png" />

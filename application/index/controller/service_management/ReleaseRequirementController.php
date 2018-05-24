@@ -162,6 +162,7 @@ class ReleaseRequirementController extends Controller
     {
         $link=DemandModel::get($request->param('demand_id'));
 
+
         $link->demand_type          = $request->param("demand_type");
         $link->title                = $request->param("title");
         $link->detail               = $request->param("detail");

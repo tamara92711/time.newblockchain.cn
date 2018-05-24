@@ -9,30 +9,113 @@ use think\Db;
 
 class DemandModel extends Model
 {
-    public static function getFieldsJobList()
+    //unbid field add
+    public static function getFieldsJobList_1()
     {
         $field_query = Db::table('qkl_demand')
             ->field('d.id,
-                        d.user_id,
-                        d.state,
-                        d.`pay_amount`,
-                        dt.`name` demand_type,
-                        date_format(d.`published_time`,\'%Y-%m-%d\')  published_time,
-                        DATE_FORMAT(d.`service_time_from`,\'%Y-%m-%d\') service_time_from,
-                        DATE_FORMAT(d.`service_time_to`,\'%Y-%m-%d\') service_time_to,
-                        d.`time_total`,
-                        d.title,
-                        is_reviewed');
+                         d.user_id,
+                         d.state,
+                         d.`pay_amount`,
+                         dt.`name` demand_type,
+                         date_format(d.`published_time`,\'%Y-%m-%d\')  published_time,
+                         DATE_FORMAT(d.`service_time_from`,\'%Y-%m-%d\') service_time_from,
+                         DATE_FORMAT(d.`service_time_to`,\'%Y-%m-%d\') service_time_to,
+                         d.`time_total`,
+                         d.title,
+                         d.is_reviewed,
+                         "unbid" as display_id');
         return $field_query;
     }
 
+    //bid field add
+    public static function getFieldsJobList_2()
+    {
+        $field_query = Db::table('qkl_demand')
+            ->field('d.id,
+                         d.user_id,
+                         d.state,
+                         d.`pay_amount`,
+                         dt.`name` demand_type,
+                         date_format(d.`published_time`,\'%Y-%m-%d\')  published_time,
+                         DATE_FORMAT(d.`service_time_from`,\'%Y-%m-%d\') service_time_from,
+                         DATE_FORMAT(d.`service_time_to`,\'%Y-%m-%d\') service_time_to,
+                         d.`time_total`,
+                         d.title,
+                         d.is_reviewed,
+                         "bid" as display_id');
+        return $field_query;
+    }
+
+    public static function jobListWhereClause($temp_query,$demand_type,$time_currency,$time_currency_from,$time_currency_to,$release_time)
+    {
+        $today = date("Y-m-d");
+        if ($demand_type == 0)
+            $temp_query =$temp_query->where('dt.id', '>',$demand_type);
+        else if ($demand_type >= 1)
+        {
+            //parent id or child id
+            $hasPid  = DemandTypeModel::isPid($demand_type);
+            if($hasPid)
+                $temp_query =$temp_query->where('dt.pid',$demand_type);
+            else
+                $temp_query =$temp_query->where('dt.id',$demand_type);
+        }
+
+        if ($time_currency >= 0)
+        {
+            switch ($time_currency)
+            {
+                case 1:
+                    $temp_query =$temp_query->where('d.pay_amount','>','0');
+                    break;
+                case 2:
+                    $temp_query =$temp_query->where('d.pay_amount','between','1,5');
+                    break;
+                case 3:
+                    $temp_query =$temp_query->where('d.pay_amount','between','5,10');
+                    break;
+                case 4:
+                    $temp_query =$temp_query->where('d.pay_amount','>','10');
+                    break;
+            }
+            if ($time_currency_from > 0 and $time_currency_to > 0 )
+            {
+                $temp_query =$temp_query->where('d.pay_amount','>=',$time_currency_from)->where('d.pay_amount','<=',$time_currency_to);
+            }
+        }
+
+        if ($release_time >= 0)
+        {
+            switch ($release_time)
+            {
+                case 1:
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')='."'$today'");
+                    break;
+                case 2:
+                    $yesterday = date('Y-m-d',strtotime("-1 days"));
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')='."'$yesterday'");
+                    break;
+                case 3:
+                    $threeDay = date('Y-m-d',strtotime("-3 days"));
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$threeDay'")
+                        ->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
+                    break;
+                case 4:
+                    $threeDay = date('Y-m-d',strtotime("-3 days"));
+                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$threeDay'");
+                    break;
+            }
+        }
+
+        return $temp_query;
+    }
     public static function jobListConditionJoin($field_query)
     {
         $join_query = $field_query
                     ->alias('d')
                     ->join('qkl_demand_type dt','d.demand_type=dt.id')
                     ->order('d.create_time','desc')
-                    ->limit(0,100)
                     ->select();
         return $join_query;
     }
@@ -72,6 +155,8 @@ class DemandModel extends Model
 
         return $project_query;
     }
+
+
 
     public static function getReviewInformation($demand_id,$user_id)
     {
@@ -183,7 +268,7 @@ class DemandModel extends Model
                         d.id,
                         d.applied_user_id,
                         d.state,
-                        is_reviewed');
+                        d.is_reviewed');
         return $field_query;
     }
 
@@ -193,7 +278,6 @@ class DemandModel extends Model
                 ->alias('d')
                 ->join('qkl_demand_type dt','d.demand_type=dt.id')
                 ->order('d.create_time','desc')
-                ->limit(100)
                 ->select();
 
         return $complete_query;
@@ -213,12 +297,14 @@ class DemandModel extends Model
 
     public static function getPublishedListWhereClause($query,$demand_type,$time_from,$time_to)
     {
-        $query
-            ->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
-            ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
-            ->where('dt.pid',$demand_type)
-            ->where('d.user_id',session('user_id'));
+        $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
+                ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
+                ->where('d.user_id',session('user_id'));
 
+        if ($demand_type == 0)
+            $query->where('d.id','>=',0);
+        else
+            $query->where('dt.pid',$demand_type);
         return $query;
     }
 
@@ -262,8 +348,12 @@ class DemandModel extends Model
     public static function getUndertakenListWhereClause($query,$demand_type,$time_from,$time_to)
     {
          $query->where('DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>='."'$time_from'")
-                ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'")
-                ->where('dt.pid',$demand_type);
+                ->where('DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<='."'$time_to'");
+
+        if ($demand_type == 0)
+            $query->where('d.id','>=',0);
+        else
+            $query->where('dt.pid',$demand_type);
          //or usage
 //        $query->where('(DATE_FORMAT(d.service_time_from, \'%Y-%m-%d\')>= :time_from or DATE_FORMAT(d.service_time_to, \'%Y-%m-%d\')<= :time_to)
 //                    and dt.pid = :demand_type', ['time_from'=>$time_from, 'time_to'=>$time_to, 'demand_type' => $demand_type]);
@@ -287,6 +377,7 @@ class DemandModel extends Model
 
         return array_merge($data,$data_1);
     }
+
     //待承接 get list function
     public static function getToUnderkenList()
     {
@@ -297,7 +388,7 @@ class DemandModel extends Model
                 ->join('qkl_apply a','a.demand_id = d.id')
                 ->where('a.user_id',session('user_id'))
                 ->where('d.applied_user_id',0)
-                ->value('a.demand_id');
+                ->column('a.demand_id');
 
         }catch (Exception $exception)
         {
@@ -379,6 +470,14 @@ class DemandModel extends Model
         else  if($state == 3 && $is_reviewed == 5)
             return '已失效';
 
+    }
+
+    public static function  makeMemberId($member_id)
+    {
+        $length = 7;
+        $zeroLength = $length - strlen($member_id);
+        $zeorString = str_repeat(0,$zeroLength);
+        return $zeorString.$member_id;
     }
 
 }

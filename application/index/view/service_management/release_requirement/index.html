@@ -471,17 +471,19 @@
         $("#contact").val(contact);
         $("#contact_phone").val(contact_phone);
 
-        $("#region_1").change(region1Change());
-        console.log(contact_region1_id);
-        console.log(contact_region2_id);
-        $("#district").val(contact_region2_id);
+        insertAddressRegion1Change(contact_region1_id,contact_region2_id)
+        // console.log(contact_region1_id);
+        // console.log(contact_region2_id);
+
 
     }
+
+
 
     function region1Change()
     {
         var region1=$("#region_1").val();
-        console.log(region1);
+        // console.log(region1);
         var container = $('#district');
         $.ajax({
             url:  '/index/data_management.address_manage/getregion2byregion1/region1/' + region1,

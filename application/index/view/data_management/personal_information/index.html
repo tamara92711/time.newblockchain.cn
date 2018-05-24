@@ -13,8 +13,7 @@
                         <label for="username">用户名：</label>
                     </div>
                     <div class="right">
-                        <input type="text" class="form-control" name="username" id="username" readonly="readonly" value="{$user_data[0]['name']}"
-                        />
+                        <input type="text" class="form-control" name="username" id="username" readonly="readonly" value="{$user_data[0]['name']}"/>
                     </div>
                     <label class="error" for="username" id="username_error">这是必填栏。</label>
                 </div>
@@ -24,7 +23,7 @@
                         <label>真实姓名：</label>
                     </div>
                     <div class="right">
-                        <input type="text" class="form-control" name="realname" id="realname" value="{$user_data[0]['real_name']}" readonly/>
+                        <input type="text" class="form-control" name="realname" id="realname" value="{$user_real_name}" readonly/>
                     </div>
                     <label class="error" for="realname" id="realname_error">这是必填栏。</label>
                 </div>
@@ -105,9 +104,9 @@
                     </div>
                     <div class="right">
                         <input type="number" class="form-control" style="width:200px;float:left;margin-right:10px" id="cellphone" name="cellphone"
-                            readonly="readonly" value="{$user_data[0]['mobile']}" />
+                               readonly="readonly" value="{$user_data[0]['mobile']}" />
                         <a href="#changePhoneNumber" role="button" class="btn" data-toggle="modal" style="float:left;width:90px;background-color:#ff5656;margin-top:-6px;height:36px;border-radius:0px">
-                        修改手机 </a>
+                            修改手机 </a>
                     </div>
                     <label class="error" for="cellphone" id="cellphone_error">这是必填栏。</label>
                 </div>
@@ -116,7 +115,7 @@
                         <label>固定电话：</label>
                     </div>
                     <div class="right">
-                        <input type="number" class="form-control" id="fixed" name="fixed" value="{$user_data[0]['fixed']}" />
+                        <input type="text" class="form-control" id="fixed" name="fixed" value="{$user_fixed}"  />
                     </div>
                     <label class="error" for="fixed" id="fixed_error">这是必填栏。</label>
                 </div>
@@ -125,7 +124,7 @@
                         <label>E-mail：</label>
                     </div>
                     <div class="right">
-                        <input type="email" class="form-control" id="email" name="email" value="{$user_data[0]['email']}" />
+                        <input type="email" class="form-control" id="email" name="email" value="{$user_email}" />
                     </div>
                     <label class="error" for="email" id="email_error">这是必填栏。</label>
                 </div>
@@ -143,7 +142,7 @@
 </div>
 
 <div id="changePhoneNumber" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changePhoneNumberLabel" aria-hidden="true"
-    style="display: none;">
+     style="display: none;">
     <div class="modal-dialog container" style="width:452px;margin-top:200px">
         <div class="modal-content">
             <div class="modal-header">
@@ -220,7 +219,7 @@
 
 {/block} {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/common/common.js"></script>
-{/block}
+
 <script>
     $(document).ready(function () {
         $('.error').hide();
@@ -238,9 +237,14 @@
         e.preventDefault();
         if (($("#beforepass").val().length >= 1) && ($("#newpass").val().length >= 1) && ($("#verifypass").val().length >= 1))
         {
-            if (!validation(2)) return;
-        } else {
-            if (!validation(1)) return;
+            validation(2);
+            // if(!result) return;
+        }
+        else
+        {
+            validation(1);
+            // console.log(result);
+            // if(!result) return;
         }
 
 
@@ -249,7 +253,6 @@
             url: "/personal_update",
             method: 'POST',
             data: formData,
-            timeout: 9000,
             success: function (result) {
 
                 if (result == 'ok') {
@@ -374,14 +377,18 @@
             success: function (response) {
                 result = JSON.parse(response);
                 if (result.error) {
-                    console.log("" + mode + "-code:" + result.code);
-                    console.log("" + mode + "-text:" + result.text);
+                    // console.log("" + mode + "-code:" + result.code);
+                    // console.log("" + mode + "-text:" + result.text);
                     // $("#new_mobile").focus();
                 } else {
-                    console.log("" + mode + "-code:" + result.code);
-                    console.log("" + mode + "-text:" + result.text);
-                    if (mode == 1) time($("#oldMobileVerifyCodeButton"), 60);
-                    if (mode == 2) time($("#newMobileVerifyCodeButton"), 60);
+                    // console.log("" + mode + "-code:" + result.code);
+                    // console.log("" + mode + "-text:" + result.text);
+                    if (mode == 1) {
+                        time($("#oldMobileVerifyCodeButton"), 60);
+                    }
+                    if (mode == 2) {
+                        time($("#newMobileVerifyCodeButton"), 60);
+                    }
                 }
             }
         });
@@ -403,10 +410,17 @@
     //     return regex.test(email);
     // }
 
+
+    $("#fixed").keypress(function (event) {
+        var code = event.which;
+        if (code < 48 || code > 57) event.preventDefault();
+        else $("#fixed_error").text('input enter number').show();
+    });
+
     function tempValidation_1(mode) {
         $('.error').hide();
         var username = $("input#username").val();
-        if (username == "") { //user name 
+        if (username == "") { //user name
             $("label#username_error").show();
             $("input#username").focus();
             return false;
@@ -452,16 +466,19 @@
             $("input#verifypass").focus();
             return false;
         }
-        console.log("mode2");
+        // console.log("mode2");
         return true;
     }
 
     function validation(mode) {
-        if (mode == 1) {
-            return tempValidation_1();
+        if (mode == 1)
+        {
+            console.log("1");
+            tempValidation_1();
         }
-        else if (mode == 2) {
-            return tempValidation_1() && tempValidation_2();
+        else if (mode == 2)
+        {
+            tempValidation_1() && tempValidation_2();
         }
     }
     $("#beforepass,#newpass,#verifypass,#email,#fixed").keypress(function () {
@@ -472,4 +489,5 @@
         $("label#fixed_error").hide();
 
     })
-</script> {/block}
+</script>
+{/block}

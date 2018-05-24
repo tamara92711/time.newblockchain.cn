@@ -65,95 +65,57 @@ class UndertakeServiceController extends Controller
      */
     public function read(Request $request,$id)
     {
-        //1: 未发布 don't display
-        $temp_query = DemandModel::getFieldsJobList()
-            ->where('d.state','>',1);
+        $temp_query = DemandModel::getFieldsJobList_1();
 
-        $today = date("Y-m-d");
-        $demand_type = $request->param('demand_type');
-        $demand_state = $request->param('demand_status');
-        $time_currency = $request->param('time_currency');
-        $release_time = $request->param('release_time');
-        $time_currency_from = $request->param('time_currency_from');
-        $time_currency_to = $request->param('time_currency_to');
 
-        if ($demand_type >= 0)
-        {
-            //parent id or child id
-            $hasPid  = DemandTypeModel::isPid($demand_type);
-            if($hasPid)
-                $temp_query =$temp_query->where('dt.pid',$demand_type);
-            else
-                $temp_query =$temp_query->where('dt.id',$demand_type);
-        }
+        $demand_type                = $request->param('detail_demand_type');
+        $demand_state               = $request->param('demand_status');
+        $time_currency              = $request->param('time_currency');
+        $release_time               = $request->param('release_time');
+        $time_currency_from         = $request->param('time_currency_from');
+        $time_currency_to           = $request->param('time_currency_to');
+
+        $temp_query = DemandModel::jobListWhereClause($temp_query,$demand_type,$time_currency,$time_currency_from,$time_currency_to,$release_time);
+
         if ($demand_state >= 0)
         {
-            switch ($demand_state)
-            {
-                case 0:
-                    $temp_query =$temp_query->where('d.state','>',1);//all
-                    break;
-                case 2:
-                    $temp_query =$temp_query->where('d.state',2)->where('is_reviewed',0);//发布中
-                    break;
-                case 3:
-                    $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',0);//已承接
-                    break;
-                case 4:
-                    $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
-                    break;
-                case 5:
-                    $temp_query =$temp_query->where('is_reviewed',4);//cancled  已失效 wrong so change
-                    break;
-            }
-        }
+           if($demand_state == 0)
+           {
+               // only show unbid list
+               $temp_query    = $temp_query->where('d.state','>',1);//all   未发布 don't display
+               $temp_query    = $temp_query->whereNotin('d.id',DemandModel::getToUnderkenList());
 
-        if ($time_currency >= 0)
-        {
-            switch ($time_currency)
-            {
-                case 1:
-                    $temp_query =$temp_query->where('d.pay_amount','>','0');
-                    break;
-                case 2:
-                    $temp_query =$temp_query->where('d.pay_amount','between','1,5');
-                    break;
-                case 3:
-                    $temp_query =$temp_query->where('d.pay_amount','between','5,10');
-                    break;
-                case 4:
-                    $temp_query =$temp_query->where('d.pay_amount','>','10');
-                    break;
-            }
-            if ($time_currency_from > 0 and $time_currency_to > 0 )
-            {
-                $temp_query =$temp_query->where('d.pay_amount','>=',$time_currency_from)->where('d.pay_amount','<=',$time_currency_to);
-            }
-        }
+               //only show bid list
+               $temp_query_2  = DemandModel::getFieldsJobList_2();
+               $temp_query_2  = $temp_query_2->whereIn('d.id',DemandModel::getToUnderkenList());
+               $temp_query_2  = DemandModel::jobListWhereClause($temp_query_2,$demand_type,$time_currency,$time_currency_from,$time_currency_to,$release_time);
 
-        if ($release_time >= 0)
-        {
-            switch ($release_time)
-            {
-                case 1:
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')='."'$today'");
-                    break;
-                case 2:
-                    $yesterday = date('Y-m-d',strtotime("-1 days"));
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')='."'$yesterday'");
-                    break;
-                case 3:
-                    $threeDay = date('Y-m-d',strtotime("-3 days"));
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')>'."'$threeDay'")
-                        ->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
-                    break;
-                case 4:
-                    $threeDay = date('Y-m-d',strtotime("-3 days"));
-                    $temp_query =$temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$threeDay'");
-                    break;
-            }
+               $data_1 = DemandModel::jobListConditionJoin($temp_query);
+               $data_2 = DemandModel::jobListConditionJoin($temp_query_2);
+
+               $data = array_merge($data_1,$data_2);
+
+               return json_encode($data);
+           }
+           else if($demand_state == 2)
+           {
+               $temp_query = $temp_query->where('d.state',2)->where('is_reviewed',0);//发布中
+               $temp_query = $temp_query->whereNotin('d.id',DemandModel::getToUnderkenList());
+           }
+           else if($demand_state == 3)
+           {
+               $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',0);//已承接
+           }
+           else if($demand_state == 4)
+           {
+               $temp_query =$temp_query->where('d.state',3)->where('is_reviewed',3);//已完成
+           }
+           else if($demand_state == 5)
+           {
+               $temp_query =$temp_query->where('is_reviewed',4);//cancled  已失效 wrong so change
+           }
         }
-        $today = date('Y-m-d');
+//        $today = date('Y-m-d');
 //        $temp_query = $temp_query->where('DATE_FORMAT(d.published_time, \'%Y-%m-%d\')<='."'$today'");
         $data = DemandModel::jobListConditionJoin($temp_query);
 
@@ -200,15 +162,20 @@ class UndertakeServiceController extends Controller
         return json_encode($detailDemandType);
     }
 
-    public function getBuilderProject($demand_id,$state_id,$uid,$is_reviewed)
+    public function getBuilderProject($demand_id,$state_id,$uid,$is_reviewed,$display_id)
     {
         //发布中 display
-        if ($state_id == 2 && $is_reviewed == 0)
+        if ($state_id == 2 && $is_reviewed == 0 )
         {
             if ($uid == session('user_id'))
-                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0]);
+                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 0,"display_id"=>'unbid']);
             else
-                return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1]);
+            {
+                if($display_id == 'unbid')
+                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1,"display_id"=>'unbid']);
+                else
+                    return redirect("/index/project/project_processing/project_published", ["id" => $demand_id, "mode" => 1,"display_id"=>'bid']);
+            }
         }
         else if ($state_id == 3 && $is_reviewed == 0)
         {

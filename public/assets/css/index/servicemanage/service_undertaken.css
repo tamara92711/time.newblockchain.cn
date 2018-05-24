@@ -137,11 +137,11 @@ input[type="radio"] + label:before {
 /*}*/
 
 #image-preview-front input{
-    line-height: 86px;
+    line-height: 134px;
     position: absolute;
     opacity: 0;
     z-index: 10;
-    width: 202px;
+    width: 174px;
     /*line-height: 86px;*/
     /*position: absolute;*/
     /*opacity: 0;*/
