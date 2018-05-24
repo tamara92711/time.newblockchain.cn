@@ -197,7 +197,7 @@
                                     <input type="number" class="form-control" style="width:190px;" id="newMobileVerifyCode" oninput="if(value.length>4)value=value.slice(0,4)">
                                     <span class="input-group-btn">
                                         <!-- <button class="btn" type="button" onclick="create_phone_verify_code(2);" id="newMobileVerifyCodeButton">获取验证码</button> -->
-                                        <input type="button" onclick="create_phone_verify_code(2)" class="btn get-veri-code-btn" id="newMobileVerifyCodeButton" value="获取验证码" style="width: 90px;height: 32px;margin-top: -6px;border-top-left-radius: 0px;border-bottom-left-radius: 0px;padding:0px 5px"/>
+                                        <input type="button" onclick="create_phone_verify_code(2)" class="btn get-veri-code-btn" id="newMobileVerifyCodeButton" value="获取验证码" style="width: 90px;height: 32px;margin-top: -6px;border-top-left-radius: 0px;border-bottom-left-radius: 0px;padding:0px 5px">
                                     </span>
                                 </div>
                             </div>
@@ -220,7 +220,6 @@
 
 {/block} {block name="custom-js"}
 <script type="text/javascript" src="/assets/js/common/common.js"></script>
-{/block}
 <script>
     $(document).ready(function () {
         $('.error').hide();
@@ -271,8 +270,8 @@
 
     });
     //when modal diaolg show at first confirm and verifycode button disable
-    $("#changePhoneButton").attr('disabled', 'disabled').addClass('ui-state-disabled');
-    $("#newMobileVerifyCodeButton").attr('disabled', 'disabled').addClass('ui-state-disabled');
+    $("#changePhoneButton").prop('disabled', true);
+    $("#newMobileVerifyCodeButton").prop('disabled', true);
 
     $("#oldMobileVerifyCode").on('keyup blur', function () {
         var oldMobileVerifyCode = $(this).val();
@@ -321,7 +320,7 @@
                     }
                     else if (result == "ok") {
                         $("#verifyError").hide();
-                        $("#changePhoneButton").removeAttr("disabled");
+                        $("#changePhoneButton").prop('disabled', false);
                     }
                 }
             });
@@ -335,7 +334,7 @@
         if (!isnum || new_mobile.length != 11) {
             $(this).focus();
         }
-        else if (isnum || new_mobile.length == 11) {
+        else if (isnum && new_mobile.length == 11) {
             $.ajax({
                 url: '/existMobile',
                 method: "post",
@@ -347,7 +346,7 @@
                     }
                     else if (result == "not exist") {
                         $("#verifyError").hide();
-                        $("#newMobileVerifyCodeButton").removeAttr("disabled");
+                        $("#newMobileVerifyCodeButton").prop("disabled", false);
                     }
                 }
             })
@@ -378,12 +377,12 @@
                 } else {
                     console.log("" + mode + "-code:" + result.code);
                     console.log("" + mode + "-text:" + result.text);
-                    if (mode == 1) {
-                        time($("#oldMobileVerifyCodeButton"), 60);
-                    }
-                    if (mode == 2) {
-                        time($("#newMobileVerifyCodeButton"), 60);
-                    }
+                }
+                if (mode == 1) {
+                    time($("#oldMobileVerifyCodeButton"), 60);
+                }
+                if (mode == 2) {
+                    time($("#newMobileVerifyCodeButton"), 60);
                 }
             }
         });
@@ -474,4 +473,6 @@
         $("label#fixed_error").hide();
 
     })
-</script> {/block}
+</script>
+{/block}
+
