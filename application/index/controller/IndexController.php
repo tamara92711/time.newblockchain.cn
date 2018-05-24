@@ -144,8 +144,9 @@ class IndexController extends Controller
 
         $unBidCnt       = DemandModel::calculatePublisherUnBidCount();
         $publi_Statics  = DemandModel::calculatePublisherStatics_2();
+        $total_appliCnt = DemandModel::where(['user_id'=>session('user_id')],['applied_user_id','<>',0])->count();
 
-        $this->assign(['unAppliedCnt'=>$unAppliedCnt,'freeStatics'=>$freeStatics,'unBidCnt'=>$unBidCnt,'publi_Statics'=>$publi_Statics]);
+        $this->assign(['unAppliedCnt'=>$unAppliedCnt,'freeStatics'=>$freeStatics,'unBidCnt'=>$unBidCnt,'publi_Statics'=>$publi_Statics,'total_appliCnt'=>$total_appliCnt]);
 
         $this->assign(['user_data'=>$user_data,"published_data"=>$published_data,"underker_data" =>$underker_data, 'header_nav' =>'personal_home',"side_nav"=>'personal_info','nav_type'=>0]);
 

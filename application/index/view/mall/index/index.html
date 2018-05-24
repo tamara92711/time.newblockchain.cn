@@ -18,7 +18,7 @@
             </label>
             <input id="zt-3" class="radio-inline__input" type="radio" name="zt" value="3">
             <label class="radio-inline__label" for="zt-3" style="padding-left: 25px;">
-                51-100
+                50-100
             </label>
             <input id="zt-4" class="radio-inline__input" type="radio" name="zt" value="4">
             <label class="radio-inline__label" for="zt-4" style="padding-left: 6px;">
@@ -37,7 +37,7 @@
     </div>
     <div class="table-header">
         <div class="fl sorting">排序</div>
-        <label class="fl" id="total_sales" style="margin-top: -4px;padding: 16px 29px;font-size: 16px;position:relative;">销量
+        <label class="fl" id="sales_count" style="margin-top: -4px;padding: 16px 29px;font-size: 16px;position:relative;">销量
             <div class="fa fa-sort-asc" style="position: absolute;margin-top: 3px;" id="sales_asc"></div>
             <div class="fa fa-sort-desc" id="sales_desc"></div>
         </label>
@@ -61,10 +61,10 @@
 <link href="/assets/css/pagination/pagination.css" rel="stylesheet" type="text/css" />
 <link href="/assets/css/index/index/public_welfaremall.css" rel="stylesheet" type="text/css" /> {/block} {block name="custom-js"}
 <script src="/assets/js/pagination/pagination.js" type="text/javascript"></script>
-<script src="/assets/jsondata/public_json.js" type="text/javascript"></script>
 <script>
     var product_json;
     var container = $('#pagination');
+
     $(document).ready(function () {
 
         $.ajax({
@@ -92,14 +92,22 @@
             success: function (response) {
                 product_json = JSON.parse(response);
                 build_pagination(product_json);
+                total_length = product_json.items.length;
+                setTotalHtml(total_length);
+
             }
         })
         $("#lx-1").attr("checked", true);
         $("#zt-1").attr("checked", true);
-        
-        //$(".btn-search").click();
+
+
     });
 
+    function setTotalHtml(total_cnt)
+    {
+       var  extraHtml = "<li style='margin-top: -2px;'>共 <span style='color: red;' id='totalNumbers'>" +total_cnt +"</span>个产品</li>";
+        $(".paginationjs-pages ul li:first").html(extraHtml);
+    }
     //when detail demand type's is clicked.
     $("#product_types").change(product_search);
     //when detail demand type's is clicked.
@@ -111,13 +119,15 @@
         var time_money = $("input[name='zt']:checked").val();
         var key = $("#search-key").val();
 
-        console.log('product_type='+product_type+'time_money='+time_money+'key='+key);
+        // console.log('product_type='+product_type+'time_money='+time_money+'key='+key);
         $.ajax({
             method: "GET",
             url: "/index/mall.index/search",
             data: { product_type: product_type, time_money: time_money, key: key },
             success: function (response) {
-                build_pagination(JSON.parse(response));
+                var result = JSON.parse(response);
+                build_pagination(result);
+                setTotalHtml(result.items.length);
             }
         })
     }
@@ -129,8 +139,8 @@
             product_search();
         }
     }
-    function build_pagination(data_json) {
-        console.log(data_json);
+    function build_pagination(data_json)
+    {
         var tempData = [];
         for (var i = 0; i < data_json.items.length; i += 4) {
             var exItem = [];
@@ -147,7 +157,8 @@
         })
         var options = {
             dataSource: tempData,
-            callback: function (response, pagination) {
+            callback: function (response, pagination)
+            {
 
                 var dataHtml = '';
                 $.each(response, function (index, item) {
@@ -238,69 +249,86 @@
                             '    </div>';
                     }
                 });
-                container.prev().html(dataHtml);
+                if (data_json.items.length > 0)
+                {
+                    container.prev().html(dataHtml);
+                }
+                else
+                {
+                    var dataHtml = '<div style="color:red;text-align: center;font-size: 20px;padding-top: 16px;">搜索结果中没有产品。</div>'
+                    container.prev().html(dataHtml);
+                }
             }
         };
         container.pagination(options);
     }
     //json array sort function
-    function sortByKey(array, key, sortmethod) {
-        if (sortmethod == 'asc') {
-            return array.sort(function (a, b) {
-                var x = a[key]; var y = b[key];
-                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-            });
-        }
-        else if (sortmethod == 'desc') {
-            return array.sort(function (a, b) {
-                var x = a[key]; var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            });
-        }
+    function sortByKey(array, key, sortmethod)
+    {
+        if (sortmethod == 'asc')
+        {
+            return array.sort(function (a, b)
+            {
+                var x = eval(a[key]);
+                var y = eval(b[key]);
+                return ((x > y) ? 1 : ((x < y) ? -1 : 0));
 
+            });
+        }
+        else if (sortmethod == 'desc')
+        {
+            return array.sort(function (a, b)
+            {
+                var x = eval(a[key]);
+                var y = eval(b[key]);
+                return (y > x) ? 1 : (y < x ? -1 : 0);
+            });
+        }
     }
 
-    function sort(param, sortMethod) {
-        var data_json = product_json;
 
-        if (sortMethod) {
-            var sort_key = param;
-            if (param == 'total_sales') sort_key = 'sales_count';
-            data_json.items = sortByKey(data_json.items, sort_key, sortMethod);
-        }
+
+    function sort(param, sortMethod)
+    {
+        var data_json = product_json;
+        data_json.items = sortByKey(data_json.items, param, sortMethod);
         build_pagination(data_json);
     }
 
     var clicked = true;
-    $(".table-header label").click(function () {
+    $(".table-header label").click(function ()
+    {
         var valueElement = $('#' + $(this).attr('id'));
 
         var idStr = valueElement.attr('id');
+
         //initialize
-        $(".table-header label").css("color", "#808080");
-        $(".table-header .fa-sort-asc").css("color", "#808080");
-        $(".table-header .fa-sort-desc").css("color", "#808080");
+        $(".table-header label").css("color", "#0e0e0e");
+        $(".table-header .fa-sort-asc").css("color", "#0e0e0e");
+        $(".table-header .fa-sort-desc").css("color", "#0e0e0e");
 
         valueElement.css("color", "#ff5656");
 
-        if (clicked) {
-            $("#" + idStr + " .fa-sort-desc").css("color", "#808080");
+        if (clicked)
+        {
+            $("#" + idStr + " .fa-sort-desc").css("color", "#0e0e0e");
             $("#" + idStr + " .fa-sort-asc").css("color", "#ff5656");
             sort(idStr, 'asc');
             clicked = false;
-        } else {
+
+        }
+        else
+        {
             $("#" + idStr + " .fa-sort-desc").css("color", "#ff5656");
-            $("#" + idStr + " .fa-sort-asc").css("color", "#808080");
+            $("#" + idStr + " .fa-sort-asc").css("color", "#0e0e0e");
             sort(idStr, 'desc');
             clicked = true;
         }
     })
 
     function add_cart(id) {
-        console.log(id);
+        // console.log(id);
         var count = 0;
-
-        console.log(container.data('pagination').model.pageNumber);
 
         product_json.items[id-1].state = false;
 
@@ -334,7 +362,6 @@
         });
 
     }
-
     function order(id) {
             var ids = "" + id;
             console.log(ids);
@@ -353,6 +380,5 @@
             $(document.body).append(form);
             form.submit();
         }
-
 </script> 
 {/block}

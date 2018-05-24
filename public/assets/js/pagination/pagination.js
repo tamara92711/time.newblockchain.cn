@@ -234,9 +234,7 @@
             html += "<ul>";
           }
           html +=
-            "<li style='margin-top: 7px;'>共 <span style='color: red;'>" +
-            totalNumber +
-            "</span>个项目</li>";
+            "<li style='margin-top: 7px;'>共 <span style='color: red;' id='totalNumbers'>" +totalNumber +"</span>个项目</li>";
           // Whether to display the Previous button
           if (showPrevious) {
             if (currentPage <= 1) {

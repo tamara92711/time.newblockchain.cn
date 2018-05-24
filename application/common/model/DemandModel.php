@@ -29,6 +29,7 @@ class DemandModel extends Model
     }
 
     //bid field add
+
     public static function getFieldsJobList_2()
     {
         $field_query = Db::table('qkl_demand')
@@ -498,7 +499,7 @@ class DemandModel extends Model
     {
         $result = Db::query("SELECT   CASE WHEN (is_reviewed = 3) THEN COUNT(1) ELSE 0 END AS completeCount,
                                                 CASE WHEN (is_reviewed = 0) THEN COUNT(1) ELSE 0 END AS progressCount,
-                                                CASE WHEN (is_reviewed = 1) THEN COUNT(1) ELSE 0 END AS waitingCount
+                                                CASE WHEN (is_reviewed = 2) THEN COUNT(1) ELSE 0 END AS waitingCount
                                                 FROM qkl_demand
                                                 WHERE state = 3 AND applied_user_id =".session('user_id'));
 
@@ -525,7 +526,7 @@ class DemandModel extends Model
     {
         $result = Db::query("SELECT CASE WHEN (is_reviewed = 3) THEN COUNT(1) ELSE 0 END AS completeCount,
                                         CASE WHEN (is_reviewed = 0) THEN COUNT(1) ELSE 0 END AS progressCount,
-                                        CASE WHEN (is_reviewed = 2) THEN COUNT(1) ELSE 0 END AS waitingCount
+                                        CASE WHEN (is_reviewed = 1) THEN COUNT(1) ELSE 0 END AS waitingCount
                                         FROM qkl_demand
                                         WHERE state = 3 AND user_id =".session('user_id'));
 
