@@ -64,6 +64,7 @@
 <script>
     var product_json;
     var container = $('#pagination');
+
     $(document).ready(function () {
 
         $.ajax({
@@ -91,14 +92,22 @@
             success: function (response) {
                 product_json = JSON.parse(response);
                 build_pagination(product_json);
+                total_length = product_json.items.length;
+                setTotalHtml(total_length);
+
             }
         })
         $("#lx-1").attr("checked", true);
         $("#zt-1").attr("checked", true);
-        
-        //$(".btn-search").click();
+
+
     });
 
+    function setTotalHtml(total_cnt)
+    {
+       var  extraHtml = "<li style='margin-top: -2px;'>共 <span style='color: red;' id='totalNumbers'>" +total_cnt +"</span>个产品</li>";
+        $(".paginationjs-pages ul li:first").html(extraHtml);
+    }
     //when detail demand type's is clicked.
     $("#product_types").change(product_search);
     //when detail demand type's is clicked.
@@ -116,7 +125,9 @@
             url: "/index/mall.index/search",
             data: { product_type: product_type, time_money: time_money, key: key },
             success: function (response) {
-                build_pagination(JSON.parse(response));
+                var result = JSON.parse(response);
+                build_pagination(result);
+                setTotalHtml(result.items.length);
             }
         })
     }
@@ -254,31 +265,33 @@
     //json array sort function
     function sortByKey(array, key, sortmethod)
     {
-        console.log(array);
         if (sortmethod == 'asc')
         {
             return array.sort(function (a, b)
             {
-                var x = a[key]; var y = b[key];
-                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+                var x = eval(a[key]);
+                var y = eval(b[key]);
+                return ((x > y) ? 1 : ((x < y) ? -1 : 0));
+
             });
         }
         else if (sortmethod == 'desc')
         {
             return array.sort(function (a, b)
             {
-                var x = a[key]; var y = b[key];
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+                var x = eval(a[key]);
+                var y = eval(b[key]);
+                return (y > x) ? 1 : (y < x ? -1 : 0);
             });
         }
-
     }
+
+
 
     function sort(param, sortMethod)
     {
         var data_json = product_json;
         data_json.items = sortByKey(data_json.items, param, sortMethod);
-
         build_pagination(data_json);
     }
 
@@ -302,6 +315,7 @@
             $("#" + idStr + " .fa-sort-asc").css("color", "#ff5656");
             sort(idStr, 'asc');
             clicked = false;
+
         }
         else
         {
@@ -348,6 +362,8 @@
         });
 
     }
+
+
 
 </script> 
 {/block}

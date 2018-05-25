@@ -79,16 +79,22 @@
                         container.prev().html(dataHtml);
                     }
                 };
-                console.log(response.length);
 
                 if((response.length)>10) {
                     container.pagination(options);
                 }
                 container.pagination(options);
+                setTotalHtml(response.length);
             }
 
         })
     });
+
+    function setTotalHtml(total_cnt)
+    {
+        var  extraHtml = "<li style='margin-top: -2px;'>共 <span style='color: red;' id='totalNumbers'>" +total_cnt +"</span>个慈善公益组织</li>";
+        $(".paginationjs-pages ul li:first").html(extraHtml);
+    }
 </script>
 {/block}
 

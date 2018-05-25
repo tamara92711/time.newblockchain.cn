@@ -24,11 +24,13 @@ class ShowPublishedController extends Controller
     {
         $demand_type = DemandTypeModel::where('pid',0)->field('id,name')->select();
         $demand_status = array('0'=>'全部','1'=>'未发布','2'=>'已发布','3'=>'未完成','4'=>'待评价','5'=>'已完成','6'=>'已过期','7'=>'已失效');
+
         $this->assign('demand_type',$demand_type);
         $this->assign('demand_status',$demand_status);
         $this->assign('side_nav', 'project_published');
         $this->assign('header_nav', 'project_publish');
         $this->assign("nav_type", 1);
+
         return $this->fetch();
     }
 
@@ -63,6 +65,7 @@ class ShowPublishedController extends Controller
         $demand_id= $request->param('demand_id');
         $review = $request->param('review');
         $review_txt= $request->param('review_txt');
+
         if (!empty($request->file('publiher-image')))
         {
             $image = $request->file('publiher-image');
@@ -76,6 +79,7 @@ class ShowPublishedController extends Controller
             $info = $image->move('./uploads/');
             $link->project_image = $info->getSaveName();
         }
+
         $link->demand_id     = $demand_id;
         $link->user_id       = $user_id;
         $link->description   = $review_txt;
@@ -88,29 +92,37 @@ class ShowPublishedController extends Controller
         {
             //state 3 : 已承接 is review 1 so freelance gave review employeer to  set 1 as default
             //check if freelancer give review to employeer
+
             $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',1)->count();
             //if freelancer give review to employer, project compelted so update is_review field as 3
+
             if ($count > 0)
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
             //if freelancer don't give review to employer project compelted so update is_review field as 1
+
             else if ($count == 0)
                 DemandModel::where('id',$demand_id)->where('state','=',3)->update(['is_reviewed'=>1,'complete_time'=>date('Y-m-d H:i:s')]);
 
             //if success go to success page
+
             return redirect('/index/service_management.show_undertaken');
         }
 
 
         //employeer -> freelance    to review
+
         else if ($mode ==0 )
         {
             //state 3 : 已承接  so employeer gave review to freelancer set 2 as default
             //check if employeer give review to freelancer
+
             $count = DemandModel::where('id',$demand_id)->where('state',3)->where('is_reviewed',2)->count();
             //if employer give review to freelancer project compelted so update is_review field as 3
+
             if ($count > 0)
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>3,'complete_time'=>date('Y-m-d H:i:s')]);
             //if employer don't give review to freelancer project compelted so update is_review field as 1
+
             else if ($count == 0)
                 DemandModel::where('id',$demand_id)->where('state',3)->update(['is_reviewed'=>2,'complete_time'=>date('Y-m-d H:i:s')]);
 
@@ -141,6 +153,7 @@ class ShowPublishedController extends Controller
 
                 $query = DemandModel::getPublishedListField();
                 $temp_query = DemandModel::getPublishedListWhereClause($query,$demand_type,$time_from,$time_to);
+
                 switch ($demand_state)
                 {
                     case 1:
@@ -169,6 +182,7 @@ class ShowPublishedController extends Controller
                         break;
                         break;
                 }
+                //get publisted list 
                 $tmpData    = DemandModel::getPublishedListJoin($temp_query);
                 DemandModel::getAllPublishedList($tmpData);
 
@@ -240,6 +254,7 @@ class ShowPublishedController extends Controller
         {
             $checkId = $request->param('checkId');
             $demandId = $request->param('demandId');
+
             DemandModel::where('id',$demandId)->update(['applied_user_id'=>$checkId,'state' => 3,'accepted_time'=> date('Y-m-d H:i:s')]);
             return "ok";
         }catch (Exception $exception)
@@ -251,32 +266,36 @@ class ShowPublishedController extends Controller
     public function getBuilderProject($demand_id,$state_id,$is_reviewed)
     {
         //drafts projet send to editable state
+
         if ($state_id == 1 && $is_reviewed == 0)
             return redirect('/index/service_management.release_requirement/draftsEdit',["demand_id" => $demand_id,"state_id" => $state_id]);
         //biding state publise select freelancer
+
         if ($state_id == 2 && $is_reviewed == 0)
             return redirect('/index/project/project_processing/project_published',["id" => $demand_id,"mode" => 0,"display_id"=>'unbid']);
+
         //publisher give review to publisher freelancer
+
         if ($state_id == 3 && $is_reviewed == 0)
             return redirect('/index/project/project_processing/publish_completed',["id" => $demand_id,"mode" => 0]);
+
         //waiting evaluated from freelancer so give evaluated goto completed step by employeer
+
         if ($state_id == 3 && $is_reviewed == 1)
             return redirect('/index/project/project_processing/publish_completed',["id" => $demand_id,"mode" => 1]);
+
         //employeer give review at first so 3:0=> 3:2 update ,,,review evaluated state in employee
+
         if ($state_id == 3 && $is_reviewed == 2)
             return redirect('/index/project/project_processing/publish_completed',["id" => $demand_id,"mode" => 2]);
+
         //completed state
+
         if ($state_id == 3 && $is_reviewed == 3)
             return redirect('/index/project/project_processing/project_publish_complete',["id" => $demand_id]);
-        if($state_id == 2 && $is_reviewed == 4)
-        {
-            return redirect('/index/project/project_processing/project_cancled',["id" => $demand_id, "mode" => 0]);
-        }
 
-//
-//            //已发布
-//            case 6:
-//                return redirect('/index/project/project_processing/project_published',["id" => $demand_id,"mode" => 0]);
-//                break;
+        if($state_id == 2 && $is_reviewed == 4)
+            return redirect('/index/project/project_processing/project_cancled',["id" => $demand_id, "mode" => 0]);
+
     }
 }

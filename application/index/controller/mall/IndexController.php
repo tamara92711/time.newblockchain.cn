@@ -59,7 +59,7 @@ class IndexController extends Controller
         if (is_null($time_money))   $time_money = 1;
         if (is_null($key))          $key = 1;
 
-        $result = ProductModel::where("is_deleted", 0);
+        $result = ProductModel::where("is_deleted", 0);//->limit(5);
         switch ($time_money)
         {
             case 1:
